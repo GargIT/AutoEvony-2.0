@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" title="Settings">
+	<mx:Script>
+		<![CDATA[
+//			import org.smtp.events.SMTPEvent;
+//			import org.smtp.mailer.SMTPMailer;
+			import autoevony.player.Map;
+			import mx.managers.PopUpManager;
+			
+			public var cbClose:Function = null;
+			
+ 			public function init() : void
+			{
+				mapBack.selectedColor = Map.colorBACKGROUND;
+				enemy.selectedColor = Map.colorENEMY_ALLIANCE;
+				friend.selectedColor = Map.colorFRIEND_ALLIANCE;
+				same.selectedColor = Map.colorSAME_ALLIANCE;
+				neutral.selectedColor = Map.colorMIDDLE_ALLIANCE;
+				mycities.selectedColor = Map.colorPLAYER;
+				npc5.selectedColor = Map.colorNPC5;
+				npc10.selectedColor = Map.colorNPC10;
+				otherfield.selectedColor = Map.colorUNKOWNFIELD;
+				flat5.selectedColor = Map.colorFlat5;
+				flat10.selectedColor = Map.colorFlat10;
+			}
+			
+			private function ok() : void
+			{
+				Map.colorBACKGROUND = mapBack.selectedColor;
+				Map.colorENEMY_ALLIANCE = enemy.selectedColor;
+				Map.colorFRIEND_ALLIANCE = friend.selectedColor;
+				Map.colorSAME_ALLIANCE = same.selectedColor;
+				Map.colorMIDDLE_ALLIANCE = neutral.selectedColor;
+				Map.colorPLAYER = mycities.selectedColor;
+				Map.colorNPC5 = npc5.selectedColor;
+				Map.colorNPC10 = npc10.selectedColor;
+				Map.colorUNKOWNFIELD = otherfield.selectedColor;
+				Map.colorFlat5 = flat5.selectedColor;
+				Map.colorFlat10 = flat10.selectedColor;
+//				Context.smtpAddress = smtpAddressText.text;
+//				Context.smtpServer = smtpServerText.text;
+//				Context.smtpUser = smtpUserText.text;
+//				Context.smtpPassword = smtpPasswordText.text;
+				PopUpManager.removePopUp(this);
+				
+				if (cbClose != null)
+				{
+					cbClose.apply(this);
+				}
+			}
+			 
+
+			
+/* 			private function test_Click() : void
+			{
+				testResultLabel.text = "";
+				Context.MailHandler.addEventListener(org.smtp.events.SMTPEvent.MAIL_SENT, onMailTest);
+				Context.MailHandler.addEventListener(org.smtp.events.SMTPEvent.MAIL_ERROR, onMailTest);
+				Context.MailHandler.addEventListener(IOErrorEvent.IO_ERROR, onMailTest);
+				Context.smtpAddress = smtpAddressText.text;
+				Context.smtpServer = smtpServerText.text;
+				Context.smtpUser = smtpUserText.text;
+				Context.smtpPassword = smtpPasswordText.text;
+
+				if (smtpAddressText.text.length > 0 &&
+					smtpServerText.text.length > 0)
+					{
+						Context.sendAlert("This is a test message from evobot");
+					}
+			} */
+			
+/* 			private function onMailTest(result:Object) : void
+			{
+				if (result == null)
+				{
+					testResultLabel.text = "Unexpected result.  Check settings and try again";
+				}
+				else if (result is Event)
+				{
+					testResultLabel.text = "Error sending mail.  Check settings";
+				}
+				else if (result.result != null && result.result.code == 250)
+				{
+					testResultLabel.text = "Test mail sent.";
+				}
+				
+				Context.MailHandler.removeEventListener(org.smtp.events.SMTPEvent.MAIL_ERROR, onMailTest);
+				Context.MailHandler.removeEventListener(org.smtp.events.SMTPEvent.MAIL_SENT, onMailTest);
+				Context.MailHandler.removeEventListener(IOErrorEvent.IO_ERROR, onMailTest);
+			} */
+			 
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" verticalGap="0" borderThickness="0" borderStyle="none">
+		<mx:TabBar direction="horizontal"  verticalAlign="middle" dataProvider="settingsStack"/>
+		<mx:ViewStack id="settingsStack" width="100%" height="100%" creationPolicy="all" creationComplete="init()" >
+			<mx:Canvas label="Map colors" width="100%" height="100%">
+				<mx:Form height="100%" width="100%">
+					<mx:HBox width="100%">
+					<mx:FormItem label="Enemy alliance" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="enemy"/>
+					</mx:FormItem>
+					<mx:FormItem label="Friend alliance" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="friend"/>
+					</mx:FormItem>								
+					</mx:HBox>
+										
+					<mx:HBox width="100%">
+					<mx:FormItem label="Neutral alliance" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="neutral"/>
+					</mx:FormItem>					
+					<mx:FormItem label="My alliance" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="same"/>
+					</mx:FormItem>
+					</mx:HBox>
+																				
+					<mx:HBox width="100%">
+					<mx:FormItem label="My cities" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="mycities"/>
+					</mx:FormItem>
+					<mx:FormItem label="All other fields" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="otherfield"/>
+					</mx:FormItem>								
+					</mx:HBox>
+
+					<mx:HBox width="100%">
+					<mx:FormItem label="NPC5" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="npc5"/>
+					</mx:FormItem>		
+					<mx:FormItem label="NPC10" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="npc10"/>
+					</mx:FormItem>					
+					</mx:HBox>				
+					<mx:HBox width="100%">
+					<mx:FormItem label="Flat5" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="flat5"/>
+					</mx:FormItem>		
+					<mx:FormItem label="Flat10" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="flat10"/>
+					</mx:FormItem>					
+					</mx:HBox>
+					
+					<mx:HBox width="100%">
+					<mx:FormItem label="Map background" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="mapBack"/>
+					</mx:FormItem>
+			
+					</mx:HBox>
+				</mx:Form>
+			</mx:Canvas>
+<!--			<mx:Canvas label="Notification" width="100%" height="100%">
+				<mx:CheckBox x="10" y="10" label="Audio attack alert" id="audioAlert" click="audioAlert_Click()"/>
+				<mx:HRule x="0" y="40" width="100%" height="1"/>
+				<mx:CheckBox x="10" y="49" label="Mail alert" id="mailAlert" click="mailAlert_Click()"/>
+				<mx:Button x="94" y="49" label="Test" id="testButton" click="test_Click()"/>
+				<mx:Label x="10" y="81" text="Address" id="addressLabel"/>
+				<mx:TextInput x="91" y="79" id="smtpAddressText"/>
+				<mx:Label x="10" y="107" text="SMTP server"/>
+				<mx:TextInput x="91" y="107" id="smtpServerText"/>				
+				<mx:Label x="10" y="133" text="Username"/>
+				<mx:TextInput x="91" y="133" id="smtpUserText"/>
+				<mx:Label x="10" y="161" text="Password"/>
+				<mx:TextInput x="91" y="163" id="smtpPasswordText" displayAsPassword="true"/>
+				<mx:Label x="152" y="51" id="testResultLabel"/>
+			</mx:Canvas>		-->
+		</mx:ViewStack>
+	<mx:HBox horizontalAlign="right" verticalAlign="bottom" width="100%">
+		<mx:Button id="okButton" label="Ok" enabled="true" click="ok()"/>		
+	</mx:HBox>	
+
+	</mx:VBox>
+</mx:TitleWindow>

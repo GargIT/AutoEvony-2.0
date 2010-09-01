@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="488" showCloseButton="false" title="Send Mail" creationComplete="handleCreationComplete();" alpha="1.0">
+    
+    <mx:Script>
+        <![CDATA[
+            import mx.managers.PopUpManager;
+            import com.umge.sovt.common.module.alliance.AllianceMembersResponse;
+			import com.umge.sovt.common.beans.PlayerInfoBean;
+			import com.umge.sovt.common.module.alliance.PlayerInfoResponse;
+			import com.umge.sovt.client.action.ActionFactory;
+			import mx.utils.StringUtil;
+            
+            private var AllianceMembers:Array = new Array();
+            
+            private function handleCreationComplete():void {
+                // Center the TitleWindow container 
+                // over the control that created it.
+                this.messageAlliance.enabled = false;
+                PopUpManager.centerPopUp(this);
+                ActionFactory.getInstance().getAllianceCommands().getAllianceMembers(handleAllianceMembersResponse);
+            }
+                        
+            private function processMail():void {
+            	
+                if ( this.messageBody.text == "" ) {
+                	// No Body
+                	return;
+                }
+                if ( this.messageSubject.text == "") {
+                	// No Subject
+                	return;
+                }
+                if ( this.messageAddresses.text == "") {
+                	// No Addresses
+                	return;
+                }
+                this.btnSend.enabled = false;
+                
+                var mailto:Array = this.messageAddresses.text.split(",");
+                for each ( var address:String in mailto ) {
+                	address = StringUtil.trim( address );
+                	address = address.replace( "_" , " " );
+                	ActionFactory.getInstance().getMailCommands().sendMail( address, this.messageSubject.text, this.messageBody.text, handleCommandResponse);
+                }
+                
+                PopUpManager.removePopUp(this);
+            }
+            
+            private function closeWindow():void {
+            	PopUpManager.removePopUp(this);
+            }
+            private function handleCommandResponse(response:PlayerInfoResponse) : void {
+        		if (response.ok != 1) {
+        			//logCommandMessage("Error Player: " + response.errorMsg);
+        			return;
+        		}
+        	}
+            
+            private function handleAllianceMembersResponse(response:AllianceMembersResponse) : void {
+        		if (response.ok != 1) {
+        			//logCommandMessage("Alliance members error: " + response.errorMsg);
+        			return;
+        		}
+        		
+        		var num:Number = 0;
+        		//response.membersArray.source.sort(compareByLoginTime);		
+        		//logCommandMessage("Alliance members: ");
+        		for each(var player:PlayerInfoBean in response.membersArray) {
+        			//logCommandMessage(" " + player.userName + " " + player.allianceLevel + " pres: " + player.prestige + " last: " + new Date(player.lastLoginTime).toLocaleString());
+        			AllianceMembers.push( player.userName );
+        			num = num + 1;
+        		}
+        		this.messageAlliance.label = "My Alliance Members (" + num + ")";
+        		this.messageAlliance.enabled = true;
+        	}
+        	
+            private function messageAllianceMembers():void {
+            	 if ( this.messageAlliance.selected === true ) {
+            	 	var num:Number = 0;
+            	 	var comma:String = "";
+            	 	for each (var member:String in AllianceMembers) {
+            	 		member = member.replace( " " , "_" )
+            	 		if ( num == 0 ) {
+            	 			num = num + 1;
+            	 		} else {
+            	 			comma = ", ";
+            	 		}
+            	 		this.messageAddresses.text = this.messageAddresses.text + comma + member ;
+            	 	}
+            	 } else {
+            	 	this.messageAddresses.text = "";
+            	 }
+            }
+            
+            private function bodychars():void {
+            	var left:Number = 500 - this.messageBody.length;
+            	this.bodycharsleft.text  = "(" + left + " chars remaining)";
+            }
+
+            private function subjchars():void {
+            	var left:Number = 25 - this.messageSubject.length;
+            	this.subjcharsleft.text  = "(" + left + " chars remaining)";
+            }
+        ]]>
+    </mx:Script>
+
+	<mx:TextArea width="360" height="235" wordWrap="true" editable="true" enabled="true" backgroundColor="#FFFFEE" borderColor="#000000" x="10" y="182" change="bodychars();" maxChars="500" id="messageBody"/>
+	<mx:TextInput width="360" borderColor="#000000" backgroundColor="#FFFFEE" x="10" y="141" maxChars="25" change="subjchars();" id="messageSubject"/>
+	<mx:Text text="Subject&#xd;" width="360" x="10" y="121"/>
+	<mx:Text text="Message" width="360" x="10" y="163"/>
+	<mx:Text x="10" y="10" text="To:"/>
+	<mx:Button x="316" y="421" click="processMail();" label="Send" id="btnSend"/>
+	<mx:Button x="245" y="421" label="Cancel" id="btnClose" click="closeWindow();"/>
+	<mx:CheckBox x="35" y="8" label="My Alliance Members" selected="false" click="messageAllianceMembers(  );" id="messageAlliance"/>
+	<mx:Text x="208" y="12" text="(This does NOT use Speakers)" width="165" color="#FF0000" fontSize="9" textAlign="right"/>
+	<mx:TextArea x="10" y="62" width="360" height="59" backgroundColor="#FFFFEE" id="messageAddresses" borderColor="#000000"/>
+	<mx:Text x="69" y="121" text="(Max 25 Characters)" width="192" color="#FF0000" id="subjcharsleft" />
+	<mx:Text x="69" y="163" text="(Max 500 Characters)" width="192" color="#FF0000" id="bodycharsleft" />
+	<mx:Text x="10" y="30" text="Enter names seperated by a comma (me, you) to mail someone with a space in the name use a _ (underline)&#xd;" width="360" height="32"/>
+	
+</mx:TitleWindow>

@@ -1,0 +1,71 @@
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="488" showCloseButton="false" title="Send Mail" creationComplete="handleCreationComplete();" alpha="1.0">    
+    <mx:Script>
+        <![CDATA[
+            import mx.managers.PopUpManager;
+            import com.umge.sovt.common.module.alliance.AllianceMembersResponse;
+			import com.umge.sovt.common.beans.PlayerInfoBean;
+			import com.umge.sovt.common.module.alliance.PlayerInfoResponse;
+			import com.umge.sovt.client.action.ActionFactory;
+			import mx.utils.StringUtil;
+			import autoevony.event.ScriptLogEvent;
+			import autoevony.scripts.Script;
+			import autoevony.player.Map;
+			import autoevony.net.Connection;
+			import autoevony.scripts.CityState;
+			import autoevony.common.CommandHelp;
+			import autoevony.gui.MainScreen;
+			import com.umge.sovt.common.beans.MapCastleBean;
+			import flash.utils.setTimeout;
+			import com.umge.sovt.client.action.ActionFactory;
+			import mx.core.Container;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.events.ToolTipEvent;
+			import mx.collections.ArrayCollection;
+			
+			import mx.core.UIComponent;
+			
+			private var city:CityState;
+			private var scriptCache:SharedObject;
+			
+			[Bindable] private var heroData:ArrayCollection = new ArrayCollection;
+			
+			public function init( city:CityState, log:CityLogView) : void {
+				this.city = city;	        	        
+				city.cityManager.updateHeroData(heroData);				
+				   				    			
+			}
+			        
+			]]>
+	</mx:Script>
+					<local:RowColorDataGrid dataProvider="{heroData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Hero" dataField="col1" width="0.2"/>
+							<mx:DataGridColumn headerText="Status" dataField="col2" width="0.2"/>
+							<mx:DataGridColumn headerText="Type" dataField="col3" width="0.3" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Action" width="0.2">
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+									private var lastTime:Number = 0;
+									private function recallHero(heroId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.recallHero(heroId);
+									}
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="10" id="recall" label="Recall" visible="{data.col4!=-1}" click="recallHero(data.col4)"/>
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</local:columns>
+					</local:RowColorDataGrid>	
+</mx:TitleWindow>
