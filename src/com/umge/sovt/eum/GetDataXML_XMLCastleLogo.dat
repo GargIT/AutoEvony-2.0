@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<castleLogoDefine>
+  <castleLogos>
+    <logo url="images/icon/cityLogo/citylogo_01.png"/>
+    <logo url="images/icon/cityLogo/citylogo_02.png"/>
+    <logo url="images/icon/cityLogo/citylogo_03.png"/>
+    <logo url="images/icon/cityLogo/citylogo_04.png"/>
+  </castleLogos>
+</castleLogoDefine>

@@ -1,0 +1,1461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:local="*"
+	creationComplete="init()" width="100%" height="100%" borderThickness="0" paddingBottom="0" xmlns:ns1="autoevony.gui.*">
+	<mx:Script>
+		<![CDATA[
+			import com.umge.sovt.common.beans.UnitAlliance;
+			import autoevony.event.ScriptLogEvent;
+			import autoevony.common.Utils;
+			import autoevony.player.Map;
+			import autoevony.common.MD5;
+			import autoevony.management.CityManager;
+			import autoevony.net.Connection;
+			import autoevony.scripts.CityState;
+			import mx.core.SoundAsset;
+			import com.umge.sovt.common.server.events.ChannelChatMsg;
+			import com.umge.sovt.common.server.events.WorldChatMsg;
+			import com.umge.sovt.common.server.events.SystemInfoMsg;
+			import com.umge.sovt.common.module.shop.UseItemResultResponse;
+			import mx.core.UITextField;
+			import flash.net.navigateToURL;
+			import com.umge.net.client.GameClientEvent;
+			import com.umge.sovt.common.server.events.ConnectionLost;
+			import com.umge.sovt.common.beans.MapCastleBean;
+			import com.umge.sovt.common.module.report.ReportResponse;
+			import com.umge.sovt.common.server.events.CastleUpdate;
+			import com.umge.sovt.common.beans.ReportBean;
+			import com.umge.sovt.common.module.report.ReportListResponse;
+			import com.umge.sovt.common.constants.ObjConstants;
+			import com.umge.sovt.common.beans.PlayerInfoBean;
+			import com.umge.sovt.common.module.alliance.AllianceMembersResponse;
+			import com.umge.sovt.common.module.alliance.AllianceFriendshipResponse;
+			import com.umge.sovt.common.beans.MilitarySituation;
+			import com.umge.sovt.common.module.alliance.MilitarySituationListResponse;
+			import com.umge.sovt.common.module.alliance.AllianceArmyResponse;
+			import com.umge.sovt.common.module.mail.MailResponse;
+			import com.umge.sovt.common.beans.MailBean;
+			import com.umge.sovt.common.module.mail.MailListResponse;
+			import com.umge.sovt.common.constants.MailConstants;
+			import com.umge.sovt.common.module.field.*;
+			import com.umge.sovt.common.server.events.PrivateChatMessage;
+			import com.umge.sovt.common.module.alliance.PlayerInfoResponse;
+			import com.umge.sovt.common.module.alliance.AllianceManagementResponse;
+			import com.umge.sovt.common.beans.PlayerBean;
+
+			import com.umge.net.client.GameClient;
+			import mx.containers.ControlBar;
+			import mx.core.UIComponent;
+			import mx.collections.ArrayCollection;
+			import mx.containers.Panel;
+			import mx.controls.Button;
+			import mx.containers.Canvas;
+			import com.umge.sovt.common.beans.CastleBean;
+			import mx.controls.Alert;
+			import mx.controls.Text;
+			import com.umge.sovt.client.action.ActionFactory;
+			import com.umge.sovt.common.beans.ArmyBean;
+			import com.umge.sovt.common.beans.TroopBean;
+			import com.umge.sovt.client.response.ResponseDispatcher;
+			import com.umge.sovt.common.module.common.MapInfoSimpleResponse;
+    		import com.umge.sovt.common.server.events.AllianceChatMsg;
+			import com.umge.sovt.common.server.events.EnemyArmysUpdate;
+			import com.umge.sovt.common.server.events.LoginResponse;
+			import com.umge.sovt.common.module.rank.RankHeroResponse;
+			import com.umge.sovt.common.beans.RankHeroBean;			
+			import com.umge.sovt.common.module.rank.RankHeroResponse;
+			import mx.events.ItemClickEvent;
+			import mx.managers.PopUpManager;
+			import mx.core.IFlexDisplayObject;
+			import mx.utils.StringUtil;
+            import autoevony.gui.mailPopup;
+            
+			public var currentPlayer:PlayerBean;
+	        
+	        private var cities:Array= new Array();
+	        private var lastChatUser:String = "";	   
+	        private var relays:Array = new Array();
+	        private var detailReport:Boolean = false;
+	           
+	        [Bindable]
+	        private var lastChatUsers:ArrayCollection = new ArrayCollection();
+	        
+            [Embed(source='../media/Warning.mp3')]
+            private var Attack_Sound:Class;
+            
+            [Embed(source='../media/More.mp3')]
+            private var Attack_Several_Sound:Class;
+            
+            [Embed(source='../media/Ended.mp3')]
+            private var Attack_Ended_Sound:Class;
+
+			private var attackSound:SoundAsset = new Attack_Sound() as SoundAsset;
+			private var attackSeveralSound:SoundAsset = new Attack_Several_Sound() as SoundAsset;
+			private var attackEndedSound:SoundAsset = new Attack_Ended_Sound() as SoundAsset;
+
+
+			public function init():void {
+				trace("Connecting to " + config.connection.server);
+				Connection.getInstance().init(
+					config.connection.username,
+					config.connection.password,
+					config.connection.server);
+				
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_LOGIN_RESPONSE, onLogin);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_ALLIANCE_CHAT_MSG, onAllianceChat);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_WORLD_CHAT_MSG, onWorldChat);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_CHANNEL_CHAT_MSG, onChannelChat);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_PRIVATE_CHAT_MESSAGE, onPrivateChat);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_ENEMY_ARMYS_UPDATE, onEnemyArmysUpdate);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_CONNECTION_LOST, onDisconnect);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_SYSTEM_INFO_MSG, onSystemMessage);
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_CASTLE_UPDATE, handleCastleUpdate);
+
+				citiesTab.addEventListener(ItemClickEvent.ITEM_CLICK, ontab_changed);
+				
+				chatText.addEventListener(KeyboardEvent.KEY_UP, keySendChat);
+				
+				mainPanel.addEventListener(MouseEvent.CLICK,
+				function (event:MouseEvent) : void {
+					if (event.target is UITextField) {
+						var field:UITextField = event.target as UITextField;
+						if (field.text.indexOf("AutoEvony") == 0) {
+							navigateToURL(new URLRequest("http://www.wiki-site.com/index.php/Evobot_City_Management"), "_blank");
+						}
+					}
+				});
+
+				aChatText.text = "";
+				pChatText.text = "";
+				commandText.text = "";
+				
+				var pausedLabelTimer:Timer = new Timer(3000);
+				pausedLabelTimer.addEventListener(TimerEvent.TIMER, setPausedLabel);
+				pausedLabelTimer.start();
+			}
+			
+			private function onLink( event : TextEvent ) : void {        
+				navigateToURL(new URLRequest("http://" + event.text), "_blank");
+			}
+			
+	        public function onLogin(loginResponse:LoginResponse) : void {
+	        	
+	        	if(loginResponse.ok != 1) {
+		        	trace(loginResponse.errorMsg);
+	        		return;
+	        	}
+	        	
+	        	/*
+	        	var date:Date = new Date();
+	        	logs.text += "\n"+date.toLocaleTimeString()+;
+	        	*/
+	        	
+	        	currentPlayer = loginResponse.player; 
+	        	Map.initMap(currentPlayer.mapSizeX, currentPlayer.mapSizeY, currentPlayer.playerInfo.userName);
+	        	Utils.setServerTime(currentPlayer.currentTime);
+
+	        	var date:Date = new Date();
+	        	date.setTime(Utils.getServerTime());
+	        	appendToTextArea(logs, "<b>Logged in successfully, server time difference: " + (Utils.getServerLagTime()/1000) + "s</b>");
+	        	if (Math.abs(Utils.getServerLagTime()) > 5000) {	// more than 5s lag
+	        		appendToTextArea(logs, "<b>Your current computer time: " + new Date().toLocaleTimeString() + "</b>");
+	        		appendToTextArea(logs, "<b>PLEASE AVOID ADJUSTING YOUR COMPUTER CLOCK WHILE THE BOT IS RUNNING. IF YOU DO ADJUST, BE SURE TO CLICK ON REFRESH.</b>");
+	        	}
+	        	parseCities(currentPlayer.castlesArray.toArray(), currentPlayer);
+	        		        	
+	        	citiesTab.dataProvider = citiesViewStack;
+				tabBar_creationComplete(citiesTab);
+	        	// Check if under attack
+	        	if (loginResponse.player.enemyArmysArray.length > 0)
+	        	{
+	        		processEnemyArmysUpdate(loginResponse.player.enemyArmysArray);
+	        	}
+	        	
+	        	// handleCommand("listmail");
+	        }
+	        
+            public function onDisconnect(resp:ConnectionLost) : void
+            {
+                var message:String = "Disconnected - ";
+                switch (resp.reasonCode)
+                {
+                    case ConnectionLost.KICK_BY_SERVER:
+                            message = "Kicked by server";
+                            break;
+                    case ConnectionLost.SERVER_START:
+                            message = "Server starting";
+                            break
+                    case ConnectionLost.SERVER_SHUTDOWN:
+                            message = "Server shutdown";
+                            break;
+                    case ConnectionLost.KICK_BY_OTHER:
+                            message = "Another user has logged into your account";
+                            break;
+                    case ConnectionLost.SERVER_MAINTAIN:
+                            message = "Server down for maintanence";
+                            break;
+                    default:
+                            message = "Unknown reason for disconnect";
+                            break;
+                }
+
+                appendToTextArea(logs, "<b>" + message + "</b>");
+
+                if (resp.reasonCode == ConnectionLost.KICK_BY_OTHER) {
+                	ensurePauseQueue(Utils.rand(28*60*1000, 32*60*1000)); // 28-32 min
+                }
+            }
+
+	        public function onAllianceChat(msg:AllianceChatMsg):void {
+	        	// Send Alliance chat to window
+	        	appendToTextArea(aChatText, " [" + msg.fromUser + "]: " + msg.msg, "#4377F9");
+	   				
+				if (chatStack.selectedIndex != 0) Button(chatToggleBar.getChildAt(0)).setStyle("fontWeight", "bold");
+				
+	        	// do relaying
+	        	for (var nick:String in relays) {
+	        		ActionFactory.getInstance().getCommonCommands().privateChat(nick, "[" + msg.fromUser + "] " + msg.msg);
+	        	}
+	        	removeOldRelays(null);
+	        }
+
+	        public function onWorldChat(msg:WorldChatMsg):void {
+	        	appendToTextArea(wChatText, "[" + msg.fromUser + "]: " + msg.msg, "#222222");
+	        	// purposely do not highlight tab
+	        }
+
+			// strange, chat sent to world chat now appears in channel chat?
+	        public function onChannelChat(msg:ChannelChatMsg):void {
+	        	appendToTextArea(wChatText, "[" + msg.fromUser + "]: " + msg.msg, "#222222");
+	        	// purposely do not highlight tab
+	        }
+
+	        public function in_array( needle:*, haystack:Array ):Boolean{ var itemIndex:int = haystack.indexOf( needle ); return ( itemIndex < 0 ) ? false : true;}
+
+	        public function onPrivateChat(msg:PrivateChatMessage):void {
+	        	if (msg.fromUser == currentPlayer.playerInfo.userName)
+	        	{
+	        		return;
+	        	}
+	        	
+	        	lastChatUser = msg.fromUser;
+	        	
+	        	if ( lastChatUsers.length == 16 ) {
+	        			lastChatUsers.removeItemAt( 16 ); 
+	        	} 
+	        	
+	        	var AlreadyinList:Boolean = false;
+	        	var items:Array = new Array();
+	        	
+	        	for each ( items in lastChatUsers ) {
+	        		if (items["label"] == lastChatUser) {
+	        			AlreadyinList = true;
+	        		}
+	        	}
+	        	if ( AlreadyinList === false ) {
+	        		var obj:Array = new Array();
+	        		obj["label"] = lastChatUser;
+	        		lastChatUsers.addItem( obj );
+	        	} 
+	        	
+	        	if (msg.msg.substr(0,2) == "//") {
+	        		handleRemoteCommand(msg.fromUser, Utils.trim(msg.msg.substr(2)));
+	        		return;
+	        	}
+	        	
+	        	appendToTextArea(pChatText, " [" + msg.fromUser + "]: " + msg.msg, "#6A44AF");
+	        	appendToTextArea(aChatText, " [" + msg.fromUser + "]: " + msg.msg, "#6A44AF");
+	        	
+	        	if (chatStack.selectedIndex != 1) Button(chatToggleBar.getChildAt(1)).setStyle("fontWeight", "bold");
+	        	
+	        }
+
+			public function logMessage(msg:String):void {
+				appendToTextArea(logs, msg);
+			}
+	                
+			public function onLog(event:ScriptLogEvent):void {
+				
+				appendToTextArea(logs, event.logText);
+				
+				/*
+				var date:Date = new Date();
+				logs.text += "\n"+date.toLocaleTimeString()+": " + event.logText;
+				callLater(function():void {
+					logs.verticalScrollPosition = logs.maxVerticalScrollPosition;
+				});
+				*/
+			}
+			
+			public function onSystemMessage(systemInfoMsg:SystemInfoMsg) : void {
+				var msg:String = systemInfoMsg.msg;
+				msg = msg.replace(/<[^<]*>/g, "");
+				msg = msg.replace(/<[^<]*>/g, "");
+				msg = msg.replace(/<[^<]*>/g, "");
+				
+				// throw out amulet use messages
+				var words:Array = msg.split(" ");
+				if (words.length >= 5 &&
+					(words[0] == "Lord" || words[0] == "Lady") && 
+					words[words.length-2] == "from" && words[words.length-1] == "Amulet!") return;
+
+				// Maintenance: Evony Server *** will be taken offline for daily security maintenance on 03:50:00 CST Jan 31 2010, which is due in 2 minutes 56 seconds . 
+				//   In most circumstance daily maintenance will last for 15 minutes. During the maintenance period, players will be unable to login to the game and play. 
+				//   Thank you for your understanding and patience. 
+				if (msg.search(/maintenance/i) > 0) {
+					appendToTextArea(logs, "MAINTENANCE: " + msg);
+					var minutes:String = Utils.getStringBetween(msg, "due in ", " minutes");
+					if (minutes != null && Utils.isNumeric(minutes) && int(minutes) <= 5) {
+						ensurePauseQueue(Utils.rand(20*60*1000, 40*60*1000)); // 20-40 min
+						logMessage("Click on Resume to resume the program manually. Make sure you don't resume when the server is still down, though.");
+					}
+				} else {
+					appendToTextArea(wChatText, "SYSTEM: " + msg, "#4377F9");
+					appendToTextArea(aChatText, "SYSTEM: " + msg, "#3F3F3F");
+				}
+			}
+			
+			private var lastDate:Date = new Date();
+			private var cache:Array = new Array();
+			
+			private function appendToTextArea(textControl:TextArea, message:String, color:String = "#000000" ) : void
+			{
+				var date:Date = new Date();
+				date.setTime(Utils.getServerTime());
+				
+				if (cache[textControl.id] == undefined) cache[textControl.id] = textControl.htmlText;
+				var datecolor:String = "";
+				if ( color == "#000000" ) {
+					datecolor = "#006666";
+				} else {
+					datecolor = color;
+				}
+				
+				cache[textControl.id] += "<font color='" + datecolor + "'>" + (date.toLocaleTimeString() + "</font> <font color='" + color + "'>" + message + "</font>\n"); 
+				if (cache[textControl.id].length > 128000) {
+					var ind:int = cache[textControl.id].indexOf("\n", 16000);
+					cache[textControl.id] = cache[textControl.id].substr(ind);
+				}
+				
+				textControl.htmlText = cache[textControl.id];
+				callLater(
+					function():void 
+					{    	
+						textControl.verticalScrollPosition = textControl.maxVerticalScrollPosition;
+					});	
+			}
+	        
+			private function ontab_changed(event:ItemClickEvent):void {
+				citiesLogViewStack.selectedIndex =  event.index;
+			}
+
+			private function parseCities(castlesArray:Array, player:PlayerBean) : void{
+				try {
+		        	for each(var castle:CastleBean in castlesArray) {	        		
+						// empty town will be npc'ed and shouldn't be included in the tab
+						if (castlesArray.length > 1 && castle.buildingsArray.length <= 1) {
+							logMessage("Abandon castle: " + castle.name + " at " + Map.fieldIdToCoordString(castle.fieldId));
+							var pw:String = Connection.getInstance().getHashedPassword();
+							ActionFactory.getInstance().getCityCommands().giveupCastle(pw, castle.id);
+							continue;
+						}
+		        		
+		        		// does the city already exists in cities list?
+		        		var found:Boolean = false;
+		        		for each(var c:CityState in cities) {
+		        			if(c.castle.id == castle.id) {
+		        				c.castle = castle;
+		        				found = true;
+		        			}
+		        		}
+	
+		        		if (found) continue;
+	
+						// new city	    
+		        		var city:CityState;
+		        		if (castle == castlesArray[0]) {
+		        			city = new CityState(castle, player, false);
+		        			city.loginSequence();
+		        		} else {
+		        			city = new CityState(castle, player);
+		        		}
+		        		
+		        		cities.push(city);
+		        		var log:CityLogView = new CityLogView();
+		        		citiesLogViewStack.addChild(log); 
+		        		
+		        		var cityPanel:CityPanel = new CityPanel();
+		        		// citiesViewStack.addChild(createCanvasForCity(city));
+		        		citiesViewStack.addChild(cityPanel);
+		        		cityPanel.init(this, city, log);
+		        		
+		        	}
+		        	
+		        	removeOldCities(castlesArray);
+		  		} catch(error:Error) {
+		  			logMessage("Error in parseCities: " + error.message);
+		  		}
+	        }
+
+			// this function should be merged with handleCastleUpdate in CityManager.as
+			// does not handle castle name change yet
+			private function handleCastleUpdate(response:CastleUpdate) : void {
+				var city:CityState;
+				var castle:CastleBean = response.castleBean;
+				
+				if (response.updateType == 1) {					
+					// city lost
+					for each(city in cities) {
+						if (city.castle.id == castle.id) {
+							removeCity(city);
+							break;
+						}
+					}
+				} else if (response.updateType == 0) {
+					// new city -- if this is a brand new city, assume it is for npc
+					// need fixing...
+	        		if (castle.buildingsArray.length <= 1) return;
+	        		city = new CityState(castle, currentPlayer);
+	        		cities.push(city);
+	        		
+	        		var log:CityLogView = new CityLogView();
+	        		citiesLogViewStack.addChild(log); 
+	        		
+	        		var cityPanel:CityPanel = new CityPanel();
+	        		citiesViewStack.addChild(cityPanel);
+	        		cityPanel.init(this, city, log);
+				}
+			}
+	        
+			private function removeOldCities(castlesArray:Array) : void{
+	        	for each(var city:CityState in cities) {	        		
+	        		// does the city already exists in cities list?
+	        		var found:Boolean = false;
+	        		for each(var c:CastleBean in castlesArray) {
+	        			if(c.id == city.castle.id) {
+	        				found = true;
+	        			}
+	        		}
+
+	        		if (found) continue;
+					removeCity(city);
+	        	}
+	        }	        
+
+	        private function removeCity(city:CityState) : void {
+	        	for each(var object:Object in citiesViewStack.getChildren()) {
+	        		if (! (object is CityPanel)) continue;
+	        		var cityPanel:CityPanel = object as CityPanel;
+	        		if (cityPanel.getCity() != city) continue;
+	        		citiesViewStack.removeChild(cityPanel);
+	        		cityPanel.cleanup();
+	        		city.cleanup();
+	        	}
+	        }
+	        
+			/**
+			 * When a city is under *real* attack, this changes the 
+			 * color of the tab to red to indicate an incoming attack
+			 */ 
+			private var lastWarningStatus:Boolean = false;
+			private function processEnemyArmysUpdate(enemyArmies:ArrayCollection):void 
+			{
+				var city:String = "";
+				var newWarningStatus:Boolean = false;
+
+				// Attack has stopped
+				for each (var t2:Object in citiesTab.getChildren())
+		    	{
+					t2.setStyle('color','0x0');
+		    	}	  						
+
+				if (enemyArmies != null && enemyArmies.length > 0)
+				{	        		
+					for each (var army:ArmyBean in enemyArmies) 
+					{
+						if (CityManager.isJunkTroop(army.troop)) continue;
+						city = army.targetPosName;
+			        	var sName:String = city;
+			        	if (sName.length > 3) sName = sName.substring(0, 3);
+			        	sName = sName + "(" + Map.getX(army.targetFieldId) + "," + Map.getY(army.targetFieldId) + ")";
+
+			    		for each (var t1:Object in citiesTab.getChildren())
+			        	{
+			        		if (t1.label.toLowerCase() == sName.toLowerCase())
+			        		{
+			        			newWarningStatus = true;
+			        			t1.setStyle('color','0xff0000');			        			
+			        		}	
+			        	}
+			    	}		        	
+				}
+				
+				var firstCity:CityState = (cities.length > 0) ? cities[0] : null;
+				if (firstCity != null && firstCity.cityManager.getWarningStatus()) {
+					if (newWarningStatus) {
+						if (enemyArmies.length > 1) {
+							attackSeveralSound.play();
+						} else {
+							attackSound.play();
+						}
+					} else {
+						if (lastWarningStatus) {
+							attackEndedSound.play();
+						}
+					}
+				}
+				
+				lastWarningStatus = newWarningStatus;
+			}
+
+	        private function onEnemyArmysUpdate(msg:EnemyArmysUpdate):void 
+	        {
+	        	processEnemyArmysUpdate(msg.armysArray);
+	        }
+	        
+	        private function pauseQueue() : void {
+	        	// Process pause request
+        		var conn:Connection = Connection.getInstance();
+				conn.paused = (conn.paused == false);
+				setPausedLabel();
+
+				var date:Date = new Date();
+	        	logMessage(conn.paused ? "Pausing jobs" : "Resuming jobs");
+	        	
+	        	if (!conn.paused && !conn.authenticated) {
+	        		conn.reconnectTimer.stop();
+	        		conn.connect();
+	        	}
+	        }
+	        
+	        private function setPausedLabel(event:TimerEvent=null) : void {
+        		var conn:Connection = Connection.getInstance();
+				var str:String = conn.paused ? "Resume" : "Pause";	  
+				if (pauseButton.label != str) pauseButton.label = str;     	
+	        }
+
+	        private function refresh() : void {
+	        	// Process pause request
+        		var conn:Connection = Connection.getInstance();
+        		var paused:Boolean = conn.paused;
+        		if (!paused) conn.paused = true;
+				conn.disconnect();
+				conn.connect();
+				conn.paused = paused;
+	        }
+
+	        private function ensurePauseQueue(duration:Number) : void {
+        		var conn:Connection = Connection.getInstance();
+				if (conn.paused) return;
+
+				logMessage("Pause job queues for " + Utils.formatTime(duration/1000));
+ 	   			pauseQueue();
+				var timer:Timer = new Timer(duration, 1);
+				timer.addEventListener(TimerEvent.TIMER, ensureUnpauseQueue);
+				timer.start();
+			}
+			
+			private function ensureUnpauseQueue(event:TimerEvent) : void {
+				var conn:Connection = Connection.getInstance();
+				if (conn.paused) pauseQueue();
+			}
+			
+			private function removeOldRelays(event:TimerEvent) : void {
+				for (var nick:String in relays) {
+					if (new Date().getTime() - relays[nick].getTime() > 1800000) {
+						ActionFactory.getInstance().getCommonCommands().privateChat(nick, "authentication session expired");
+						delete relays[nick];
+						continue;
+					}
+				}
+			}
+			
+/* 			private function onTabSelect(): void
+			{
+				var selectedTab:String
+				if (chatStack.selectedIndex == 0) {
+					selectedTab = "Alliance Chat"
+				} else if (chatStack.selectedIndex == 1) {
+					selectedTab = "Private Chat"
+				} else if (chatStack.selectedIndex == 3) {
+					selectedTab = "Commands"
+				} else {
+					return;
+				}
+				for each (var t1:Object in chatTab.getChildren())
+				{
+					if (t1.label == selectedTab) t1.setStyle("fontWeight", "normal");		        			
+				}		
+			} */
+			
+			private var chatHistory:Array = new Array("");
+			private var currentHistory:int = 0;
+			private function keySendChat(e:KeyboardEvent) : void
+			{
+				if (e.keyCode == Keyboard.ENTER && Utils.trim(chatText.text).length > 0) {
+					chatHistory[chatHistory.length - 1] = chatText.text;
+					chatHistory.push("");
+					currentHistory = chatHistory.length - 1;
+					sendChat();
+				} else if (e.keyCode == Keyboard.UP && currentHistory >= 1) {
+					chatHistory[currentHistory] = chatText.text;
+					currentHistory--;
+					chatText.text = chatHistory[currentHistory];
+				} else if (e.keyCode == Keyboard.DOWN && currentHistory < chatHistory.length - 1) {
+					chatHistory[currentHistory] = chatText.text;
+					currentHistory++;
+					chatText.text = chatHistory[currentHistory];
+				}
+			}
+			
+			private function sendChat() : void
+			{
+				var msg1:String = Utils.trim(chatText.text);
+		        var userName:String;
+		        var msg2:String;
+				if (msg1.length > 0)
+				{
+					if (msg1.charAt(0)=="\\")
+					{
+						handleCommand(Utils.trim(msg1.substr(1)));
+						chatText.text = "";
+						return;
+					}
+
+					if (msg1.charAt(0)=="/")
+					{
+						if(msg1.charAt(1)=="'")
+							{
+								userName= msg1.substr(2,msg1.indexOf("'",2)-2);
+								msg2=msg1.substr(userName.length+4,msg1.length-(userName.length+4));
+							}
+						else
+							{			        			
+								if (msg1.indexOf(" ", 1) != -1) {
+									userName = msg1.substr(1,msg1.indexOf(" ",1)-1);
+									msg2=msg1.substr(userName.length+1,msg1.length-1-userName.length);
+								} else {
+									userName = msg1.substr(1);
+									msg2 = "";
+								}
+								if (userName == "r") userName = lastChatUser;								
+								if (userName == "") return;
+							}
+							
+						if (msg2 == "") return;
+						lastChatUser = userName;
+	        	
+			        	if ( lastChatUsers.length == 16 ) lastChatUsers.removeItemAt( 16 ); 
+			        	
+			        	var AlreadyinList:Boolean = false;
+			        	var items:Array = new Array();
+			        	
+			        	for each ( items in lastChatUsers ) {
+			        		if (items["label"] == lastChatUser) {
+			        			AlreadyinList = true;
+			        		}
+			        	}
+			        	if ( AlreadyinList === false ) {
+			        		var obj:Array = new Array();
+			        		obj["label"] = lastChatUser;
+			        		lastChatUsers.addItem( obj );
+			        	}
+	        		 
+						ActionFactory.getInstance().getCommonCommands().privateChat(userName,msg2)
+						appendToTextArea(pChatText, " [to " + lastChatUser + "]: " + msg2, "#6A44AF");
+					}
+					else if (chatStack.selectedIndex == 2) ActionFactory.getInstance().getCommonCommands().worldChat(chatText.text, 0); // world chat
+					else ActionFactory.getInstance().getCommonCommands().allianceChat(chatText.text, 0);
+	        		
+	        		chatText.text = "";
+	        	}        	
+	        }
+
+	        
+	        private function logCommandMessage(str:String) : void {
+		        appendToTextArea(commandText, " " + str, "#096E6D");
+		        if (chatStack.selectedIndex != 3) Button(chatToggleBar.getChildAt(3)).setStyle("fontWeight", "bold");	
+	        }
+
+			private function sendMsg(nick:String, msg:String) : void {
+				ActionFactory.getInstance().getCommonCommands().privateChat(nick, msg);
+			}
+
+        	private function handleRemoteCommand(nick:String, str:String) : void {
+        		var command:String = str;
+        		var arg:String = "";
+
+        		var sp:int = str.indexOf(" ");
+        		if (sp != -1) {
+	        		command = str.substr(0, sp);
+     		   		arg = str.substr(sp+1);
+     		   	}
+     		   	
+     		   	var soRelayKey:SharedObject ;
+				soRelayKey = SharedObject.getLocal("relaykey");
+				if (soRelayKey.data.relaykey == undefined) {
+					soRelayKey.data.relaykey = MD5.encrypt("abcd" + Math.random());
+					soRelayKey.flush();
+				}
+     		   	
+     		   	var timer:Timer;
+     		   	var hash:String = MD5.encrypt(soRelayKey.data.relaykey + currentPlayer.playerInfo.userName + " " + nick).substr(0,8);
+
+     		   	logCommandMessage("Receive from " + nick + ": " + command + " " + arg + ", hash = " + hash);
+
+ 		   		if (command == "relay") {
+ 		   			if (arg != hash) return;
+ 		   			logCommandMessage("Start relaying to " + nick);
+ 		   			relays[nick] = new Date();
+        			sendMsg(nick, "starting relay...");
+					timer = new Timer(60*60*1000 + 10000, 1);
+					timer.addEventListener(TimerEvent.TIMER, removeOldRelays);
+					timer.start();
+ 		   		} else if (command == "pause") {
+ 		   			if (arg != hash) return;
+ 		   			logCommandMessage("Pause queue requested by " + nick);
+ 		   			sendMsg(nick, "pausing for 1 hour");
+ 		   			ensurePauseQueue(60*60*1000);
+ 		   		} else if (command == "unrelay") {
+ 		   			if (relays[nick] == undefined) return;
+ 		   			delete relays[nick];
+ 		   			if (arg != hash) return;
+ 		   			logCommandMessage("End relaying to " + nick);
+ 		   			sendMsg(nick, "relay ends");
+	 		   	} else if (command == "warreport") {
+	 		   		if (relays[nick] == undefined) return;
+	 		   		if (arg == "") {
+	 		   			sendMsg(nick, "Usage: //warreport xxx,yyy");
+	 		   			return;
+	 		   		}
+	 		   		logCommandMessage("Send war report with search term: " + arg);
+	 		   		ActionFactory.getInstance().getAllianceCommands().getMilitarySituationList(int(arg), 100, 
+	 		   		function (response:MilitarySituationListResponse) : void {
+		        		if (response.ok != 1) {
+		        			logCommandMessage("military situation error: " + response.errorMsg);
+		        			return;
+		        		}
+	 		   			var count:int = 0;
+		        		for each(var sit:MilitarySituation in response.situationsArray) {
+        					var type:String = (sit.attack) ? "ATT" : "DEF";
+        					var alliance:String = (sit.otherAllianceName != null) ? sit.otherAllianceName : "-";
+        					var xml:XML = new XML(sit.xml_data);
+        					var str:String = (type + " " + alliance + " " + sit.eventName + " from " + sit.startPos + " to " + sit.targetPos + " " + xml.battleReport.defendTroop.@king + " on " + new Date(sit.time).toLocaleString());
+
+        					if (str.toLocaleLowerCase().indexOf(arg.toLowerCase()) == -1) continue;
+        					sendMsg(nick, str);
+        					sendMsg(nick, " " + xml.@reportUrl);
+        					logCommandMessage("  " + str + " " + xml.@reportUrl);
+        					if (++count >= 10) return;
+        				}
+        				if (count == 0) sendMsg(nick, "no war report found for location: " + arg);
+	 		   		});
+	 		   	} else if (command == "query") {
+	 		   		if (relays[nick] == undefined) return;
+	 		   		if (arg == "") {
+	 		   			sendMsg(nick, "Usage: //query nick");
+	 		   			return;
+	 		   		}
+	 		   		logCommandMessage("Query login time of nick: " + arg);
+	 		   		ActionFactory.getInstance().getAllianceCommands().getAllianceMembers( 
+	 		   		function (response:AllianceMembersResponse) : void {
+		        		if (response.ok != 1) {
+		        			logCommandMessage("Alliance members error: " + response.errorMsg);
+		        			return;
+		        		}	
+		        		logCommandMessage("Alliance members: ");
+		        		for each(var player:PlayerInfoBean in response.membersArray) {
+		        			if (player.userName.toLowerCase() == arg.toLowerCase()) {
+		        				logCommandMessage(" " + player.userName + " " + player.allianceLevel + " pres: " + player.prestige + " last: " + new Date(player.lastLoginTime).toLocaleString());
+		        				sendMsg(nick, player.userName + " " + player.allianceLevel + " pres: " + player.prestige + " last: " + new Date(player.lastLoginTime).toLocaleString());
+		        				return;
+		        			}
+		        		}
+		        		sendMsg(nick, "no alliance member: " + arg);
+	 		   		});
+
+ 		   		} else {
+ 		   			logCommandMessage("Unknown command: " + command);
+ 		   		}
+     		   	
+        	}
+        	
+        	private function distanceToCastles(fieldId:int) : Number {
+        		var dist:Number = 10000;
+        		for each (var castle:CastleBean in currentPlayer.castlesArray) {
+        			var d:Number = Map.fieldDistance(fieldId, castle.fieldId);
+        			if (d < dist) dist = d;
+        		}
+        		return dist;
+        	}
+        	
+        	private function sortByDistance(c1:MapCastleBean, c2:MapCastleBean) : int {
+        		var d1:Number = distanceToCastles(c1.id);
+        		var d2:Number = distanceToCastles(c2.id);
+        		if (d1 < d2) return -1;
+        		if (d1 > d2) return 1;
+        		return 0;
+        	}
+	        
+	        private static function stateName(state:int) : String {
+	        	if (state == 1) return "peace";
+	        	else if (state == 2) return "truce";
+	        	else if (state == 5) return "holiday";
+	        	else if (state == 6) return "dream";
+	        	else return "state"+state;
+	        }
+	        
+        	private function handleCommand(str:String, external:Boolean = true) : void {
+        		var command:String = str;
+        		var arg:String = "";
+				var arr:Array;
+				var count:int;
+				var maxTowns:int;
+				var castle:MapCastleBean;
+
+        		var sp:int = str.indexOf(" ");
+        		if (sp != -1) {
+	        		command = str.substr(0, sp);
+     		   		arg = str.substr(sp+1);
+     		   	}
+	
+				if (external) logCommandMessage("Command: " + str);
+        		if (command == "who") {
+        			ActionFactory.getInstance().getCommonCommands().getPlayerInfoByName(Utils.trim(arg), handlePlayerInfoResponse);
+        			return;
+        		} else if (command == "loc") {
+        			var fieldId:int = ToFieldId(Utils.trim(arg));
+        			if (fieldId == -1) {
+        				logCommandMessage("Invalid location: " + arg);
+        				return;
+        			}
+        			Map.updateInfo(fieldId);
+        			Map.updateDetailInfo(fieldId);
+					var t:Timer = new Timer(2*1000, 5);
+					t.addEventListener(TimerEvent.TIMER, 
+					function (timer:TimerEvent) : void {
+						var type:int = Map.getType(fieldId);
+						var detail:MapCastleBean = Map.getDetailInfo(fieldId);
+						if (type == -1 || detail == null) return;
+						logCommandMessage("Location: " + arg + ": " + Map.fieldIdToString(ToFieldId(Utils.trim(arg))) + " " + stateName(detail.state) + ", " + detail.name + " " + detail.zoneName + ", belongs to " + ((detail.userName == null)? "none" : detail.userName + " " + detail.allianceName + ", pres: " + detail.prestige));
+						t.stop();
+					});
+					t.start();        			
+        		} else if (command == "searchcastle") {
+        			if (arg == "") {
+        				logCommandMessage("Usage \\searchcastle name|user|alliance");
+        				return;
+        			}
+        			arr = Map.searchCastles(arg);
+        			arr.sort(sortByDistance);
+        			logCommandMessage("===search castle for " + arg + "===");
+        			for each(castle in arr) {
+        				logCommandMessage(Map.fieldIdToString(castle.id) + ", " + stateName(castle.state) + ", " + (int(distanceToCastles(castle.id)*100)/100) + " miles, " + castle.name + " by " + castle.userName + " " + castle.allianceName + ", pres " + castle.prestige + ", honor " + castle.honor);
+        			}
+					logCommandMessage("===end search===");
+        		} else if (command == "searchenemies") {
+        			if (arg == "") arg = "200";
+        			if (!Utils.isNumeric(arg)) {
+        				logCommandMessage("Usage: \\searchenemies maxtowns");
+        				return;
+        			}
+        			maxTowns = int(arg);
+        			arr = Map.searchEnemyCastles(arg);
+        			arr.sort(sortByDistance);
+        			logCommandMessage("===Enemy castles===");
+        			count = 0;
+          			for each(castle in arr) {
+          				if (++count == maxTowns) break;
+        				logCommandMessage(Map.fieldIdToString(castle.id) + ", " + stateName(castle.state) + ", " + (int(distanceToCastles(castle.id)*100)/100) + " miles, " + castle.name + " by " + castle.userName + " " + castle.allianceName + ", pres " + castle.prestige + ", honor " + castle.honor);
+        			}
+        			if (arr.length > 1000) 
+        				logCommandMessage("Warning: ONLY 1000 nearest enemy towns are shown, please use '\searchcastle alliance' instead");
+        			else if (count > 100) 
+        				logCommandMessage("Notice: You may want to restrict the search result, for example: \\searchenemies 20");
+					logCommandMessage("===end search===");
+				} else if (command == "declare") {
+        			var deargsArr:Array = arg.split(" ");
+					if (deargsArr.length < 2) {
+						logCommandMessage("Usage: \\declare alliance red|blue|gray");
+						return;
+					}
+					var destatus:int = 0;
+					if 	(deargsArr[1] == "red" ) destatus = 3;
+					if 	(deargsArr[1] == "blue" ) destatus = 1;
+					if 	(deargsArr[1] == "gray" ) destatus = 2;
+        			ActionFactory.getInstance().getAllianceManagementCommands().setAllianceFriendship(deargsArr[0], destatus, 
+                        function (response:AllianceManagementResponse) : void {
+                            if (response.ok == 1) {
+                            	logCommandMessage(arg + " has been hostiled.");
+                            } else {
+                            	logCommandMessage(response.errorMsg);
+                            }
+                        }
+                    );
+                    logCommandMessage("declare complete");
+                    return;
+        		} else if (command == "listcastles") {
+		   			var argsArr:Array = arg.split(" ");
+					if (argsArr.length < 2) {
+						logCommandMessage("Usage: \\listcastles coord coord [maxtowns]");
+						return;
+					}
+					var nwCorner:int = Map.coordStringToFieldId(argsArr[0]);
+					var seCorner:int = Map.coordStringToFieldId(argsArr[1]);
+					var maxTowns3:int = (argsArr.length >= 3) ? parseInt(argsArr[2]) : 200;
+					if (nwCorner == -1 || seCorner == -1 || isNaN(maxTowns3)) {
+						logCommandMessage("Invalid corner coodinates or max number of towns");
+						return;
+					}
+					arr = Map.allCastles(nwCorner, seCorner);
+        			arr.sort(sortByDistance);
+        			logCommandMessage("===List castles===");
+        			count = 0;
+          			for each(castle in arr) {
+          				if (++count == maxTowns) break;
+        				logCommandMessage(Map.fieldIdToString(castle.id) + ", " + stateName(castle.state) + ", " + (int(distanceToCastles(castle.id)*100)/100) + " miles, " + castle.name + " by " + castle.userName + " " + castle.allianceName + ", pres " + castle.prestige + ", honor " + castle.honor);
+        			}
+        			if (arr.length > 1000) 
+        				logCommandMessage("Warning: ONLY 1000 nearest enemy towns are shown, please use '\searchcastle alliance' instead");
+        			else if (count > 100) 
+        				logCommandMessage("Notice: You may want to restrict the search result, for example: \\searchenemies 20");
+					logCommandMessage("===end listcastle===");
+        		} else if (command == "quickmail") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getMailCommands().receiveMailList(int(arg), MailConstants.MAIL_RECEIVE, 6, handleQuickMailListResponse);
+        		} else if (command == "listmail") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getMailCommands().receiveMailList(int(arg), MailConstants.MAIL_RECEIVE, 6, handleMailListResponse);
+        		} else if (command == "listsystemmail") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getMailCommands().receiveMailList(int(arg), MailConstants.MAIL_SYSTEM, 6, handleMailListResponse);
+        		} else if (command == "listsentmail") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getMailCommands().receiveMailList(int(arg), MailConstants.MAIL_SEND, 6, handleMailListResponse);
+        		} else if (command == "readmail") {
+        			if (arg == "") {
+        				logCommandMessage("Usage \\readmail mailId");
+        				return;
+        			}
+        			ActionFactory.getInstance().getMailCommands().readMail(int(arg), handleMailResponse);
+        		} else if (command == "mail") {
+        			var sp1:int = arg.indexOf(" ");
+        			var sp2:int = arg.indexOf(" ", sp1+1);
+        			if (sp1 == -1 || sp2 == -1) {
+        				logCommandMessage("Usage \\mail username title content");
+        				return;
+        			}
+        			var username:String = arg.substr(0, sp1);
+        			username = Utils.searchAndReplace(username, "_", " ");
+        			var title:String = arg.substr(sp1+1, sp2-sp1-1);
+        			title = Utils.searchAndReplace(title, "_", " ");
+        			var content:String = arg.substr(sp2+1);
+        			ActionFactory.getInstance().getMailCommands().sendMail(username, title, content, handleCommandResponse);
+        		} else if ( command == "searchheroes" ) {
+        			var argsHArr:Array = arg.split(" ");
+					if (argsHArr.length < 2) {
+        				logCommandMessage("Usage \\searchheroes heroname (lvl,atk,pol,int)");
+        				return;
+        			}	
+        			var searchtype:int = 1;
+        			if ( argsHArr[1] == "lvl") searchtype = 1;
+        			if ( argsHArr[1] == "atk") searchtype = 3;
+        			if ( argsHArr[1] == "pol") searchtype = 2; 
+        			if ( argsHArr[1] == "int") searchtype = 4;
+        			 
+        			ActionFactory.getInstance().getRankCommands().getHeroRank( argsHArr[0] , 1 , 10 , searchtype , handleHeroRankResponse );
+        		} else if (command == "listcastles") {
+		   			var argsArr3:Array = arg.split(" ");
+					if (argsArr3.length < 2) {
+						logCommandMessage("Usage: \\listcastles coord coord [maxtowns]");
+						return;
+					}
+					var nwCorner3:int = Map.coordStringToFieldId(argsArr3[0]);
+					var seCorner3:int = Map.coordStringToFieldId(argsArr3[1]);
+					var maxTowns4:int = (argsArr3.length >= 3) ? parseInt(argsArr3[2]) : 200;
+					if (nwCorner3 == -1 || seCorner3 == -1 || isNaN(maxTowns4)) {
+						logCommandMessage("Invalid corner coodinates or max number of towns");
+						return;
+					}
+					arr = Map.allCastles(nwCorner3, seCorner3);
+        			arr.sort(sortByDistance);
+        			logCommandMessage("===List castles===");
+        			count = 0;
+          			for each(castle in arr) {
+          				if (++count == maxTowns4) break;
+        				logCommandMessage(Map.fieldIdToString(castle.id) + ", " + stateName(castle.state) + ", " + (int(distanceToCastles(castle.id)*100)/100) + " miles, " + castle.name + " by " + castle.userName + " " + castle.allianceName + ", pres " + castle.prestige + ", honor " + castle.honor);
+        			}
+        			if (arr.length > 1000) 
+        				logCommandMessage("Warning: ONLY 1000 nearest enemy towns are shown, please use '\searchcastle alliance' instead");
+        			else if (count > 100) 
+        				logCommandMessage("Notice: You may want to restrict the search result, for example: \\searchenemies 20");
+					logCommandMessage("===end listcastle===");
+        		}  else if (command == "quickarmyreport") {
+        			if (arg == "") arg = "1";
+        			detailReport = false;
+        			ActionFactory.getInstance().getReportCommands().receiveReportList(int(arg), 6, ObjConstants.REPORT_TYPE_ARMY, handleArmyReportList);
+        		} else if (command == "armyreport") {
+        			if (arg == "") arg = "1";
+        			detailReport = true;
+        			ActionFactory.getInstance().getReportCommands().receiveReportList(int(arg), 6, ObjConstants.REPORT_TYPE_ARMY, handleArmyReportList);
+        		} else if (command == "readreport") {
+        			if (arg == "") {
+        				logCommandMessage("Usage \\readreport reportId");
+        				return;
+        			}
+        			ActionFactory.getInstance().getReportCommands().markAsRead(int(arg), handleMarkAsReadResponse);
+
+        		} else if (command == "warreport") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getAllianceCommands().getMilitarySituationList(int(arg), 6, handleMilitarySituationListResponse);
+        		} else if (command == "members") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getAllianceCommands().getAllianceMembers(handleAllianceMembersResponse);
+        		} else if (command == "relations") {
+        			if (arg == "") arg = "1";
+        			ActionFactory.getInstance().getAllianceManagementCommands().getAllianceFriendshipList( handleAllianceFriendshipResponse );
+        		} else if (command == "accept") {
+ 					if (arg == "") {
+        				logCommandMessage("Usage \\accept nick");
+        				return;
+        			}
+        			ActionFactory.getInstance().getAllianceManagementCommands().addUsertoAlliance(arg, handleGenericResponse);
+        		} else if (command == "apply") {
+ 					if (arg == "") {
+        				logCommandMessage("Usage \\apply alliance");
+        				return;
+        			}
+        			ActionFactory.getInstance().getAllianceManagementCommands().agreeComeinAllianceByUser(currentPlayer.castlesArray[0].id, arg, handleGenericResponse);
+        		} else if (command == "quitalliance") {
+ 					if (arg == "") {
+        				logCommandMessage("Usage \\quitalliance");
+        				return;
+        			}
+        			ActionFactory.getInstance().getAllianceManagementCommands().sayByetoAlliance( handleGenericResponse );
+        		} else if (command == "eject") {
+ 					if (arg == "") {
+        				logCommandMessage("Usage \\eject nick");
+        				return;
+        			}
+        			ActionFactory.getInstance().getAllianceManagementCommands().kickOutMemberfromAlliance(arg, handleGenericResponse);
+        		} else {
+        			logCommandMessage("Invalid command: " + command);
+        			logCommandMessage("cmd available: who loc searchcastle searchenemies listcastles listmail listsystemmail listsentmail readmail mail members warreport armyreport readreport quickarmyreport apply accept eject");
+        		}
+        	}
+        	
+        	private function handleGenericResponse(response:Object) : void {
+        		if (response.ok == undefined) {
+        			logCommandMessage("BUG: Bad use of handle generic response");
+        			return;
+        		}
+        		if (response.ok != 1) {
+        			logCommandMessage("Error Generic: " + response.errorMsg);
+        			return;
+        		}        		
+        	}
+
+        	private function handleCommandResponse(response:PlayerInfoResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Error Player: " + response.errorMsg);
+        			return;
+        		}
+        	}
+        	
+        	private function handlePlayerInfoResponse(response:PlayerInfoResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Player info: " + response.errorMsg);
+        			return;
+        		}
+        		var p:com.umge.sovt.common.beans.PlayerInfoBean = response.playerInfo;
+        		var titleArr:Array = new Array("Civilian", "Knight", "Baronet", "Baron", "Viscount", "Earl", "Marquis", "Duke", "Furstin", "Prinzessin");
+        		logCommandMessage("Player info: " + p.userName + ", alliance: " + p.alliance + ", castle: " + p.castleCount + ", pres: " + p.prestige + ", honor: " + p.honor + ", rank: " + p.ranking + ", pos: " + p.office + ", title: " + titleArr[p.titleId] + ", pop: " + p.population);
+        	}
+        	
+        	private function handleAllianceFriendshipResponse(response:AllianceFriendshipResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Alliance Friendship error: " + response.errorMsg);
+        			return;
+        		}
+        		if ( response.enemyListArray.length == 0 ) {
+        			this.logCommandMessage( "No Hostiles" );
+        		} else {
+        			this.logCommandMessage( response.enemyListArray.length + " Hostiles:" );
+        			for each ( var redalliance:UnitAlliance in response.enemyListArray ) {
+        				this.logCommandMessage( redalliance.allianceName );
+        			} 
+        		}
+        		if ( response.middleListArray.length == 0 ) {
+        			this.logCommandMessage( "No Neutrals" );
+        		} else {
+        			this.logCommandMessage( response.middleListArray.length + " Neutrals:" );
+        			for each ( var greyalliance:UnitAlliance in response.middleListArray ) {
+        				this.logCommandMessage( greyalliance.allianceName );
+        			} 
+        		}
+        		if ( response.friendlyListArray.length == 0 ) {
+        			this.logCommandMessage( "No Freindlies" );
+        		} else {
+        			this.logCommandMessage( response.friendlyListArray.length + " Friendlies:" );
+        			for each ( var bluealliance:UnitAlliance in response.friendlyListArray ) {
+        				this.logCommandMessage( bluealliance.allianceName );
+        			} 
+        		}
+        		
+        	}
+        	
+        	private function handleMailListResponse(response:MailListResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Mail list error: " + response.errorMsg);
+        			return;
+        		}
+        		logCommandMessage("Page: " + response.pageNo + "/" + response.totalPage);
+        		if (response.mailsArray.length == 0) return;
+        		
+        		var ids:Array = new Array();
+        		for each(var mail:MailBean in response.mailsArray) {
+ 					ids.push(mail.mailid);
+        		}
+        		
+    			var timer:Timer = new Timer(2000, ids.length);
+    			var count:int = 0;
+    			timer.addEventListener(TimerEvent.TIMER,
+    			function (event:TimerEvent) : void {
+    				handleCommand("readmail " + ids[count], false);
+    				count++;			
+    			});
+    			timer.start();
+        	}
+        	
+        	private function handleQuickMailListResponse(response:MailListResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Mail list error: " + response.errorMsg);
+        			return;
+        		}
+        		if (response.mailsArray.length == 0) return;
+        		var ids2:Array = new Array();
+        		for each(var mail2:MailBean in response.mailsArray) {
+        			if ( !mail2.isRead ) {
+ 						ids2.push(mail2.mailid);
+        			}
+        		}
+        		logCommandMessage( ids2.length + " Unread messages ");
+        		if ( ids2.length > 0 ) {
+    				var timer2:Timer = new Timer(2000, ids2.length);
+    				var count2:int = 0;
+    				timer2.addEventListener(TimerEvent.TIMER,
+    				function (event:TimerEvent) : void {
+    					handleCommand("readmail " + ids2[count2], false);
+    					count2++;			
+    				});
+    				timer2.start();        		
+        		}
+        	}
+
+        		private function handleHeroRankResponse( response:RankHeroResponse):void {
+        		if ( response.ok != 1 ) {
+        			logCommandMessage("Error Hero Rank: " + response.errorMsg);
+        			return;
+        		}   
+        		
+        		this.logCommandMessage("Page " + response.pageNo + " of " +  response.totalPage.toString() + " Pages");
+        		var RankHero:ArrayCollection = response.beansArray;
+        		this.logCommandMessage("<pre>");
+        		for each ( var a:RankHeroBean in RankHero ) {
+        			
+        			logCommandMessage( "Rank: " +  leftPad(a.rank.toString() , 6) + " Name: " + rightPad( a.name.toString() , 10 ) + " Owner: " + rightPad(a.kind.toString() , 10) + " Level: " + leftPad(a.grade.toString(),4) + " Atk: " + leftPad(a.power.toString(),4)  + " Int: " + leftPad(a.stratagem.toString(),4) + " Pol: " + leftPad(a.management.toString(),4) );
+        		}
+        		this.logCommandMessage("</pre>");
+				
+			}
+			            private function leftPad(source:String, targetLength:int, padChar:String = " "):String {
+				if (source.length < targetLength)
+ 				{
+ 					var padding:String = "";
+ 					while (padding.length + source.length < targetLength)
+   						padding += padChar;
+  						return padding + source;
+ 				}
+				return source;
+			}
+			private function rightPad(source:String, targetLength:int, padChar:String = " "):String
+			{
+ 				while (source.length < targetLength) {
+  					source += padChar;
+  				}
+				return source;
+				
+			}
+        	private function handleMailResponse(response:MailResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Read mail error: " + response.errorMsg);
+        			return;
+        		}
+        		logCommandMessage("[" + response.mailid + ":" + response.sender + ">" + response.receiver + "] " + response.title + " on " + new Date(response.receiveTime).toLocaleDateString() + "@" + new Date(response.receiveTime).toLocaleTimeString() + "\n" + response.content);
+        	}
+
+        	private function handleMarkAsReadResponse(response:ReportResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Read report/mark as read error: " + response.errorMsg);
+        			return;
+        		}
+        		var rep:ReportBean = response.report;
+        		// var type:String = (rep.back) ? "BACK" : (rep.attack) ? "ATT" : "DEF";
+        		var type:String = (rep.attack) ? "ATT" : "DEF";
+ 		  		var xml:XML = new XML(rep.content);
+/*				logCommandMessage(type + " " + rep.title + " on " + new Date(rep.eventTime).toLocaleString() +
+					"\n  from " + rep.startPos + " to " + rep.targetPos +
+					"\n" + xml.@reportUrl);*/
+				logCommandMessage(Utils.formatUrl(type + " " + rep.title + " on " + new Date(rep.eventTime).toLocaleString() + " from " + rep.startPos + " to " + rep.targetPos, xml.@reportUrl));
+					
+         	}
+        	
+        	private function handleArmyReportList(response:ReportListResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Army report list error: " + response.errorMsg);
+        			return;
+        		}
+        		logCommandMessage("Page: " + response.pageNo + "/" + response.totalPage);
+        		if (response.reportsArray.length == 0) return;
+        		
+        		var ids:Array = new Array();
+        		for each(var report:ReportBean in response.reportsArray) {
+     				var type:String = (report.attack) ? "ATT" : "DEF";
+     				if (detailReport) {
+     					ids.push(report.id);
+     				} else {
+    					logCommandMessage("[" + report.id + "]" + type + " " + report.title + " from " + report.startPos + " to " + report.targetPos + " on " + new Date(report.eventTime).toLocaleString());
+     				}
+        		}
+        		
+        		if (ids.length == 0) return;
+
+    			var timer:Timer = new Timer(2000, ids.length);
+    			var count:int = 0;
+    			timer.addEventListener(TimerEvent.TIMER,
+    			function (event:TimerEvent) : void {
+    				handleCommand("readreport " + ids[count], false);
+    				count++;			
+    			});
+    			timer.start();        		
+        	}
+        	
+        	private function handleMilitarySituationListResponse(response:MilitarySituationListResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Military situation list error: " + response.errorMsg);
+        			return;
+        		}
+        		logCommandMessage("Page: " + response.pageNo + "/" + response.totalPage);
+        		for each(var sit:MilitarySituation in response.situationsArray) {
+        			var type:String = (sit.attack) ? "ATT" : "DEF";
+        			var xml:XML = new XML(sit.xml_data);
+/*					logCommandMessage(type + " " + sit.otherAllianceName + " " + sit.eventName + " on " + new Date(sit.time).toLocaleString() +
+						"\nfrom " + sit.startPos + " " + xml.battleReport.attackTroop.@king + " to " + sit.targetPos + " " + xml.battleReport.defendTroop.@king +
+						"\n" + xml.@reportUrl);*/
+					logCommandMessage(Utils.formatUrl(type + " " + sit.otherAllianceName + " " + sit.eventName + " on " + new Date(sit.time).toLocaleString() + " from " + sit.startPos + " " + xml.battleReport.attackTroop.@king + " to " + sit.targetPos + " " + xml.battleReport.defendTroop.@king, xml.@reportUrl));        				
+				}
+        	}
+			
+			private function compareByLoginTime(p1:PlayerInfoBean, p2:PlayerInfoBean) : int {
+				if (p1.lastLoginTime > p2.lastLoginTime) return -1;
+				if (p1.lastLoginTime < p2.lastLoginTime) return 1;
+				return 0;
+			}
+			
+        	private function handleAllianceMembersResponse(response:AllianceMembersResponse) : void {
+        		if (response.ok != 1) {
+        			logCommandMessage("Alliance members error: " + response.errorMsg);
+        			return;
+        		}
+        		response.membersArray.source.sort(compareByLoginTime);		
+        		logCommandMessage("Alliance members: ");
+        		for each(var player:PlayerInfoBean in response.membersArray) {
+        			logCommandMessage(" " + player.userName + " " + player.allianceLevel + " pres: " + player.prestige + " last: " + new Date(player.lastLoginTime).toLocaleString());
+        		}
+        	}
+        	
+			private function ToFieldId(coords:String) : int
+			{
+				var first:int;
+				var second:int;
+				var coordArray:Array = coords.split(",");
+
+				if (coordArray.length >= 2)
+				{
+					first = int(coordArray[0]);
+					second = int(coordArray[1]);
+					return Map.getFieldId(first, second);
+				}
+	
+				// -1 == and invalid coord was passed in.
+				return -1;
+			}
+
+			private function tabBar_creationComplete(tabObject:Object):void {
+				
+				for each (var t1:Object in tabObject.getChildren())
+				{
+					t1.setStyle("themeColor", 0x000000 );
+					t1.setStyle("color", "#000000");	
+					if (t1.label == "Alliance Chat") {
+						t1.setStyle("themeColor", 0x3333FF );
+						t1.setStyle("color", "#3333FF");
+					} else if (t1.label == "Private Chat") {
+						t1.setStyle("themeColor", 0x6A44AF );
+						t1.setStyle("color", "#6A44AF");	
+					} else if (t1.label == "Commands") {
+						t1.setStyle("themeColor", 0x006600 );
+						t1.setStyle("color", "#006600");
+					} else {
+						t1.setStyle("themeColor", 0x000000 );
+						t1.setStyle("color", "#000000");	
+					}
+	       			t1.setStyle('fontSize','10');
+					t1.setStyle('fontWeight','normal');
+					//t1.setStyle("fillColors", ["#FFFFFF", "#FFFFFF"]);
+					//t1.setStyle("fillAlphas", [1.0, 1.0]);
+					//t1.setStyle("backgroundColor", "#FFFFFF");
+				}
+			}
+			private function clickHandler(event:ItemClickEvent):void {
+                Button(chatToggleBar.getChildAt(event.index)).setStyle("fontWeight", "normal");
+            }
+                        
+            private function ButtonBarclickHandler(event:ItemClickEvent):void {
+       				if ( event.label == "Send Mail" ) {
+       					var mailWindow:IFlexDisplayObject = PopUpManager.createPopUp( this , mailPopup, false);
+       					
+       				} else {
+       					chatText.text = "";
+                    	chatText.text = "\\" + event.label + " ";
+                    	chatText.setFocus();
+                    	chatText.setSelection(chatText.length,chatText.length);
+       				}
+            }
+            
+ 			private function ButtonBar2clickHandler(event:ItemClickEvent):void {
+       
+                    chatText.text = "";
+                     
+                    chatText.text = "/" + (event.label.indexOf(" ") == -1) ? event.label : "'" + event.label + "'";
+                    chatText.setFocus();
+                    chatText.setSelection(chatText.length,chatText.length);
+            }
+           
+            private function showSettings() : void
+			{
+				var p:BotSettings = PopUpManager.createPopUp(this, BotSettings, true) as BotSettings;
+				p.cbClose = Map.saveMapSettings;
+				PopUpManager.centerPopUp(p);
+				p.init()
+			}
+			
+ 			private function CommandLogHandler(event:MouseEvent):void {
+       				cache[commandText.id] = "";
+                    commandText.text = "";
+            }			
+			
+
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="config" source="/config.xml" />
+
+	<mx:VBox width="100%" height="100%" x="0" y="0">
+		<mx:Panel id="mainPanel" height="100%" width="100%" layout="horizontal" borderStyle="solid" borderColor="#090909"  backgroundColor="#D4D4D4" headerHeight="0" paddingTop="8">
+			<mx:VBox width="100%" height="100%" verticalGap="0" borderStyle="none">
+				<mx:HBox width="100%" height="36" verticalAlign="middle" horizontalGap="5" paddingLeft="5" paddingRight="5">
+					<mx:Button id="pauseButton" label="Pause" enabled="true" click="pauseQueue()" fontSize="10" themeColor="#000000"/>
+					<mx:Button id="refreshButton" label="Refresh" enabled="true" click="refresh()" fontSize="10" themeColor="#000000"/>
+					<mx:Button label="Settings" id="settingsButton" enabled="true" click="showSettings()" fontSize="10" themeColor="#000000"/>
+					<mx:Label text="AutoEvony - http://www.wiki-site.com/index.php/Evobot_City_Management" useHandCursor="true" width="100%" fontWeight="bold"/>
+					<ns1:CityTopView id="_Playerstats">
+					</ns1:CityTopView>
+				</mx:HBox>
+				<mx:ToggleButtonBar id="citiesTab" direction="horizontal"  fontSize="9" paddingLeft="1" horizontalGap="1"/>
+				<mx:VDividedBox width="100%" height="100%">
+				<mx:ViewStack id="citiesViewStack" width="100%" height="50%"></mx:ViewStack>
+					<mx:HDividedBox width="100%" id="logChatBox" horizontalGap="3" height="50%" borderStyle="solid" borderThickness="0" verticalAlign="bottom">
+						<mx:VBox width="50%" height="100%" borderStyle="none" id="vlogs" verticalGap="3">
+								<mx:HBox width="100%" height="24" verticalAlign="middle">
+									<mx:ToggleButtonBar dataProvider="logStack" horizontalGap="1" paddingLeft="1" id="logToggleBar" selectedIndex="0" creationComplete="tabBar_creationComplete(logToggleBar)"/>
+								</mx:HBox>
+								<mx:ViewStack id="logStack" width="100%" height="100%" creationPolicy="all">
+									<mx:Canvas id="logCanv" width="100%" height="100%" label="Log">
+							<mx:TextArea width="100%" id="logs" height="100%" wordWrap="true" editable="false" enabled="true" link="onLink(event)" />
+									</mx:Canvas>
+									<mx:Canvas id="cLogCanv" width="100%" height="100%" label="City log">
+										<mx:ViewStack id="citiesLogViewStack" width="100%" height="100%" ></mx:ViewStack>
+									</mx:Canvas>
+			<!--						<mx:Canvas id="aLogCanv" width="100%" height="100%" label="Alerts log">
+										<mx:TextArea width="100%" id="alertLogs" height="100%" wordWrap="true" editable="false" enabled="true"/>
+									</mx:Canvas>-->
+								</mx:ViewStack>
+						</mx:VBox>
+						<mx:VBox width="50%" height="100%" verticalGap="0" borderStyle="none" id="vchatbox">
+							<mx:VDividedBox height="100%" width="100%" verticalGap="2">
+								<mx:VBox height="100%" width="100%" verticalGap="3">
+									<mx:HBox width="100%" height="24" verticalAlign="middle" paddingLeft="1">
+										<mx:ToggleButtonBar dataProvider="chatStack" horizontalGap="1" id="chatToggleBar" selectedIndex="0" creationComplete="tabBar_creationComplete(chatToggleBar)" itemClick="clickHandler(event);" paddingLeft="1">
+										</mx:ToggleButtonBar>
+									</mx:HBox>
+									<mx:ViewStack id="chatStack" width="100%" height="100%" creationPolicy="all">
+										<mx:Canvas id="allianceChatLabel" width="100%" height="100%" label="Alliance Chat">
+											<mx:TextArea id="aChatText" fontFamily="_sans" fontSize="11" width="100%" height="100%" wordWrap="true" editable="false" enabled="true" right="0" bottom="0"/>
+										</mx:Canvas>
+										<mx:Canvas id="privateChatLabel" width="100%" height="100%" label="Private Chat">
+											<mx:HBox height="100%" width="100%" horizontalGap="1" paddingRight="1">
+												<mx:TextArea id="pChatText" fontFamily="_sans" fontSize="11" width="100%" height="100%" wordWrap="true" editable="false" enabled="true" right="0" bottom="0"/>
+												<mx:ButtonBar direction="vertical" dataProvider="{lastChatUsers}" itemClick="ButtonBar2clickHandler(event);" buttonHeight="17" />
+											</mx:HBox>
+										</mx:Canvas>
+										<mx:Canvas id="worldChatLabel" width="100%" height="100%" label="World Chat">
+											<mx:TextArea id="wChatText" fontFamily="_sans" fontSize="11" width="100%" height="100%" wordWrap="true" editable="false" enabled="true" right="0" bottom="0"/>
+										</mx:Canvas>
+										<mx:Canvas id="commandCanv" width="100%" height="100%" label="Commands">
+											<mx:HBox height="100%" width="100%" horizontalGap="1" paddingRight="1">
+												<mx:TextArea id="commandText" fontFamily="Courier New" fontSize="10" width="100%" height="100%" 
+													wordWrap="true" editable="false" enabled="true" color="#073144" right="0" bottom="0" 
+													link="onLink(event)"  doubleClick="CommandLogHandler(event);" doubleClickEnabled="true" fontWeight="bold"/>
+												<mx:ButtonBar direction="vertical" itemClick="ButtonBarclickHandler(event);" buttonHeight="17">
+													<mx:dataProvider>
+											            <mx:String>who</mx:String>
+											            <mx:String>loc</mx:String>
+											            <mx:String>listcastles</mx:String>
+											            <mx:String>searchcastle</mx:String>
+											            <mx:String>searchenemies</mx:String>
+											            <mx:String>searchheroes</mx:String>
+											            <mx:String>Send Mail</mx:String>
+											            <mx:String>listmail</mx:String>
+											            <mx:String>listsystemmail</mx:String>
+											            <mx:String>listsentmail</mx:String>
+											            <mx:String>warreport</mx:String>
+											            <mx:String>armyreport</mx:String>	 
+			      										<mx:String>readreport</mx:String>
+											            <mx:String>quickarmyreport</mx:String>
+											            <mx:String>apply</mx:String>
+											            <mx:String>quitalliance</mx:String>
+											            <mx:String>relations</mx:String>
+			<!--								            who loc searchcastle searchenemies listmail listsystemmail listsentmail readmail mail members warreport armyreport readreport quickarmyreport apply accept eject-->
+											        </mx:dataProvider>
+												</mx:ButtonBar>
+											</mx:HBox>
+										</mx:Canvas>
+									</mx:ViewStack>
+									<mx:HBox width="100%" height="24" verticalAlign="bottom">
+										<mx:TextInput id="chatText" width="90%" editable="true" height="100%" maxChars="150"/>
+										<mx:Button label="Send" id="sendButton" click="sendChat()" height="100%"/>
+									</mx:HBox>
+								</mx:VBox>
+							</mx:VDividedBox>
+						</mx:VBox>
+					</mx:HDividedBox>
+				</mx:VDividedBox>
+			</mx:VBox>
+	</mx:Panel>
+	<mx:HBox width="100%" height="26" verticalAlign="middle">
+		<mx:HBox width="100%" height="26" verticalAlign="middle">
+			<mx:Label text="Build {Version.build_number}, compiled on {Version.build_time} using Evony version {Version.GAMECLIENTVERSION}" />
+		</mx:HBox>
+	</mx:HBox>
+	</mx:VBox>
+</mx:Module>

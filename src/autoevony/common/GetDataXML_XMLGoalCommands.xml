@@ -1,0 +1,322 @@
+<type name="autoevony.scripts::CityState">
+    <method name="cleanreports" desciption="" example="">
+      <parameter name="SearchString" type="String" optional="true"/>
+      <parameter name="page" type="int" optional="true"/>
+    </method>
+    <method name="create" desciption="" example="">
+      <parameter name="BuildingType" type="String" optional="false"/>
+      <parameter name="PositionPolicy" type="String" optional="true"/>
+    </method>
+    <method name="reinforce" desciption="" example="">
+      <parameter name="Coords" type="String" optional="false"/>
+      <parameter name="Hero" type="String" optional="false"/>
+      <parameter name="Troops" type="String" optional="false"/>
+      <parameter name="Resources" type="String" optional="true"/>
+      <parameter name="RestTime" type="String" optional="true"/>
+    </method>
+    <method name="buildcity" desciption="" example="">
+      <parameter name="Coords" type="String" optional="false"/>
+    </method>
+    <method name="settaxrate" desciption="" example="">
+      <parameter name="NewTaxRate" type="int" optional="false"/>
+    </method>
+    <method name="npc10limit" desciption="" example="npc10limit a:500000,w:200000">
+      <parameter name="Troops" type="String" optional="false"/>
+    </method>
+    <method name="npc10troops" desciption="" example="npc10troop a:92100,t:1900,w:3000,s:1000,wo:2000">
+      <parameter name="Troops" type="String" optional="false"/>
+    </method>
+    <method name="troopgoal" desciption="" example="troopgoal s:150000,p:30000,sw:30000,cav:10000,cata:5000">
+      <parameter name="Troops" type="String" optional="false"/>
+    </method>
+    <method name="deploy" desciption="" example="">
+      <parameter name="1" type="Object" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="String" optional="false"/>
+      <parameter name="4" type="String" optional="false"/>
+      <parameter name="5" type="String" optional="true"/>
+      <parameter name="6" type="String" optional="true"/>
+    </method>
+    <method name="listmedals" desciption="" example=""/>
+    <method name="npctroops" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="abandon" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="persuadehero" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="resourcelimits" desciption="" example="">
+      <parameter name="1" type="Number" optional="false"/>
+      <parameter name="2" type="Number" optional="false"/>
+      <parameter name="3" type="Number" optional="false"/>
+      <parameter name="4" type="Number" optional="false"/>
+    </method>
+    <method name="scout" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="String" optional="false"/>
+      <parameter name="4" type="String" optional="true"/>
+    </method>
+    <method name="releasehero" desciption="" example="">
+      <parameter name="1" type="int" optional="true"/>
+      <parameter name="2" type="int" optional="true"/>
+    </method>
+    <method name="fortificationgoal" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="abandontown" desciption="" example=""/>
+    <method name="verbose" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="buildinggoals" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="buy" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+      <parameter name="3" type="Number" optional="false"/>
+    </method>
+    <method name="huntingtype" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="npcheroes" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="gatepolicy" desciption="" example="">
+      <parameter name="1" type="int" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+      <parameter name="3" type="int" optional="false"/>
+      <parameter name="4" type="int" optional="false"/>
+    </method>
+    <method name="npc10troop" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="idrecall" desciption="" example="">
+      <parameter name="1" type="int" optional="false"/>
+    </method>
+    <method name="endguardedattack" desciption="" example=""/>
+    <method name="checkresearch" desciption="" example=""/>
+    <method name="demosite" desciption="" example="">
+      <parameter name="1" type="int" optional="false"/>
+    </method>
+    <method name="levy" desciption="" example="">
+      <parameter name="1" type="Object" optional="false"/>
+    </method>
+    <method name="dumpresource" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="String" optional="false"/>
+    </method>
+    <method name="npclist" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="train" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="true"/>
+      <parameter name="3" type="String" optional="true"/>
+      <parameter name="4" type="int" optional="true"/>
+    </method>
+    <method name="production" desciption="" example="">
+      <parameter name="1" type="int" optional="true"/>
+      <parameter name="2" type="int" optional="true"/>
+      <parameter name="3" type="int" optional="true"/>
+      <parameter name="4" type="int" optional="true"/>
+    </method>
+    <method name="scanmap" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+    </method>
+    <method name="cleannpcreports" desciption="" example="">
+      <parameter name="1" type="int" optional="true"/>
+    </method>
+    <method name="travelinfo" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+    </method>
+    <method name="npctroop" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="spamheroes" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="setmayorbyname" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="endspamattack" desciption="" example=""/>
+    <method name="resetgoals" desciption="" example=""/>
+    <method name="endloyaltyattack" desciption="" example=""/>
+    <method name="comfort" desciption="" example="">
+      <parameter name="1" type="Object" optional="false"/>
+    </method>
+    <method name="upgrade" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+      <parameter name="2" type="String" optional="true"/>
+      <parameter name="3" type="int" optional="true"/>
+    </method>
+    <method name="valleytroops" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="findfield" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+      <parameter name="3" type="int" optional="false"/>
+      <parameter name="4" type="String" optional="true"/>
+      <parameter name="5" type="String" optional="true"/>
+      <parameter name="6" type="String" optional="true"/>
+    </method>
+    <method name="endkeeptroop" desciption="" example=""/>
+    <method name="recall" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="setguard" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+    </method>
+    <method name="keepresource" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="int" optional="true"/>
+    </method>
+    <method name="updateArmies" desciption="" example="">
+      <parameter name="1" type="mx.collections::ArrayCollection" optional="false"/>
+    </method>
+    <method name="guardedattack" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="int" optional="false"/>
+      <parameter name="4" type="String" optional="false"/>
+    </method>
+    <method name="dumptroop" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="String" optional="false"/>
+    </method>
+    <method name="demo" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+      <parameter name="2" type="String" optional="true"/>
+    </method>
+    <method name="canceltrade" desciption="" example=""/>
+    <method name="research" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="getspamhero" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+    </method>
+    <method name="setballsused" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="rescanmap" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+    </method>
+    <method name="techgoals" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="listitems" desciption="" example=""/>
+    <method name="firehero" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="loyaltyattack" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="true"/>
+    </method>
+    <method name="spamattack" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="int" optional="false"/>
+    </method>
+    <method name="changeheroname" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+    </method>
+    <method name="traveltime" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+    </method>
+    <method name="walldefense" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+      <parameter name="2" type="int" optional="true"/>
+      <parameter name="3" type="String" optional="true"/>
+    </method>
+    <method name="cancelbuildcity" desciption="" example=""/>
+    <method name="transport" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="String" optional="false"/>
+    </method>
+    <method name="npc10list" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="findhero" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+      <parameter name="2" type="int" optional="true"/>
+      <parameter name="3" type="int" optional="true"/>
+    </method>
+    <method name="scanrec" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+    </method>
+    <method name="setmayor" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+    </method>
+    <method name="useitem" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="true"/>
+      <parameter name="3" type="String" optional="true"/>
+    </method>
+    <method name="endevacuate" desciption="" example=""/>
+    <method name="endkeepresource" desciption="" example=""/>
+    <method name="config" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="npc10heroes" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="distancepolicy" desciption="" example="">
+      <parameter name="1" type="int" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+      <parameter name="3" type="int" optional="false"/>
+      <parameter name="4" type="int" optional="false"/>
+    </method>
+    <method name="keeptroop" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="int" optional="true"/>
+    </method>
+    <method name="healtroops" desciption="" example=""/>
+    <method name="evacuatetown" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="capture" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="true"/>
+    </method>
+    <method name="trade" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="int" optional="false"/>
+      <parameter name="4" type="Number" optional="false"/>
+    </method>
+    <method name="attack" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="String" optional="false"/>
+      <parameter name="3" type="String" optional="false"/>
+      <parameter name="4" type="String" optional="true"/>
+    </method>
+    <method name="completequests" desciption="" example="">
+      <parameter name="1" type="String" optional="true"/>
+    </method>
+    <method name="huntingpos" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+    <method name="sell" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+      <parameter name="2" type="int" optional="false"/>
+      <parameter name="3" type="Number" optional="false"/>
+    </method>
+    <method name="valleytroop" desciption="" example="">
+      <parameter name="1" type="String" optional="false"/>
+    </method>
+</type>

@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildingDefine>
+  <buildingEum name="Cottage" desc="Cottages offer shelter to citizens, attracting more people to reside." wikiDesc="Primitives used to live in caves or nested on trees. They found a natural and effective living way to avoid animal attacks, and chillness of winter. However, caves are unpredictable to them, and living room is limited. Gradually they started to build shanties which allowed them to live outside together with their families." typeId="1">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Cottage offers population 100."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Cottage offers population 300."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Cottage offers population 600."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Cottage offers population 1,000."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Cottage offers population 1,500."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Cottage offers population 2,100."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Cottage offers population 2,800."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Cottage offers population 3,600."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Cottage offers population 4,500."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Cottage offers population 5,500."/>
+      <upLevelDesc level="10" upLevelDesc="build.House.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="100" produce="0" food="100" wood="500" stone="100" iron="50" time="75" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="300" produce="0" food="200" wood="1000" stone="200" iron="100" time="150" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="600" produce="0" food="400" wood="2000" stone="400" iron="200" time="300" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="1000" produce="0" food="800" wood="4000" stone="800" iron="400" time="600" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="1500" produce="0" food="1600" wood="8000" stone="1600" iron="800" time="1200" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="2100" produce="0" food="3200" wood="16000" stone="3200" iron="1600" time="2400" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="2800" produce="0" food="6400" wood="32000" stone="6400" iron="3200" time="4800" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="3600" produce="0" food="12800" wood="64000" stone="12800" iron="6400" time="9600" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="4500" produce="0" food="25600" wood="128000" stone="25600" iron="12800" time="19200" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="5500" produce="0" food="51200" wood="256000" stone="51200" iron="25600" time="38400" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Warehouse" desc="Warehouse is used to store your resources and prevent the enemies from plundering." wikiDesc="One of the most ancient methods of food preservation is sun- or air-drying. Drying works because it removes much of the food's water. Without adequate water, microorganisms cannot multiply and chemical activities greatly slow down. Dried meat was one of the earliest staple foods of hunters and nomads. Warehouse finally came into being, offering a adequate place for food storage." typeId="3">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Warehouse can store 10,000 units resource."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Warehouse can store 30,000 units resource."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Warehouse can store 60,000 units resource."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Warehouse can store 100,000 units resource."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Warehouse can store 150,000 units resource."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Warehouse can store 210,000 units resource."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Warehouse can store 280,000 units resource."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Warehouse can store 360,000 units resource."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Warehouse can store 450,000 units resource."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Warehouse can store 550,000 units resource."/>
+      <upLevelDesc level="10" upLevelDesc="build.WareHouse.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="10000" produce="0" food="100" wood="1500" stone="1000" iron="300" time="600" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="30000" produce="0" food="200" wood="3000" stone="2000" iron="600" time="1200" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="60000" produce="0" food="400" wood="6000" stone="4000" iron="1200" time="2400" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="100000" produce="0" food="800" wood="12000" stone="8000" iron="2400" time="4800" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="150000" produce="0" food="1600" wood="24000" stone="16000" iron="4800" time="9600" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="210000" produce="0" food="3200" wood="48000" stone="32000" iron="9600" time="19200" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="280000" produce="0" food="6400" wood="96000" stone="64000" iron="19200" time="38400" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="360000" produce="0" food="12800" wood="192000" stone="128000" iron="38400" time="76800" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="450000" produce="0" food="25600" wood="384000" stone="256000" iron="76800" time="153600" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="550000" produce="0" food="51200" wood="768000" stone="512000" iron="153600" time="307200" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Inn" desc="Inn is used to recruit heroes. The higher its level, the stronger heroes can be recruited." wikiDesc="Found in Europe, they possibly first sprang up when the Romans built their system of Roman roads two millennia ago. Some inns in Europe are several centuries old. In addition to providing for the needs of travellers, inns traditionally acted as community gathering places. Inn had to provide not only food and lodging, but also stabling and fodder for the travellers' horses." typeId="21">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Inn of level 1 accommodates 1 hero."/>
+      <upLevelDesc level="1" upLevelDesc="Inn of level 2 accommodates 2 heroes."/>
+      <upLevelDesc level="2" upLevelDesc="Inn of level 3 accommodates 3 heroes."/>
+      <upLevelDesc level="3" upLevelDesc="Inn of level 4 accommodates 4 heroes."/>
+      <upLevelDesc level="4" upLevelDesc="Inn of level 5 accommodates 5 heroes."/>
+      <upLevelDesc level="5" upLevelDesc="Inn of level 6 accommodates 6 heroes."/>
+      <upLevelDesc level="6" upLevelDesc="Inn of level 7 accommodates 7 heroes."/>
+      <upLevelDesc level="7" upLevelDesc="Inn of level 8 accommodates 8 heroes."/>
+      <upLevelDesc level="8" upLevelDesc="Inn of level 9 accommodates 9 heroes."/>
+      <upLevelDesc level="9" upLevelDesc="Inn of level 10 accommodates 10 heroes."/>
+      <upLevelDesc level="10" upLevelDesc="build.Tavern.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="1" produce="0" food="300" wood="2000" stone="1000" iron="400" time="240" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="0" food="600" wood="4000" stone="2000" iron="800" time="480" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="3" produce="0" food="1200" wood="8000" stone="4000" iron="1600" time="960" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="4" produce="0" food="2400" wood="16000" stone="8000" iron="3200" time="1920" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="5" produce="0" food="4800" wood="32000" stone="16000" iron="6400" time="3840" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="6" produce="0" food="9600" wood="64000" stone="32000" iron="12800" time="7680" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="7" produce="0" food="19200" wood="128000" stone="64000" iron="25600" time="15360" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="8" produce="0" food="38400" wood="256000" stone="128000" iron="51200" time="30720" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="9" produce="0" food="76800" wood="512000" stone="256000" iron="102400" time="61440" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="10" produce="0" food="153600" wood="1024000" stone="512000" iron="204800" time="122880" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Feasting Hall" desc="Feasting Hall is the residence of heroes. You can check the status of heroes, upgrade skills, give rewards and dismiss them. There must be vacancies in your Feasting Hall if you want to hire heroes." wikiDesc="In ancient Scandinavia a feasting hall was initially simply a large building with a single room. From the fifth century to early medieval times such a building was the residence of a lord and his retainers. In this hall, people danced and sang for celebration. Heroes are praised and appointed here." typeId="27">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Feasting Hall accomodates a maximum of 1 Hero."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Feasting Hall accomodates a maximum of 2 Heroes."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Feasting Hall accomodates a maximum of 3 Heroes."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Feasting Hall accomodates a maximum of 4 Heroes."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Feasting Hall accomodates a maximum of 5 Heroes."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Feasting Hall accomodates a maximum of 6 Heroes."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Feasting Hall accomodates a maximum of 7 Heroes."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Feasting Hall accomodates a maximum of 8 Heroes."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Feasting Hall accomodates a maximum of 9 Heroes."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Feasting Hall accomodates a maximum of 10 Heroes."/>
+      <upLevelDesc level="10" upLevelDesc="build.HeroMansion.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="1" produce="0" food="400" wood="2500" stone="1200" iron="700" time="360" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="0" food="800" wood="5000" stone="2400" iron="1400" time="720" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="3" produce="0" food="1600" wood="10000" stone="4800" iron="2800" time="1440" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="4" produce="0" food="3200" wood="20000" stone="9600" iron="5600" time="2880" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="5" produce="0" food="6400" wood="40000" stone="19200" iron="11200" time="5760" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="6" produce="0" food="12800" wood="80000" stone="38400" iron="22400" time="11520" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="7" produce="0" food="25600" wood="160000" stone="76800" iron="44800" time="23040" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="8" produce="0" food="51200" wood="320000" stone="153600" iron="89600" time="46080" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="9" produce="0" food="102400" wood="640000" stone="307200" iron="179200" time="92160" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="10" produce="0" food="204800" wood="1280000" stone="614400" iron="358400" time="184320" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Embassy" desc="Embassy hosts convoys from other players. At level 1, you can join alliances created by other players. At level 2, you can establish an alliance yourself and perform joint operations with your allies. The host of the alliance can increase the limit of allies by upgrading the embassy. " wikiDesc="Warfare is not the best way for a nation’s development. Friendly contact with neighboring countries became an inevitable way for a country to survive. At this time, embassy started to form its shape. Envoys were sent to other countries or cities. Their missions were to establish a good relation with others or make every effort to avoid wars between each other. The place they lived and worked in host country was embassy." typeId="28">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Embassy allows 1 alliance troop to be garrisoned."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Embassy allows 2 alliance troops to be garrisoned."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Embassy allows 3 alliance troops to be garrisoned."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Embassy allows 4 alliance troops to be garrisoned."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Embassy allows 5 alliance troops to be garrisoned."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Embassy allows 6 alliance troops to be garrisoned."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Embassy allows 7 alliance troops to be garrisoned."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Embassy allows 8 alliance troops to be garrisoned."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Embassy allows 9 alliance troops to be garrisoned."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Embassy allows 10 alliance troops to be garrisoned."/>
+      <upLevelDesc level="10" upLevelDesc="build.Embassy.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="1" produce="0" food="200" wood="2000" stone="500" iron="300" time="720" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="20" food="400" wood="4000" stone="1000" iron="600" time="1440" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="3" produce="30" food="800" wood="8000" stone="2000" iron="1200" time="2880" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="4" produce="40" food="1600" wood="16000" stone="4000" iron="2400" time="5760" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="5" produce="50" food="3200" wood="32000" stone="8000" iron="4800" time="11520" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="6" produce="60" food="6400" wood="64000" stone="16000" iron="9600" time="23040" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="7" produce="70" food="12800" wood="128000" stone="32000" iron="19200" time="46080" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="8" produce="80" food="25600" wood="256000" stone="64000" iron="38400" time="92160" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="9" produce="90" food="51200" wood="512000" stone="128000" iron="76800" time="184320" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="10" produce="100" food="102400" wood="1024000" stone="256000" iron="153600" time="368640" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Marketplace" desc="Marketplace facilitates resources trading with other players; the higher its level, the more transactions can be done at any given time.
+" wikiDesc="As cities grew and prospered, trade between the farmers, artisans, and craftsmen who lived in the vicinity contributed to the economic health of the city. It soon became apparent that the best way for conducting trade within the city was to have a central location, or marketplace, where the people offering goods and services, or seeking them, could meet and conduct business. As a city's marketplace grew larger and more active, the economic vitality of the city grew as well." typeId="23">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Marketplace permits 1 transaction at a time."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Marketplace permits 2 transactions at a time. "/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Marketplace permits 3 transactions at a time. "/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Marketplace permits 4 transactions at a time. "/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Marketplace permits 5 transactions at a time. "/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Marketplace permits 6 transactions at a time. "/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Marketplace permits 7 transactions at a time. "/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Marketplace permits 8 transactions at a time. "/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Marketplace permits 9 transactions at a time. "/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Marketplace permits 10 transactions at a time. "/>
+      <upLevelDesc level="10" upLevelDesc="build.Market.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="1" produce="0" food="1000" wood="1000" stone="1000" iron="1000" time="750" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="0" food="2000" wood="2000" stone="2000" iron="2000" time="1500" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="3" produce="0" food="4000" wood="4000" stone="4000" iron="4000" time="3000" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="4" produce="0" food="8000" wood="8000" stone="8000" iron="8000" time="6000" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="5" produce="0" food="16000" wood="16000" stone="16000" iron="16000" time="12000" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="6" produce="0" food="32000" wood="32000" stone="32000" iron="32000" time="24000" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="7" produce="0" food="64000" wood="64000" stone="64000" iron="64000" time="48000" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="8" produce="0" food="128000" wood="128000" stone="128000" iron="128000" time="96000" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="9" produce="0" food="256000" wood="256000" stone="256000" iron="256000" time="192000" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="10" produce="0" food="512000" wood="512000" stone="512000" iron="512000" time="384000" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Academy" desc="Academy helps the development in terms of production, construction and military operation. The higher its level, the more technologies it can research. One academy can only conduct one research at a time. However, several academies in your cities can perform multiple researches at the same time. Technologies can be shared in all your cities so long as their academies reach the required level. " wikiDesc="An academy is a school for advanced learning. Though China, Egypt, and India had such institutes earlier, the term &quot;academy&quot; was first applied to the Athenian school of philosophy, founded by Plato in approximately 390 BC. The school was built near a sacred grove named &quot;Hekademia.&quot; An academy was an important asset for a city. It attracted both brilliant scholars and the children of wealthy or noble parents, who might then decide to settle in the city permanently. The academy could provide a broad, general education to its students, or it might concentrate upon a specific subject such as philosophy, mathematics, art, natural philosophy (the world and everything in it), or the martial arts. Today there are many educational facilities which bear the name &quot;academy.&quot; The term is used loosely now, and in addition to its original meaning, is often applied to schools for children and teenagers." typeId="25">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Academy allows Agriculture, Lumbering and Military Science to be researched."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Academy allows Masonry, Mining and Military Tradition to be researched."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Academy allows Metal Casting, Informatics and Iron Working to be researched."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Academy allows Logistics, Compass and Archery to be researched."/>
+      <upLevelDesc level="4" upLevelDesc="Horseback Riding and Construction are allowed to be researched at level 5 Academy."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Academy allows Stockpile and Medicine to be researched."/>
+      <upLevelDesc level="6" upLevelDesc="The higher level your Academy is, the more technologies can be researched."/>
+      <upLevelDesc level="7" upLevelDesc="Engineering is allowed to be researched at level 8 Academy. "/>
+      <upLevelDesc level="8" upLevelDesc="Machinery is allowed to be researched at level 9 Academy."/>
+      <upLevelDesc level="9" upLevelDesc="Privateering is allowed to be researched at level 10 Academy."/>
+      <upLevelDesc level="10" upLevelDesc="build.Academy.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="0" produce="0" food="120" wood="2500" stone="1500" iron="200" time="480" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="0" produce="0" food="240" wood="5000" stone="3000" iron="400" time="960" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="0" produce="0" food="480" wood="10000" stone="6000" iron="800" time="1920" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="0" produce="0" food="960" wood="20000" stone="12000" iron="1600" time="3840" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="0" produce="0" food="1920" wood="40000" stone="24000" iron="3200" time="7680" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="0" produce="0" food="3840" wood="80000" stone="48000" iron="6400" time="15360" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="0" produce="0" food="7680" wood="160000" stone="96000" iron="12800" time="30720" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="0" produce="0" food="15360" wood="320000" stone="192000" iron="25600" time="61440" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="0" produce="0" food="30720" wood="640000" stone="384000" iron="51200" time="122880" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="0" produce="0" food="61440" wood="1280000" stone="768000" iron="102400" time="245760" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Rally Spot" desc="Rally Spot is a place for military assembly, where you can give an order to attack or conduct a military exercise; check your army's status and intelligence; adjust your attacking and defending strategy. The higher the level, the more troops you can dispatch at a time." wikiDesc="In primitive society, Men of a tribe used to gather together, and put on some rituals before they set out for hunting. When there were conflicts between tribes, warriors rallied for a parade or maneuver before they went to the front. This place they used to gather is the predecessor of rally spot." typeId="29">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Rally Spot allows 1 troop for march at a time, with 10,000 limit."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Rally Spot allows 2 troops for march at a time, with 20,000 limit."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Rally Spot allows 3 troops for march at a time, with 30,000 limit."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Rally Spot allows 4 troops for march at a time, with 40,000 limit."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Rally Spot allows 5 troops for march at a time, with 50,000 limit."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Rally Spot allows 6 troops for march at a time, with 60,000 limit."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Rally Spot allows 7 troops for march at a time, with 70,000 limit."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Rally Spot allows 8 troops for march at a time, with 80,000 limit."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Rally Spot allows 9 troops for march at a time, with 90,000 limit."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Rally Spot allows 10 troops for march at a time, with 100,000 limit."/>
+      <upLevelDesc level="10" upLevelDesc="build.TrainningField.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="10000" limit="1" produce="0" food="100" wood="600" stone="2000" iron="150" time="150" buildPeple="0"/>
+      <levelData level="1" workPeople="20000" limit="2" produce="0" food="200" wood="1200" stone="4000" iron="300" time="300" buildPeple="0"/>
+      <levelData level="2" workPeople="30000" limit="3" produce="0" food="400" wood="2400" stone="8000" iron="600" time="600" buildPeple="0"/>
+      <levelData level="3" workPeople="40000" limit="4" produce="0" food="800" wood="4800" stone="16000" iron="1200" time="1200" buildPeple="0"/>
+      <levelData level="4" workPeople="50000" limit="5" produce="0" food="1600" wood="9600" stone="32000" iron="2400" time="2400" buildPeple="0"/>
+      <levelData level="5" workPeople="60000" limit="6" produce="0" food="3200" wood="19200" stone="64000" iron="4800" time="4800" buildPeple="0"/>
+      <levelData level="6" workPeople="70000" limit="7" produce="0" food="6400" wood="38400" stone="128000" iron="9600" time="9600" buildPeple="0"/>
+      <levelData level="7" workPeople="80000" limit="8" produce="0" food="12800" wood="76800" stone="256000" iron="19200" time="19200" buildPeple="0"/>
+      <levelData level="8" workPeople="90000" limit="9" produce="0" food="25600" wood="153600" stone="512000" iron="38400" time="38400" buildPeple="0"/>
+      <levelData level="9" workPeople="100000" limit="10" produce="0" food="51200" wood="307200" stone="1024000" iron="76800" time="76800" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Barracks" desc="Soldier training and dismissal are conducted in Barracks; the higher its level the more advanced army branches can be trained." wikiDesc="Warfare has been a recurring phenomenon throughout the history of mankind,and it continues to plague the world today. Although war is not a desirable situation, it is important that even the most peaceful of societies be prepared for the possibility of war. When warring narions are closely manpower, the army with the best training usually wins battles." typeId="2">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Barracks allows 1 troop queued for production."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Barracks allows 2 troops queued for production."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Barracks allows 3 troops queued for production."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Barracks allows 4 troops queued for production."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Barracks allows 5 troops queued for production."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Barracks allows 6 troops queued for production."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Barracks allows 7 troops queued for production."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Barracks allows 8 troops queued for production."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Barracks allows 9 troops queued for production."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Barracks allows 10 troops queued for production."/>
+      <upLevelDesc level="10" upLevelDesc="build.Barrack.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="1" produce="0" food="250" wood="1200" stone="1500" iron="500" time="300" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="0" food="500" wood="2400" stone="3000" iron="1000" time="600" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="3" produce="0" food="1000" wood="4800" stone="6000" iron="2000" time="1200" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="4" produce="0" food="2000" wood="9600" stone="12000" iron="4000" time="2400" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="5" produce="0" food="4000" wood="19200" stone="24000" iron="8000" time="4800" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="6" produce="0" food="8000" wood="38400" stone="48000" iron="16000" time="9600" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="7" produce="0" food="16000" wood="76800" stone="96000" iron="32000" time="19200" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="8" produce="0" food="32000" wood="153600" stone="192000" iron="64000" time="38400" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="9" produce="0" food="64000" wood="307200" stone="384000" iron="128000" time="76800" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="10" produce="0" food="128000" wood="614400" stone="768000" iron="256000" time="153600" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Beacon Tower" desc="Beacon Tower is used to send early warning of invasions. The higher its level, the more detailed information you gain." wikiDesc="Beacon Tower played a role in invasion warning and alarming. This old fortified facility is the most simple and effective early warning system. Built in tall plan, allows people on top to have better view. And they set up a system of signals by colored smokes, which they used in daytime. They burned up fire instead at night." typeId="30">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="1" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="2" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="3" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="4" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="5" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="6" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="7" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="8" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="9" upLevelDesc="The higher Beacon Towers level is, the more detailed information you gain."/>
+      <upLevelDesc level="10" upLevelDesc="build.SentryBuilding.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="0" produce="0" food="150" wood="1000" stone="3000" iron="300" time="450" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="0" produce="0" food="300" wood="2000" stone="6000" iron="600" time="900" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="0" produce="0" food="600" wood="4000" stone="12000" iron="1200" time="1800" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="0" produce="0" food="1200" wood="8000" stone="24000" iron="2400" time="3600" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="0" produce="0" food="2400" wood="16000" stone="48000" iron="4800" time="7200" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="0" produce="0" food="4800" wood="32000" stone="96000" iron="9600" time="14400" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="0" produce="0" food="9600" wood="64000" stone="192000" iron="19200" time="28800" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="0" produce="0" food="19200" wood="128000" stone="384000" iron="38400" time="57600" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="0" produce="0" food="38400" wood="256000" stone="768000" iron="76800" time="115200" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="0" produce="0" food="76800" wood="512000" stone="1536000" iron="153600" time="230400" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Forge" desc="Forge is used to make metal to improve your army weapons and armors; the higher its level the more advanced weapons can be made.
+" wikiDesc="A forge is a furnace where metal is heated or melted. In ancient times smiths with small forges could be found in most settlements. The furnaces were stoked with coal, which was fanned by manually pumped bellows to create intense heat. The blacksmith would heat the metal in the oven and then shape it by putting the metal on an anvil and beating it with heavy hammers. The finished product was then put into cold water to harden and cool. The smith might also melt the metal and pour it into molds. " typeId="22">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="1" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="2" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="3" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="4" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="5" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="6" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="7" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="8" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="9" upLevelDesc="In order to produce weapons and build armies, Forge is a must."/>
+      <upLevelDesc level="10" upLevelDesc="build.BlacksmithMill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="0" produce="0" food="125" wood="1000" stone="600" iron="1200" time="180" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="0" produce="0" food="250" wood="2000" stone="1200" iron="2400" time="360" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="0" produce="0" food="500" wood="4000" stone="2400" iron="4800" time="720" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="0" produce="0" food="1000" wood="8000" stone="4800" iron="9600" time="1440" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="0" produce="0" food="2000" wood="16000" stone="9600" iron="19200" time="2880" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="0" produce="0" food="4000" wood="32000" stone="19200" iron="38400" time="5760" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="0" produce="0" food="8000" wood="64000" stone="38400" iron="76800" time="11520" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="0" produce="0" food="16000" wood="128000" stone="76800" iron="153600" time="23040" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="0" produce="0" food="32000" wood="256000" stone="153600" iron="307200" time="46080" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="0" produce="0" food="64000" wood="512000" stone="307200" iron="614400" time="92160" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Stable" desc="In the Stable cavalry is trained. The higher its level the faster troops are trained." wikiDesc="A stable is any building in which horses are kept; a military stable would also include training grounds, barracks for the troopers, blacksmiths, armories, and the like. A horse must be extensively trained if it is to be successfully used in battle. In their natural state, most horses quite sensibly seek to run away from dangerous situations - say, when surrounded by screaming men armed with sharp objects. A cavalrymen's horse, on the other hand, needs to be able to suppress this instinct and instead instantly carry out any order given it by its rider - no matter how suicidal. Such training takes time and skill - for both mount and rider. Stables provide such training: any civilization which plans to employ large numbers of horsemen would be well-advised to make the investment and build as many stables as possible. " typeId="20">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="1" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="2" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="3" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="4" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="5" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="6" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="7" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="8" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="9" upLevelDesc="Horses are raised in stable. Horseman develops along with stable's level."/>
+      <upLevelDesc level="10" upLevelDesc="build.Stable.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="0" produce="0" food="1200" wood="2000" stone="800" iron="1000" time="270" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="0" produce="0" food="2400" wood="4000" stone="1600" iron="2000" time="540" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="0" produce="0" food="4800" wood="8000" stone="3200" iron="4000" time="1080" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="0" produce="0" food="9600" wood="16000" stone="6400" iron="8000" time="2160" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="0" produce="0" food="19200" wood="32000" stone="12800" iron="16000" time="4320" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="0" produce="0" food="38400" wood="64000" stone="25600" iron="32000" time="8640" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="0" produce="0" food="76800" wood="128000" stone="51200" iron="64000" time="17280" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="0" produce="0" food="153600" wood="256000" stone="102400" iron="128000" time="34560" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="0" produce="0" food="307200" wood="512000" stone="204800" iron="256000" time="69120" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="0" produce="0" food="614400" wood="1024000" stone="409600" iron="512000" time="138240" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Workshop" desc="Workshop is indispensable for city seizing and defence mechanics." wikiDesc="Early back to Bronze Age, some skilled and qualified workers gather to manufacture goods. Some apprentices worked for them in order to gain experience and profession. Apart from the larger factories, workshops were the only places of production in the days before industrialization." typeId="26">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="1" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="2" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="3" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="4" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="5" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="6" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="7" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="8" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="9" upLevelDesc="Workshop is necessary for offence and defence mechanics."/>
+      <upLevelDesc level="10" upLevelDesc="build.WorkShop.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="0" produce="0" food="150" wood="1500" stone="500" iron="1500" time="540" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="0" produce="0" food="300" wood="3000" stone="1000" iron="3000" time="1080" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="0" produce="0" food="600" wood="6000" stone="2000" iron="6000" time="2160" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="0" produce="0" food="1200" wood="12000" stone="4000" iron="12000" time="4320" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="0" produce="0" food="2400" wood="24000" stone="8000" iron="24000" time="8640" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="0" produce="0" food="4800" wood="48000" stone="16000" iron="48000" time="17280" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="0" produce="0" food="9600" wood="96000" stone="32000" iron="96000" time="34560" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="0" produce="0" food="19200" wood="192000" stone="64000" iron="192000" time="69120" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="0" produce="0" food="38400" wood="384000" stone="128000" iron="384000" time="138240" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="0" produce="0" food="76800" wood="768000" stone="256000" iron="768000" time="276480" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Relief Station" desc="Relief Station increases the speed of army movement between the cities of your own and your allies." wikiDesc="Plainly speaking, relief station was a place for those deliverymen to rest, stabling and fodder their horses in ancient time. Due to the limitation of communicating methods, letters and documents were delivered by mail coach. And relief station played an important role in information exchange of politics, economy, culture and military etc." typeId="24">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Relief Station increases the moving speed to 2 times."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Relief Station increases the moving speed to 2 times."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Relief Station increases the moving speed to 2 times."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Relief Station increase the moving speed to 3 times."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Relief Station increase the moving speed to 4 times."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Relief Station increase the moving speed to 4 times."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Relief Station increase the moving speed to 4 times."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Relief Station increase the moving speed to 5 times."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Relief Station increase the moving speed to 5 times."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Relief Station increase the moving speed to 6 times."/>
+      <upLevelDesc level="10" upLevelDesc="build.TransportStation.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="2" produce="0" food="1500" wood="5000" stone="4500" iron="500" time="3600" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="0" food="3000" wood="10000" stone="9000" iron="1000" time="7200" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="2" produce="0" food="6000" wood="20000" stone="18000" iron="2000" time="14400" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="3" produce="0" food="12000" wood="40000" stone="36000" iron="4000" time="28800" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="4" produce="0" food="24000" wood="80000" stone="72000" iron="8000" time="57600" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="4" produce="0" food="48000" wood="160000" stone="144000" iron="16000" time="115200" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="4" produce="0" food="96000" wood="320000" stone="288000" iron="32000" time="230400" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="5" produce="0" food="192000" wood="640000" stone="576000" iron="64000" time="460800" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="6" produce="0" food="384000" wood="1280000" stone="1152000" iron="128000" time="921600" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="6" produce="0" food="768000" wood="2560000" stone="2304000" iron="256000" time="1843200" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Farm" desc="Farm produces food, which is used for construction, research and expansion of your army. " wikiDesc="Agriculture is the basic factor that shape human society. In the ancient time, human beings were fed by hunting and gathering. However, for most of the time, they failed to hunt anything, and gathering food was based on seasonal conditions. Gradually, they started to keep their own farm fields which offered more regular supply to their families. Farm is the fundamental element of human civilization. " typeId="7">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Farm needs 10 people; production: 100 per hour; capacity limit: 10,000."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Farm needs 30 people; production: 300 per hour; capacity limit: 30,000."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Farm needs 60 people; production: 600 per hour; capacity limit: 60,000."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Farm needs 100 people; production: 1,000 per hour; capacity limit: 100,000."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Farm needs 150 people; production: 1,500 per hour; capacity limit: 150,000."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Farm needs 210 people; production: 2,100 per hour; capacity limit: 210,000."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Farm needs 280 people; production: 2,800 per hour; capacity limit: 280,000."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Farm needs 360 people; production: 3,600 per hour; capacity limit: 360,000.
+"/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Farm needs 450 people; production: 4,500 per hour; capacity limit: 450,000."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Farm needs 550 people; production: 5,500 per hour; capacity limit: 550,000."/>
+      <upLevelDesc level="10" upLevelDesc="build.FarmLand.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="10" limit="10000" produce="100" food="50" wood="300" stone="200" iron="150" time="30" buildPeple="0"/>
+      <levelData level="1" workPeople="30" limit="30000" produce="300" food="100" wood="600" stone="400" iron="300" time="60" buildPeple="0"/>
+      <levelData level="2" workPeople="60" limit="60000" produce="600" food="200" wood="1200" stone="800" iron="600" time="120" buildPeple="0"/>
+      <levelData level="3" workPeople="100" limit="100000" produce="1000" food="400" wood="2400" stone="1600" iron="1200" time="240" buildPeple="0"/>
+      <levelData level="4" workPeople="150" limit="150000" produce="1500" food="800" wood="4800" stone="3200" iron="2400" time="480" buildPeple="0"/>
+      <levelData level="5" workPeople="210" limit="210000" produce="2100" food="1600" wood="9600" stone="6400" iron="4800" time="960" buildPeple="0"/>
+      <levelData level="6" workPeople="280" limit="280000" produce="2800" food="3200" wood="19200" stone="12800" iron="9600" time="1920" buildPeple="0"/>
+      <levelData level="7" workPeople="360" limit="360000" produce="3600" food="6400" wood="38400" stone="25600" iron="19200" time="3840" buildPeple="0"/>
+      <levelData level="8" workPeople="450" limit="450000" produce="4500" food="12800" wood="76800" stone="51200" iron="38400" time="7680" buildPeple="0"/>
+      <levelData level="9" workPeople="550" limit="550000" produce="5500" food="25600" wood="153600" stone="102400" iron="76800" time="15360" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Sawmill" desc="Sawmill produces lumber, which is used for construction, research and weapons manufacturing. " wikiDesc="Our ancestors begun to build their houses, and to kept their poultry. Shelters for people and household animals needed material to build. At that time, wood was the most easily accessed natrual raw material for cottages and fences. As the growing need for wood, logging became a career form, the lumberjack, and the places they process logs turned into the counterpart of modern sawmill." typeId="4">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Sawmill needs 10 people; production: 100 per hour; capacity limit: 10,000."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Sawmill needs 30 people; production: 300 per hour; capacity limit: 30,000."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Sawmill needs 60 people; production: 600 per hour; capacity limit: 60,000."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Sawmill needs 100 people; production: 1,000 per hour; capacity limit: 100,000."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Sawmill needs 150 people; production: 1,500 per hour; capacity limit: 150,000."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Sawmill needs 210 people; production: 2,100 per hour; capacity limit: 210,000."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Sawmill needs 280 people; production: 2,800 per hour; capacity limit: 280,000."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Sawmill needs 360 people; production: 3,600 per hour; capacity limit: 360,000."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Sawmill needs 450 people; production: 4,500 per hour; capacity limit: 450,000."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Sawmill needs 550 people; production: 5,500 per hour; capacity limit: 550,000."/>
+      <upLevelDesc level="10" upLevelDesc="build.LumberMill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="10" limit="10000" produce="100" food="100" wood="100" stone="250" iron="300" time="45" buildPeple="0"/>
+      <levelData level="1" workPeople="30" limit="30000" produce="300" food="200" wood="200" stone="500" iron="600" time="90" buildPeple="0"/>
+      <levelData level="2" workPeople="60" limit="60000" produce="600" food="400" wood="400" stone="1000" iron="1200" time="180" buildPeple="0"/>
+      <levelData level="3" workPeople="100" limit="100000" produce="1000" food="800" wood="800" stone="2000" iron="2400" time="360" buildPeple="0"/>
+      <levelData level="4" workPeople="150" limit="150000" produce="1500" food="1600" wood="1600" stone="4000" iron="4800" time="720" buildPeple="0"/>
+      <levelData level="5" workPeople="210" limit="210000" produce="2100" food="3200" wood="3200" stone="8000" iron="9600" time="1440" buildPeple="0"/>
+      <levelData level="6" workPeople="280" limit="280000" produce="2800" food="6400" wood="6400" stone="16000" iron="19200" time="2880" buildPeple="0"/>
+      <levelData level="7" workPeople="360" limit="360000" produce="3600" food="12800" wood="12800" stone="32000" iron="38400" time="5760" buildPeple="0"/>
+      <levelData level="8" workPeople="450" limit="450000" produce="4500" food="25600" wood="25600" stone="64000" iron="76800" time="11520" buildPeple="0"/>
+      <levelData level="9" workPeople="500" limit="550000" produce="5500" food="51200" wood="51200" stone="128000" iron="153600" time="23040" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Quarry" desc="Quarry produces stone, which is used for construction, research and provides ammunition for catapults." wikiDesc="In some areas, trees were rarely found, and those suitable for building were even less. Furthermore, people found that wooden houses were not strong enough to resist beasts, and to prevent them from natural disasters. They resolved to find new material to strengthen their residence. The answer was stone. The places where they exploited massively became what we called quarry." typeId="5">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Quarry needs 20 people; production: 100 per hour; capacity limit: 10,000."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Quarry needs 60 people; production: 300 per hour; capacity limit: 30,000."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Quarry needs 120 people; production: 600 per hour; capacity limit: 60,000."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Quarry needs 200 people; production: 1,000 per hour; capacity limit: 100,000."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Quarry needs 300 people; production: 1,500 per hour; capacity limit: 150,000."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Quarry needs 420 people; production: 2,100 per hour; capacity limit: 210,000."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Quarry needs 560 people; production: 2,800 per hour; capacity limit: 280,000."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Quarry needs 720 people; production: 3,600 per hour; capacity limit: 360,000."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Quarry needs 900 people; production: 4,500 per hour; capacity limit: 450,000."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Quarry needs 1,100 people; production: 5,500 per hour; capacity limit: 550,000."/>
+      <upLevelDesc level="10" upLevelDesc="build.StoneMine.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="20" limit="10000" produce="100" food="180" wood="500" stone="150" iron="400" time="60" buildPeple="0"/>
+      <levelData level="1" workPeople="60" limit="30000" produce="300" food="360" wood="1000" stone="300" iron="800" time="120" buildPeple="0"/>
+      <levelData level="2" workPeople="120" limit="60000" produce="600" food="720" wood="2000" stone="600" iron="1600" time="240" buildPeple="0"/>
+      <levelData level="3" workPeople="200" limit="100000" produce="1000" food="1440" wood="4000" stone="1200" iron="3200" time="480" buildPeple="0"/>
+      <levelData level="4" workPeople="300" limit="150000" produce="1500" food="2880" wood="8000" stone="2400" iron="6400" time="960" buildPeple="0"/>
+      <levelData level="5" workPeople="420" limit="210000" produce="2100" food="5760" wood="16000" stone="4800" iron="12800" time="1920" buildPeple="0"/>
+      <levelData level="6" workPeople="560" limit="280000" produce="2800" food="11520" wood="32000" stone="9600" iron="25600" time="3840" buildPeple="0"/>
+      <levelData level="7" workPeople="720" limit="360000" produce="3600" food="23040" wood="64000" stone="19200" iron="51200" time="7680" buildPeple="0"/>
+      <levelData level="8" workPeople="900" limit="450000" produce="4500" food="46080" wood="128000" stone="38400" iron="102400" time="15360" buildPeple="0"/>
+      <levelData level="9" workPeople="1100" limit="550000" produce="5500" food="92160" wood="256000" stone="76800" iron="204800" time="30720" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Ironmine" desc="Ironmine produces iron, which is used for construction and research; and it's also used to upgrade weapons and armors." wikiDesc="The massive use of ironware could date back to circa 1,000 BC, then when more preference was put onto ironware to bronze ware. The continuous demand of iron led to the further development of iron mining." typeId="6">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Ironmine needs 25 people; production: 100 per hour; capacity limit: 10,000."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Ironmine needs 75 people; production: 300 per hour; capacity limit: 30,000."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Ironmine needs 150 people; production: 600 per hour; capacity limit: 60,000."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Ironmine needs 250 people; production: 1,000 per hour; capacity limit: 100,000."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Ironmine needs 375 people; production: 1,500 per hour; capacity limit: 150,000."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Ironmine needs 525 people; production: 2,100 per hour; capacity limit: 210,000."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Ironmine needs 700 people; production: 2,800 per hour; capacity limit: 280,000."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Ironmine needs 900 people; production: 3,600 per hour; capacity limit: 360,000."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Ironmine needs 1,125 people; production: 4,500 per hour; capacity limit: 450,000."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Ironmine needs 1,375 people; production: 5,500 per hour; capacity limit: 550,000."/>
+      <upLevelDesc level="10" upLevelDesc="build.IronMine.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="25" limit="10000" produce="100" food="210" wood="600" stone="500" iron="200" time="90" buildPeple="0"/>
+      <levelData level="1" workPeople="75" limit="30000" produce="300" food="420" wood="1200" stone="1000" iron="400" time="180" buildPeple="0"/>
+      <levelData level="2" workPeople="150" limit="60000" produce="600" food="840" wood="2400" stone="2000" iron="800" time="360" buildPeple="0"/>
+      <levelData level="3" workPeople="250" limit="100000" produce="1000" food="1680" wood="4800" stone="4000" iron="1600" time="720" buildPeple="0"/>
+      <levelData level="4" workPeople="375" limit="150000" produce="1500" food="3360" wood="9600" stone="8000" iron="3200" time="1440" buildPeple="0"/>
+      <levelData level="5" workPeople="525" limit="210000" produce="2100" food="6720" wood="19200" stone="16000" iron="6400" time="2880" buildPeple="0"/>
+      <levelData level="6" workPeople="700" limit="280000" produce="2800" food="13440" wood="38400" stone="32000" iron="12800" time="5760" buildPeple="0"/>
+      <levelData level="7" workPeople="900" limit="360000" produce="3600" food="26880" wood="76800" stone="64000" iron="25600" time="11520" buildPeple="0"/>
+      <levelData level="8" workPeople="1125" limit="450000" produce="4500" food="53760" wood="153600" stone="128000" iron="51200" time="23040" buildPeple="0"/>
+      <levelData level="9" workPeople="1375" limit="550000" produce="5500" food="107520" wood="307200" stone="256000" iron="102400" time="46080" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Walls" desc="Strong and firm city walls built around the city provide significant protections against attacks and invasions. All kinds of fortified units can be built here. " wikiDesc="Before the establishment of centralized governments capable of supporting strong, national armies, individual cities were left to fend for themselves when it came to defense. As a result, many cities constructed city walls to protect against raiders and bandits. City walls represented a major investment in both time and materials, requiring years to complete and constant repairs to maintain their strength and integrity. However, these walls turned the city into a fortress capable of withstanding all but the most determined attack." typeId="32">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Walls have Durability of 100,000 and Fortified Units Spaces of 1,000."/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Walls have Durability of 300,000 and Fortified Units Spaces of 3,000."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Walls have Durability of 600,000 and Fortified Units Spaces of 6,000.
+"/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Walls have Durability of 1,000,000 and Fortified Units Spaces of 10,000."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Walls have Durability of 1,500,000 and Fortified Units Spaces of 15,000."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Walls have Durability of 2,100,000 and Fortified Units Spaces of 21,000."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Walls have durability of 2,800,000 and Fortified Units Spaces of 28,000."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Walls have Durability of 3,600,000 and Fortified Units Spaces of 36,000."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Walls have Durability of 4,500,000 and Fortified Units Spaces of 45,000."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Walls have Durability of 5,500,000 and Fortified Units Spaces of 55,000."/>
+      <upLevelDesc level="10" upLevelDesc="build.Wall.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="1000" limit="100000" produce="0" food="3000" wood="1500" stone="10000" iron="500" time="1800" buildPeple="0"/>
+      <levelData level="1" workPeople="3000" limit="300000" produce="0" food="6000" wood="3000" stone="20000" iron="1000" time="3600" buildPeple="0"/>
+      <levelData level="2" workPeople="6000" limit="600000" produce="0" food="12000" wood="6000" stone="40000" iron="2000" time="7200" buildPeple="0"/>
+      <levelData level="3" workPeople="10000" limit="1000000" produce="0" food="24000" wood="12000" stone="80000" iron="4000" time="14400" buildPeple="0"/>
+      <levelData level="4" workPeople="15000" limit="1500000" produce="0" food="48000" wood="24000" stone="160000" iron="8000" time="28800" buildPeple="0"/>
+      <levelData level="5" workPeople="21000" limit="2100000" produce="0" food="96000" wood="48000" stone="320000" iron="16000" time="57600" buildPeple="0"/>
+      <levelData level="6" workPeople="28000" limit="2800000" produce="0" food="192000" wood="96000" stone="640000" iron="32000" time="115200" buildPeple="0"/>
+      <levelData level="7" workPeople="36000" limit="3600000" produce="0" food="384000" wood="192000" stone="1280000" iron="64000" time="230400" buildPeple="0"/>
+      <levelData level="8" workPeople="45000" limit="4500000" produce="0" food="768000" wood="384000" stone="2560000" iron="128000" time="460800" buildPeple="0"/>
+      <levelData level="9" workPeople="55000" limit="5500000" produce="0" food="1536000" wood="768000" stone="5120000" iron="256000" time="921600" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+  <buildingEum name="Town Hall" desc="Town Hall is the administration centre of your city. Here you can modify the Tax Rate, Comfort and Levy for your residents. Each upgrade of your Town Hall allows you to conquer one more valley and obtain three extra resource fields.
+" wikiDesc="Town Hall is the chief administrative building of a city or town's administration and usually houses the city or town council, its associated departments and their employees. In ancient period, town hall is also a hub of politics and religion in the city it served." typeId="31">
+    <upLevelDescs>
+      <upLevelDesc level="0" upLevelDesc="Level 1 Town Hall allows you to occupy 1 Valley, and offers you with 13 Resource Fields. "/>
+      <upLevelDesc level="1" upLevelDesc="Level 2 Town Hall allows you to occupy 2 Valleys, and offers you with 16 Resource FIelds."/>
+      <upLevelDesc level="2" upLevelDesc="Level 3 Town Hall allows you to occupy 3 Valleys, and offers you with 19 Resource Fields."/>
+      <upLevelDesc level="3" upLevelDesc="Level 4 Town Hall allows you to occupy 4 Valleys, and offers you with 22 Resource Fields."/>
+      <upLevelDesc level="4" upLevelDesc="Level 5 Town Hall allows you to occupy 5 Valleys, and offers you with 25 Resource Fields."/>
+      <upLevelDesc level="5" upLevelDesc="Level 6 Town Hall allows you to occupy 6 Valleys, and offers you with 28 Resource Fields."/>
+      <upLevelDesc level="6" upLevelDesc="Level 7 Town Hall allows you to occupy 7 Valleys, and offers you with 31 Resource Fields."/>
+      <upLevelDesc level="7" upLevelDesc="Level 8 Town Hall allows you to occupy 8 Valleys, and offers you with 34 Resource Fields."/>
+      <upLevelDesc level="8" upLevelDesc="Level 9 Town Hall allows you to occupy 9 Valleys, and offers you with 37 Resource Fields."/>
+      <upLevelDesc level="9" upLevelDesc="Level 10 Town Hall allows you to occupy 10 Valleys, and offers you with 40 Resource Fields."/>
+      <upLevelDesc level="10" upLevelDesc="build.TownHall.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" workPeople="0" limit="1" produce="1" food="200" wood="3000" stone="2500" iron="100" time="900" buildPeple="0"/>
+      <levelData level="1" workPeople="0" limit="2" produce="1" food="400" wood="6000" stone="5000" iron="200" time="1800" buildPeple="0"/>
+      <levelData level="2" workPeople="0" limit="3" produce="1" food="800" wood="12000" stone="10000" iron="400" time="3600" buildPeple="0"/>
+      <levelData level="3" workPeople="0" limit="4" produce="1" food="1600" wood="24000" stone="20000" iron="800" time="7200" buildPeple="0"/>
+      <levelData level="4" workPeople="0" limit="5" produce="1" food="3200" wood="48000" stone="40000" iron="1600" time="14400" buildPeple="0"/>
+      <levelData level="5" workPeople="0" limit="6" produce="1" food="6400" wood="96000" stone="80000" iron="3200" time="28800" buildPeple="0"/>
+      <levelData level="6" workPeople="0" limit="7" produce="1" food="12800" wood="192000" stone="160000" iron="6400" time="57600" buildPeple="0"/>
+      <levelData level="7" workPeople="0" limit="8" produce="1" food="25600" wood="384000" stone="320000" iron="12800" time="115200" buildPeple="0"/>
+      <levelData level="8" workPeople="0" limit="9" produce="1" food="51200" wood="768000" stone="640000" iron="25600" time="230400" buildPeple="0"/>
+      <levelData level="9" workPeople="0" limit="10" produce="1" food="102400" wood="1536000" stone="1280000" iron="51200" time="460800" buildPeple="0"/>
+    </levelDatas>
+  </buildingEum>
+</buildingDefine>

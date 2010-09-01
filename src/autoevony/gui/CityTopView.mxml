@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" height="34" width="425" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import com.umge.sovt.common.beans.PlayerInfoBean;
+			import com.umge.sovt.common.beans.PlayerBean;
+			import mx.events.PropertyChangeEvent;
+			import autoevony.player.Context;
+			
+			private var doRefresh:Boolean = true;
+			
+			public function init() : void
+			{
+				Context.getInstance().addEventListener(PropertyChangeEvent.PROPERTY_CHANGE, onContexthandler);
+			}
+			
+			public function refresh() : void
+			{				
+				updatePlayerStat();
+				updateMail();
+				updateReport();
+				doRefresh = false;
+			}
+			
+			private function onContexthandler(event:PropertyChangeEvent) : void
+			{
+				var context:Context = Context.getInstance();
+				var tipInfo:String = "";
+				
+				if (event.property == "timerUpdate")
+				{
+					_Clock.text =  df.format("2000-01-01 " + context.serverHours + ":" + context.serverMinutes);
+					if (((int(event.newValue) % 3) == 0) && doRefresh)
+					{
+						this.refresh();
+					}
+					else if ((int(event.newValue) % 3) != 0) 
+					{
+						doRefresh = true;
+					}
+					return;
+				}
+				
+				if (event.property == "PlayerInfoUpdate")
+				{
+					updatePlayerStat();
+					return;
+				}
+
+				if (event.property == "NewMail")
+				{
+					updateMail();
+					return;
+				}
+				
+				if (event.property == "NewReport")
+				{
+					updateReport();
+					return;
+				}
+				
+				
+			}
+			
+			private function updatePlayerStat() : void
+			{
+				_Honor.text = nf.format(Context.Player.playerInfo.honor);
+				_Prestige.text = nf.format(Context.Player.playerInfo.prestige);
+			}
+			
+			private function updateMail() : void
+			{
+				var tipInfo:String = "";
+				
+				if (Context.Player.newMailCount != 0)
+				{
+					tipInfo = "Inbox: " + Context.Player.newMaileCount_inbox + "\n";
+					tipInfo += "System: " + Context.Player.newMaileCount_system + "\n";
+					_Mail.text = Context.Player.newMailCount.toString();
+					_Mail.toolTip = tipInfo;
+					return;						
+				}
+				_Mail.text = "";
+				_Mail.toolTip = tipInfo;								
+			}
+			
+			private function updateReport() : void
+			{
+				var tipInfo:String = "";
+				
+				if (Context.Player.newReportCount != 0)
+				{
+					tipInfo = "Army: " + Context.Player.newReportCount_army + "\n";
+					tipInfo += "Trade: " + Context.Player.newReportCount_trade + "\n";
+					tipInfo += "Other: " + Context.Player.newReportCount_other + "\n";
+					_Reports.text = Context.Player.newReportCount.toString();
+					_Reports.toolTip = tipInfo;				
+					return;	
+				}
+				_Reports.text = "";
+				_Reports.toolTip = tipInfo;				
+			}
+			
+
+		]]>
+	</mx:Script>
+	<mx:NumberFormatter id="nf" precision="0" useThousandsSeparator="true" useNegativeSign="true"/>
+	<mx:DateFormatter id="df" formatString="J:NN"/>
+	<mx:Text x="350" text="00:00" width="75" fontSize="12" fontWeight="bold" textAlign="center" height="19" y="15" id="_Clock"/>
+	<mx:Label x="350" y="0" text="Server Time" width="75" textAlign="center" fontSize="9" maxHeight="15"/>
+	<mx:Label text="Honor" textAlign="center" fontSize="9" maxHeight="15" x="250" width="100"/>
+	<mx:Label text="Prestige" textAlign="center" fontSize="9" maxHeight="15" x="150" width="100"/>
+	<mx:Text x="250" text="0" width="100" fontSize="12" fontWeight="bold" textAlign="center" height="19" y="15" id="_Honor"/>
+	<mx:Text x="150" text="0" width="100" fontSize="12" fontWeight="bold" textAlign="center" height="19" y="15" id="_Prestige"/>
+	<mx:Text x="100" width="50" height="34" textAlign="center" color="#021EE6" fontWeight="bold" fontSize="16" paddingTop="7" id="_Mail" useHandCursor="true"/>
+	<mx:Text x="50" width="50" height="34" textAlign="center" color="#02CB19" fontWeight="bold" fontSize="16" paddingTop="7" id="_Reports" useHandCursor="true"/>
+	<mx:Text x="0" width="50" height="34" textAlign="center" color="#E61E02" fontWeight="bold" fontSize="16" paddingTop="7" id="_Quests"/>
+</mx:Canvas>

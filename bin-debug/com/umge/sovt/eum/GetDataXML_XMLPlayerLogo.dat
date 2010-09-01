@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playerLogoDefine>
+  <playerLogoEum>
+    <maleLogos>
+      <logo url="images/icon/player/faceA8.jpg"/>
+      <logo url="images/icon/player/faceA1.jpg"/>
+      <logo url="images/icon/player/faceA2.jpg"/>
+      <logo url="images/icon/player/faceA3.jpg"/>
+      <logo url="images/icon/player/faceA4.jpg"/>
+      <logo url="images/icon/player/faceA5.jpg"/>
+      <logo url="images/icon/player/faceA6.jpg"/>
+      <logo url="images/icon/player/faceA7.jpg"/>
+      <logo url="images/icon/player/faceA9.jpg"/>
+      <logo url="images/icon/player/faceA10.jpg"/>
+      <logo url="images/icon/player/faceA11.jpg"/>
+      <logo url="images/icon/player/faceA12.jpg"/>
+      <logo url="images/icon/player/faceA13.jpg"/>
+      <logo url="images/icon/player/faceA14.jpg"/>
+      <logo url="images/icon/player/faceA15.jpg"/>
+      <logo url="images/icon/player/faceA16.jpg"/>
+      <logo url="images/icon/player/faceA17.jpg"/>
+      <logo url="images/icon/player/faceA18.jpg"/>
+      <logo url="images/icon/player/faceA19.jpg"/>
+      <logo url="images/icon/player/faceA20.jpg"/>
+      <logo url="images/icon/player/faceA21.jpg"/>
+      <logo url="images/icon/player/faceA22.jpg"/>
+      <logo url="images/icon/player/faceA23.jpg"/>
+      <logo url="images/icon/player/faceA24.jpg"/>
+      <logo url="images/icon/player/faceA25.jpg"/>
+    </maleLogos>
+    <femaileLogos>
+      <logo url="images/icon/player/faceB1.jpg"/>
+      <logo url="images/icon/player/faceB2.jpg"/>
+      <logo url="images/icon/player/faceB3.jpg"/>
+      <logo url="images/icon/player/faceB4.jpg"/>
+      <logo url="images/icon/player/faceB5.jpg"/>
+      <logo url="images/icon/player/faceB6.jpg"/>
+      <logo url="images/icon/player/faceB7.jpg"/>
+      <logo url="images/icon/player/faceB8.jpg"/>
+      <logo url="images/icon/player/faceB9.jpg"/>
+    </femaileLogos>
+  </playerLogoEum>
+</playerLogoDefine>

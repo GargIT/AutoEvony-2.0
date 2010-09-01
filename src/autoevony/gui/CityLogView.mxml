@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"  autoLayout="true">
+	<mx:Script>
+		<![CDATA[
+			import autoevony.event.ScriptLogEvent;
+			import autoevony.common.Utils;
+				
+			/**
+			 * Handles ScriptLogEvent log events
+			 */		
+			public function onLog(event:ScriptLogEvent):void 
+			{
+				if (event.logType == ScriptLogEvent.MESSAGE)
+				{
+					appendToTextArea(logs, event.logText);
+				}
+			}
+						
+			public function log(message:String) : void
+			{
+				appendToTextArea(logs, message);
+			}
+
+			public function clear(textControl:TextArea) : void
+			{
+				textControl.htmlText = "";
+				cache[textControl.id] = "";
+			}
+			
+			private function onLink( event : TextEvent ) : void {        
+				navigateToURL(new URLRequest("http://" + event.text), "_blank");
+			}
+
+			private var cache:Object = new Object();
+	        private function appendToTextArea(textControl:TextArea, message:String, color:String = "#000000" ) : void
+	        {
+	        	var date:Date = new Date();
+				date.setTime(Utils.getServerTime());
+	        	
+	        	if (cache[textControl.id] == undefined) cache[textControl.id] = textControl.htmlText;
+	        	var datecolor:String = "";
+	        	if ( color == "#000000" ) {
+	        		datecolor = "#006666";
+	        	} else {
+	        		datecolor = color;
+	        	}
+	        	
+	        	cache[textControl.id] += "<font color='" + datecolor + "'>" + (date.toLocaleTimeString() + "</font> <font color='" + color + "'>" + message + "</font>\n"); 
+	        	if (cache[textControl.id].length > 30000) {
+	        		var ind:int = cache[textControl.id].indexOf("\n", 10000);
+	        		cache[textControl.id] = cache[textControl.id].substr(ind);
+	        	}
+	        	
+	        	textControl.htmlText = cache[textControl.id];
+	        	callLater(
+		        	function():void 
+		        	{    	
+		        		textControl.verticalScrollPosition = textControl.maxVerticalScrollPosition;
+		        	});	
+	        }
+			
+			
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" verticalGap="0" borderStyle="none" id="logstacker">
+		<mx:Button width="100" height="20" label="Clear" id="clearbutton" click="clear(logs)" />
+		<mx:TextArea width="100%" id="logs" height="100%" wordWrap="true" editable="false" enabled="true" link="onLink(event)"/>
+	</mx:VBox>
+</mx:Canvas>

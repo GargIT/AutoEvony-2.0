@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="autoevony.gui.*" width="100%" height="100%" borderStyle="solid" backgroundColor="#D4D4D4">
+	<mx:Script>
+		<![CDATA[
+			import autoevony.event.ScriptLogEvent;
+			import autoevony.scripts.Script;
+			import autoevony.player.Map;
+			import autoevony.net.Connection;
+			import autoevony.scripts.CityState;
+			import autoevony.common.CommandHelp;
+			import autoevony.gui.MainScreen;
+			import com.umge.sovt.common.beans.MapCastleBean;
+			import flash.utils.setTimeout;
+			import com.umge.sovt.client.action.ActionFactory;
+			import mx.core.Container;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.events.ToolTipEvent;
+			import mx.collections.ArrayCollection;
+			
+			import autoevony.gui.heroes;
+			import mx.core.UIComponent;
+			import mx.managers.PopUpManager;
+			import mx.core.IFlexDisplayObject;
+            import mx.controls.Alert;
+            import mx.events.CloseEvent;            			
+			
+			private var queueJobs:MainScreen;
+			public var city:CityState;
+			private var script:Script;
+			private var timer:Timer;
+			private var castles:Array = new Array;
+			private var uiHolder:UIComponent = new UIComponent();
+			private var mapData:Object = new Object();
+			private var scriptCache:SharedObject;
+			
+			[Bindable] private var mapImage:Bitmap = new Bitmap();
+			[Bindable] private var infoData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var resourceData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var valleyData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var buildingData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var researchData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var heroData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var armyData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var extraTroopData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var troopsData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var fortificationsData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var tradesData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var castlesData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var allianceData:ArrayCollection = new ArrayCollection;
+            			
+			public function init(queueJobs:MainScreen, city:CityState, log:CityLogView) : void {
+	        	this.queueJobs = queueJobs;
+				this.city = city;
+	        	this.script = new Script(city);
+	        	timer = new Timer(10000);
+	        	timer.addEventListener(TimerEvent.TIMER, updateAllInfo);
+	        	timer.start();
+	        	
+				this.id = "Castle" + city.castle.id;
+	        	var sName:String = city.castle.name;
+	        	if (sName.length > 3) sName = sName.substring(0, 3);
+	        	this.label = sName + "(" + Map.getX(city.castle.fieldId) + "," + Map.getY(city.castle.fieldId) + ")";
+				
+	        	script.addEventListener(ScriptLogEvent.TYPE, queueJobs.onLog);
+	        	script.addEventListener(ScriptLogEvent.TYPE, log.onLog);
+	        	city.cityManager.addEventListener(ScriptLogEvent.TYPE, queueJobs.onLog);
+	        	city.cityManager.addEventListener(ScriptLogEvent.TYPE, log.onLog);
+	        	script.addEventListener(Script.STOP, handleEndScript);
+	        	uiHolder.addEventListener(MouseEvent.DOUBLE_CLICK, onMouseDblClick);
+	        	//uiHolder.addEventListener(MouseEvent.MOUSE_MOVE, onMouseClick);
+	        	uiHolder.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+	        	uiHolder.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+	        	
+	        	if (city.castle == city.player.castlesArray[0]) Connection.getInstance().addEventListener(ScriptLogEvent.TYPE, queueJobs.onLog);
+	        	
+	        	addEventListener(FlexEvent.SHOW, updateAllInfo);
+	        	callLater(function():void {
+					for each(var c:Container in allinfo.getChildren()) {
+	        			c.addEventListener(FlexEvent.SHOW, updateAllInfo);
+	        		}
+					initTextAreas();
+					updateAllInfo();   				    
+				});
+			}
+			
+			public function getCity() : CityState { return city; }
+			public function cleanup() : void { timer.stop(); }
+	        
+	        private function updateAllInfo(obj:Object = null) : void {
+	        	if (obj != null && !visible) return;
+	        	
+	        	if (obj == null || allinfo.selectedChild == info) {
+	        		city.cityManager.updateInfoData(infoData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == resource) {
+	        		city.cityManager.updateResourceData(resourceData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == valley) {
+	        		city.cityManager.updateValleyData(valleyData);
+				}
+	        	if (obj == null || allinfo.selectedChild == heroes) {
+	        		city.cityManager.updateHeroData(heroData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == buildings) {
+	        		city.cityManager.updateBuildingData(buildingData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == research) {
+	        		city.cityManager.updateResearchData(researchData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == armies) {
+	        		city.cityManager.updateArmyData(armyData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == troops) {
+	        		city.cityManager.updateTroopData(troopsData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == fortifications) {
+	        		city.cityManager.updateFortificationsData(fortificationsData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == trade) {
+	        		city.cityManager.updateTradesData(tradesData);
+	        	}
+	        	if (obj == null || allinfo.selectedChild == extra) {
+	        		city.cityManager.updateExtraTroopData(extraTroopData);
+	        	}
+	        	if (mapPanel != null && (obj == null || allinfo.selectedChild == canMap)) {
+	        		
+	        		mapData.minSize = Math.min(mapPanel.height,mapPanel.width);
+
+	        		castles = city.cityManager.updateMapImage(mapImage,mapData);
+	        		
+	        		city.cityManager.updateCastlesData(castlesData,castles);
+	        		
+	        		if (mapImage.bitmapData != null)
+	        		{
+		        		uiHolder.width = mapImage.bitmapData.width;
+				        uiHolder.height = mapImage.bitmapData.height;
+	        		}
+	        		
+	        	}
+	        	if (obj == null || allinfo.selectedChild == alliance) {
+	        		city.cityManager.updateAllianceData(allianceData);
+	        	}
+	        		        	
+	        }
+			
+			private function initTextAreas(obj:Object = null) : void {
+				initScriptTextArea();
+				initGoalsTextArea();
+				initMapArea();
+			}
+			
+			private function initScriptTextArea(obj:Object = null) : void {
+				if (scriptTextArea == null) {
+					callLater(initScriptTextArea);
+				} else {
+					scriptCache = SharedObject.getLocal("citytab"+city.castle.id);				
+					scriptTextArea.text = scriptCache.data.now;
+					
+					script.addEventListener(Script.NEWLINE,
+					function(e:Event) : void
+					{
+						startLine.text = script.getCurrentCommandIndex().toString();
+						scriptCache.data.startline = startLine.text;
+						scriptCache.flush();
+					});
+					startLine.text = scriptCache.data.startline;
+					if(startLine.text.length == 0)
+					{
+						startLine.text = "1";
+					}
+				}
+			}
+			
+			private function initGoalsTextArea(obj:Object = null) : void {
+				if (goalsTextArea == null) {
+					callLater(initGoalsTextArea);
+				} else {
+					var goalsCache:SharedObject = SharedObject.getLocal("citygoals"+city.castle.id);				
+					goalsTextArea.text = goalsCache.data.now;
+				}
+			}
+			
+			private function initMapArea(obj:Object = null) : void {
+				if (mapPanel == null) {
+					callLater(initMapArea);
+				} else {
+					uiHolder.doubleClickEnabled = true;
+					uiHolder.addChild(mapImage);	        	
+		        	mapPanel.removeAllChildren();
+		        	mapPanel.addChild(uiHolder);
+				}
+			}
+
+			private function onMouseMove(event:MouseEvent):void 
+  	        {
+  	        	var cx:int = mapData.tx;
+				var cy:int = mapData.ty;
+				var scaleFactor:int = mapData.scaleFactor;
+				var fieldId:int = Map.getFieldId(cx+int(event.localX/scaleFactor),cy+int(event.localY/scaleFactor));						
+  	        	var myObj:Object = castles[fieldId];
+  	        	var uiHolder:UIComponent = event.target as UIComponent
+  	        	var distance:String = "\nDistance: " + (int(Map.fieldDistance(city.castle.fieldId, fieldId)*100)/100) + " miles";
+  	        	
+  	        	uiHolder.toolTip = ""
+  	        	if(myObj != null) 
+    			{
+    				var o:MapCastleBean = myObj as MapCastleBean;
+    		
+    				if(o.npc == false) {
+    					uiHolder.toolTip = Map.fieldIdToString(o.id) + " " + o.userName  + ((o.allianceName != null) ? " [" + o.allianceName + "]" : "") + " " + Map.stateName(o.state) + distance;
+    				} else {
+    					uiHolder.toolTip = Map.fieldIdToString(o.id) + distance;
+    				}
+  	       		}
+  	       		else
+  	       		{
+  	       			uiHolder.toolTip = Map.fieldIdToString(fieldId) + distance; 
+  	       		}
+	        } 	
+		         
+	        private function onMouseDblClick(event:MouseEvent):void 
+  	        {
+  	        	try {
+  		        	var cx:int = mapData.tx;
+					var cy:int = mapData.ty;
+					var scaleFactor:int = mapData.scaleFactor;
+					var fieldId:int = Map.getFieldId(cx+int(event.localX/scaleFactor),cy+int(event.localY/scaleFactor));
+					
+					Map.updateInfo(fieldId);
+   				}
+   				catch(e:Error) {
+	        		logMessage(e.message);
+	        	}
+
+	        } 	
+
+	        private function onMouseOver(event:MouseEvent):void 
+  	        {
+  	        	try {
+  		        	if (!uiHolder.hasEventListener(MouseEvent.MOUSE_MOVE)) uiHolder.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+   				}
+   				catch(e:Error) {
+	        		logMessage(e.message);
+	        	}
+
+	        } 	
+	        
+	       	private function onMouseOut(event:MouseEvent):void 
+  	        {
+  	        	try {
+  		        	if (uiHolder.hasEventListener(MouseEvent.MOUSE_MOVE)) uiHolder.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+   				}
+   				catch(e:Error) {
+	        		logMessage(e.message);
+	        	}
+
+	        } 	
+
+			private function logMessage(str:String) : void {
+				queueJobs.logMessage(str);
+			}
+			
+			private function runScript() : void {
+				try {
+    				scriptLineNumbers(true);
+					script.start(parseInt(startLine.text));
+    				runButton.enabled = false;
+    				stopButton.enabled=true;			        	
+	        		script.start();
+	   			}
+	   			catch (ae:ArgumentError) {
+          			logMessage(ae.message);
+	        		runButton.enabled = true;
+	        		stopButton.enabled = false;
+	   			}
+	   			catch(e:Error) {
+	        		logMessage(e.message);
+	        		runButton.enabled = true;
+	        		stopButton.enabled = false;
+	        	}
+			}
+			private function stopScript() : void {
+        		queueJobs.logMessage("Stopped"); 
+        		script.stop();
+        		runButton.enabled = true;
+        		stopButton.enabled = false;				
+			}
+			private function handleEndScript(obj:Object) : void {
+        		runButton.enabled = true;
+        		stopButton.enabled = false;				
+			}			
+			private function saveScript() : void {
+				//scriptCache = SharedObject.getLocal("citytab"+city.castle.id);
+				scriptLineNumbers(false);
+    			scriptCache.data.now = scriptTextArea.text;				
+    			var status:String = scriptCache.flush();
+    			if (status != "flushed") {
+    				queueJobs.logMessage("SAVING PROBLEM: " + status + ", you may need to increase flash local storage"); 
+    			}
+			}					
+
+			private function saveGoals() : void {
+				var soCityCommand:SharedObject ;
+				soCityCommand = SharedObject.getLocal("citygoals"+city.castle.id);
+    			soCityCommand.data.now = goalsTextArea.text;
+    			var status:String = soCityCommand.flush();
+    			if (status != "flushed") {
+    				queueJobs.logMessage("SAVING PROBLEM: " + status + ", you may need to increase flash local storage"); 
+    			}
+			}
+			
+			private function setGoals() : void {
+				city.cityManager.setGoals(goalsTextArea.text);
+			}
+			
+			public function abandonField(fieldId:int) : void {
+				queueJobs.logMessage("Abandon field: " + Map.fieldIdToString(fieldId));
+				ActionFactory.getInstance().getFieldCommand().giveUpField(fieldId);
+				setTimeout(city.cityManager.updateValleyData, 3000, valleyData);
+			}
+
+			public function recallSelfArmy(armyId:int) : void {
+				if (armyId == -1) return;
+				queueJobs.logMessage("Recall self army with armyId: " + armyId);
+				ActionFactory.getInstance().getArmyCommands().callBackArmy(city.castle.id, armyId);
+				setTimeout(city.cityManager.updateArmyData, 3000, armyData);
+			}
+			
+			public function recallFriendlyArmy(armyId:int) : void {
+				if (armyId == -1) return;
+				queueJobs.logMessage("Recall friendly army with armyId: " + armyId);
+				ActionFactory.getInstance().getArmyCommands().callBackArmy(city.castle.id, armyId);
+				setTimeout(city.cityManager.updateExtraTroopData, 3000, extraTroopData);
+			}
+
+			public function recallHero(heroId:int) : void {
+				queueJobs.logMessage("Recalling hero with heroId: " + heroId);
+				ActionFactory.getInstance().getHeroCommand().callBackHero(city.castle.id, heroId);
+				setTimeout(city.cityManager.updateHeroData, 3000, heroData);
+			}
+						
+			public function fireHero(heroId:int) : void {
+				queueJobs.logMessage("Firing hero with heroId: " + heroId);
+				ActionFactory.getInstance().getHeroCommand().fireHero(city.castle.id, heroId);
+				setTimeout(city.cityManager.updateHeroData, 3000, heroData);
+			}
+
+			public function demoteHero(heroId:int) : void {
+				queueJobs.logMessage("Removing Mayor: " + heroId);
+				ActionFactory.getInstance().getHeroCommand().dischargeChief( city.castle.id );
+				setTimeout(city.cityManager.updateHeroData, 3000, heroData);
+			}
+			
+/*------------- End UI Event Handlers -------------*/
+			
+			private function scriptLineNumbers(setScript:Boolean = false) : void
+			{
+				var s:TextArea = scriptTextArea; // reference
+				
+				s.text = s.text.replace(/\d+:\s/gm, "");
+				if(setScript)
+				{
+					script.SetScriptCommands = s.text;
+				}
+				var lines:Array = s.text.split(/\r|\n/);
+				var i:int = 1;
+				for (var line:String in lines)
+				{
+					if (lines[line].charAt(0) == "/")
+					{
+						continue;
+					}
+					
+					lines[line] = i + ": " + lines[line];
+					i++;
+				}
+				s.text = lines.join("\r");
+			}
+			
+			private function tabBar_creationComplete(tabObject:Object):void {
+				
+				for each (var t1:Object in tabObject.getChildren())
+				{
+					t1.setStyle("themeColor", 0x000000 );
+					t1.setStyle("color", "#000000");	
+					t1.setStyle('fontSize','10');
+					t1.setStyle('fontWeight','normal');
+					//t1.setStyle("fillColors", ["#FFFFFF", "#FFFFFF"]);
+					//t1.setStyle("fillAlphas", [1.0, 1.0]);
+					//t1.setStyle("backgroundColor", "#FFFFFF");
+				}
+			}            
+			            
+            private function helpHandler(event:Event):void {
+            	if (event.target.label == "Show help")
+            	{
+	        		helpButton.label = "Hide help";
+	        		if (scripthelp != null) {
+		        		scripthelp.visible = true;
+		        		scripthelp.width = 250;
+		        		scripthelpDivider.setStyle("horizontalGap", 6);
+	        		}
+	        		
+	        		goalshelp.visible = true;
+	        		goalshelp.width = 250;
+	        		goalshelpDivider.setStyle("horizontalGap", 6);
+            	}
+            	else
+            	{
+	        		helpButton.label = "Show help";
+	        		if (scripthelp != null) {
+		        		scripthelp.visible = false;
+		        		scripthelp.width = 0;
+		        		scripthelpDivider.setStyle("horizontalGap", 0);
+	        		}
+	        		goalshelp.visible = false;
+	        		goalshelp.width = 0;
+	        		goalshelpDivider.setStyle("horizontalGap", 0);
+            	}
+	        }
+	        
+		]]>
+	</mx:Script>
+
+
+	<mx:HDividedBox x="0" y="0" width="100%" height="100%" >
+		<mx:VBox width="100%" height="100%" verticalGap="0">
+			<mx:HBox width="100%" height="24" verticalAlign="middle">
+				<mx:ToggleButtonBar id="goalTab" dataProvider="alltasks" horizontalGap="1" paddingLeft="1" buttonHeight="20" creationComplete="tabBar_creationComplete(goalTab)"/>
+				<mx:HBox width="100%" height="24" horizontalAlign="right" verticalAlign="middle">
+					<mx:Button id="helpButton" label="Show help" click="helpHandler(event);"/>
+				</mx:HBox>
+			</mx:HBox>
+			<mx:ViewStack id="alltasks" width="100%" height="100%" borderStyle="solid">
+				<mx:Canvas label="Goals" width="100%" height="100%" id="goalsCanvas">
+					<mx:VBox width="100%" height="100%" verticalGap="0">
+						<mx:HDividedBox id="goalshelpDivider" width="100%" height="100%" horizontalGap="0">
+							<mx:TextArea id="goalsTextArea" width="100%" height="100%" backgroundColor="#F6FBFA"/>
+							<local:HelpPanel id="goalshelp" helpType="Goals" visible="false" width="0" height="100%"/>
+						</mx:HDividedBox>					
+						<mx:HBox width="100%" height="30" verticalAlign="middle" horizontalAlign="right" paddingRight="1">
+							<mx:Button label="Set Goals" click="setGoals()" themeColor="#000000"/>
+							<mx:Button label="Save" click="saveGoals()" themeColor="#000000"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:Canvas>
+				<mx:Canvas label="Script" width="100%" height="100%" id="scriptCanvas">
+					<mx:VBox width="100%" height="100%">
+						<mx:HDividedBox id="scripthelpDivider" width="100%" height="100%" horizontalGap="0">
+							<mx:TextArea id="scriptTextArea" width="100%" height="100%"/>
+							<local:HelpPanel id="scripthelp" helpType="Script" visible="false" width="0" height="100%"/>
+						</mx:HDividedBox>
+						<mx:HBox width="100%" height="30" verticalAlign="middle" horizontalAlign="right" paddingRight="1">
+							<mx:TextInput id="startLine" width="50" editable="true" restrict="0-9"  borderColor="#8F8E8E" borderStyle="solid" cornerRadius="4"/>
+							<mx:Button label="Run" id="runButton" click="runScript()" themeColor="#000000"/>
+							<mx:Button label="Stop" enabled="false" id="stopButton" click="stopScript()" themeColor="#000000"/>
+							<mx:Button label="Save" id="saveButton" click="saveScript()" themeColor="#000000"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:Canvas>
+			</mx:ViewStack>
+		</mx:VBox>
+		<mx:VBox width="510" height="100%" verticalGap="0">
+			<mx:HBox width="100%" height="24" verticalAlign="middle">
+				<mx:ToggleButtonBar id="infoTab" dataProvider="allinfo" buttonHeight="20" paddingLeft="1" horizontalGap="1" creationComplete="tabBar_creationComplete(infoTab)" buttonWidth="38"/>
+			</mx:HBox>
+			<mx:ViewStack id="allinfo" width="100%" height="100%">
+				<mx:Canvas label="I" width="100%" height="100%" id="info">
+					<mx:DataGrid dataProvider="{infoData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="false" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<mx:columns>
+							<mx:DataGridColumn headerText="" dataField="col1" width="0.25"/>
+							<mx:DataGridColumn headerText="" dataField="col2" width="0.35" showDataTips="true"/>
+						</mx:columns>
+					</mx:DataGrid>
+				</mx:Canvas>
+				<mx:Canvas label="R" width="100%" height="100%" id="resource">
+					<local:RowColorDataGrid dataProvider="{resourceData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Resource" dataField="col1" width="0.25"/>
+							<mx:DataGridColumn headerText="Amount" dataField="col2" width="0.25"/>
+							<mx:DataGridColumn headerText="Rate" dataField="col3" width="0.25" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Days left" dataField="col4" width="0.35"/>
+						</local:columns>
+					</local:RowColorDataGrid>
+				</mx:Canvas>
+				<mx:Canvas label="V" width="100%" height="100%" id="valley">
+					<mx:DataGrid dataProvider="{valleyData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<mx:columns>
+							<mx:DataGridColumn headerText="Coord" dataField="col1" width="0.2"/>
+							<mx:DataGridColumn headerText="Type" dataField="col2" width="0.2"/>
+							<mx:DataGridColumn headerText="Level" dataField="col3" width="0.2"/>
+							<mx:DataGridColumn headerText="Distance" dataField="col4" width="0.2"/>
+							<mx:DataGridColumn headerText="Action" width="0.2">
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+									private var lastTime:Number = 0;
+									private function abandonField(fieldId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.abandonField(fieldId);
+									}
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="10" id="abandonButton" label="Abandon" click="abandonField(data.col5)"/>
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</mx:columns>
+					</mx:DataGrid>
+				</mx:Canvas>
+				<mx:Canvas label="H" width="100%" height="100%" id="heroes">
+					<local:RowColorDataGrid dataProvider="{heroData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Hero" dataField="col1" width="0.2"/>
+							<mx:DataGridColumn headerText="Status" dataField="col2" width="0.15"/>
+							<mx:DataGridColumn headerText="Type" dataField="col3" width="0.1" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Buff" dataField="col10" width="0.1">							
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+ 									import mx.managers.PopUpManager;
+            						import mx.containers.TitleWindow;            						
+            						import mx.controls.Alert;
+            						import mx.events.CloseEvent;       		
+									
+									private function showWindow( hero1ID:int, item1ID:String, hero1Name:String , buff1Name:String , cityID:int ) : void {
+                						var login:SimpleTitleWindowExample=SimpleTitleWindowExample(PopUpManager.createPopUp( this, SimpleTitleWindowExample , true ));
+                						if ( buff1Name == "hero.power.1" ) {
+                							buff1Name = "Excalibur";                							
+                						} else if ( buff1Name == "hero.management.1" ) {
+                							buff1Name = "Wealth of Nations";                							
+                						} else if ( buff1Name == "hero.stratagem.1" ) {
+                							buff1Name = "Art of War";                						
+                						}
+										login.buffName1.text = buff1Name;
+										login.heroID = hero1ID;
+										login.heroName1.text = hero1Name;
+										login.itemID = item1ID;										
+										login.cityID = cityID;
+										login.cityID1.text = cityID.toString();										
+										PopUpManager.centerPopUp(login);																				                						
+            						}
+						
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="8" height="18" id="buff" label="+" visible="{data.col10 != null &amp;&amp; data.col10 != 0}" click="showWindow( data.col4, data.col11, data.col1, data.col11, data.col12)"/>								
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>							
+							<mx:DataGridColumn headerText="Lvl" dataField="col8" width="0.1" />							
+							<mx:DataGridColumn headerText="Pol" dataField="col5" width="0.1" />
+							<mx:DataGridColumn headerText="Atk" dataField="col6" width="0.1" />
+							<mx:DataGridColumn headerText="Int" dataField="col7" width="0.1" />
+							<mx:DataGridColumn headerText="Actions" width="0.2">
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+									private var lastTime:Number = 0;
+									private function recallHero(heroId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.recallHero(heroId);
+									}
+								
+									private function fireHero(heroId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.fireHero(heroId);
+									}
+									
+									private function demoteHero(heroId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.demoteHero(heroId);
+									}
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="9" height="{data.col9=='recall'?18:0}" id="recall" label="Recall" visible="{data.col9=='recall'}" click="recallHero(data.col4)"/>
+								<mx:Button fontSize="9" height="{data.col9=='fire'?18:0}" id="fire" label="Fire" visible="{data.col9=='fire'}" click="fireHero(data.col4)"/>
+								<mx:Button fontSize="9" height="{data.col9=='mayor'?18:0}" id="demote" label="Demote" visible="{data.col9=='mayor'}" click="demoteHero(data.col4)"/>
+								<mx:Button fontSize="9" height="{data.col9=='release'?18:0}" id="release" label="Release" visible="{data.col9=='release'}" click="recallHero(data.col4)"/>
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</local:columns>
+					</local:RowColorDataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="B" width="100%" height="100%" id="buildings">
+					<mx:DataGrid dataProvider="{buildingData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<mx:columns>
+							<mx:DataGridColumn headerText="Building" dataField="col1" width="0.2"/>
+							<mx:DataGridColumn headerText="Level(s)" dataField="col2" width="0.6" showDataTips="true"/>
+						</mx:columns>
+					</mx:DataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="S" width="100%" height="100%" id="research">
+					<mx:DataGrid dataProvider="{researchData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<mx:columns>
+							<mx:DataGridColumn headerText="reSearch" dataField="col1" width="0.25"/>
+							<mx:DataGridColumn headerText="Level" dataField="col2" width="0.35" showDataTips="true"/>
+						</mx:columns>
+					</mx:DataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="A" width="100%" height="100%" id="armies">
+					<local:RowColorDataGrid dataProvider="{armyData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Army" dataField="col1" width="0.15"/>
+							<mx:DataGridColumn headerText="Target" dataField="col2" width="0.40" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Remain time" dataField="col3" width="0.15"/>
+							<mx:DataGridColumn headerText="Action" width="0.15">
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+									private var lastTime:Number = 0;
+									private function recallSelfArmy(armyId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.recallSelfArmy(armyId);
+									}
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="10" id="recall" label="Recall" visible="{data.col4!=-1}" click="recallSelfArmy(data.col4)"/>
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</local:columns>
+					</local:RowColorDataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="T" width="100%" height="100%" id="troops">
+					<local:RowColorDataGrid dataProvider="{troopsData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Troop" dataField="col1" width="0.22"/>
+							<mx:DataGridColumn headerText="Avail" dataField="col2" width="0.10"/>
+							<mx:DataGridColumn headerText="Total" dataField="col3" width="0.10"/>
+							<mx:DataGridColumn headerText="Queue" dataField="col4" width="0.10"/>
+							<mx:DataGridColumn headerText="Goal" dataField="col5" width="0.10"/>
+							<mx:DataGridColumn headerText="Remain" dataField="col6" width="0.12"/>
+							<mx:DataGridColumn headerText="Reinforce" dataField="col7" width="0.15"/>
+						</local:columns>
+					</local:RowColorDataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="F" width="100%" height="100%" id="fortifications">
+					<mx:DataGrid dataProvider="{fortificationsData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="false" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<mx:columns>
+							<mx:DataGridColumn headerText="Fortification" dataField="col1" width="0.25"/>
+							<mx:DataGridColumn headerText="Available" dataField="col2" width="0.25"/>
+							<mx:DataGridColumn headerText="In Queues" dataField="col3" width="0.25"/>
+						</mx:columns>
+					</mx:DataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="X" width="100%" height="100%" id="trade">
+					<mx:DataGrid dataProvider="{tradesData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<mx:columns>
+							<mx:DataGridColumn headerText="eXchange" dataField="col1" width="0.20"/>
+							<mx:DataGridColumn headerText="Resource" dataField="col2" width="0.20"/>
+							<mx:DataGridColumn headerText="Amount" dataField="col3" width="0.30"/>
+							<mx:DataGridColumn headerText="Arrival" dataField="col4" width="0.20"/>
+						</mx:columns>
+					</mx:DataGrid>	
+				</mx:Canvas>
+				<mx:Canvas label="E" width="100%" height="100%" id="extra">
+					<local:RowColorDataGrid dataProvider="{extraTroopData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Extra troops" dataField="col1" width="0.20"/>
+							<mx:DataGridColumn headerText="From" dataField="col2" width="0.40" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Remain time" dataField="col3" width="0.20"/>
+							<mx:DataGridColumn headerText="Action" width="0.2">
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+									private var lastTime:Number = 0;
+									private function recallFriendlyArmy(armyId:int) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.recallFriendlyArmy(armyId);
+									}
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="10" id="recall" label="Recall" visible="{data.col4!=-1}" click="recallFriendlyArmy(data.col4)"/>
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</local:columns>
+					</local:RowColorDataGrid>	
+				</mx:Canvas>
+                <mx:Canvas id="canMap" label="M" width="100%" height="100%">
+					<mx:HDividedBox width="100%" height="100%" horizontalGap="4">
+                        <mx:Canvas id="mapPanel" x="0" y="0" width="50%" height="100%"/>
+                        <local:RowColorDataGrid dataProvider="{castlesData}" x="0" y="0" width="50%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Lord" dataField="col1" width="0.26" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Alliance" dataField="col3" width="0.26" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Coords" dataField="col2" width="0.30" showDataTips="true"/>							
+							<mx:DataGridColumn headerText="Distance" dataField="col4" width="0.18" showDataTips="true"/>
+						</local:columns>
+					</local:RowColorDataGrid>	
+					</mx:HDividedBox>                
+                </mx:Canvas>
+				<mx:Canvas label="All" width="100%" height="100%" id="alliance">
+					<local:RowColorDataGrid dataProvider="{allianceData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16" minColumnWidth="65">
+						<local:columns>
+							<mx:DataGridColumn headerText="Name" dataField="col1" width="170"/>
+							<mx:DataGridColumn headerText="Rank" dataField="col2" width="65" resizable="false"/>
+							<mx:DataGridColumn headerText="Prestige" dataField="col3" width="70" textAlign="right" resizable="false"/>
+							<mx:DataGridColumn headerText="Honor" dataField="col4" width="70" textAlign="right" resizable="false"/>							
+							<mx:DataGridColumn headerText="Last Login" dataField="col5" width="145" resizable="false"/>								
+						</local:columns>
+					</local:RowColorDataGrid>	
+				</mx:Canvas>                				
+			</mx:ViewStack>
+		</mx:VBox>
+	</mx:HDividedBox>
+</mx:Canvas>

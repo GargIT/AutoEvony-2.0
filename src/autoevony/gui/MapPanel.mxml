@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="autoevony.gui.*" width="100%" height="100%" borderStyle="solid" backgroundColor="#D4D4D4">
+	<mx:Script>
+		<![CDATA[
+			import autoevony.event.ScriptLogEvent;
+			import autoevony.scripts.Script;
+			import autoevony.player.Map;
+			import autoevony.net.Connection;
+			import autoevony.scripts.CityState;
+			import autoevony.gui.MainScreen;
+			import com.umge.sovt.common.beans.MapCastleBean;
+			import flash.utils.setTimeout;
+			import com.umge.sovt.client.action.ActionFactory;
+			import mx.core.Container;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.collections.ArrayCollection;
+			
+			import mx.core.UIComponent;
+			
+			private var queueJobs:MainScreen;
+			private var timer:Timer;
+			private var castles:Array = new Array;
+			
+			private var mapData:Object = new Object();
+			
+			[Bindable] private var mapImage:Bitmap = new Bitmap();
+			[Bindable] private var castlesData:ArrayCollection = new ArrayCollection;
+			
+			public function init(queueJobs:MainScreen, log:CityLogView) : void {
+	        	this.queueJobs = queueJobs;
+	        	timer = new Timer(10000);
+	        	timer.addEventListener(TimerEvent.TIMER, updateAllInfo);
+	        	timer.start();
+	        	
+	        	this.label = "Mapview";
+				
+/* 	        	addEventListener(FlexEvent.SHOW, updateAllInfo);
+	        	callLater(function():void {
+					for each(var c:Container in allinfo.getChildren()) {
+	        			c.addEventListener(FlexEvent.SHOW, updateAllInfo);
+	        		}
+	        	
+					//initTextAreas();
+					updateAllInfo();   				    
+				}); */
+			}
+			
+			public function cleanup() : void { timer.stop(); }
+	        
+	        private function updateAllInfo(obj:Object = null) : void {
+	        	if (obj != null && !visible) return;
+	        	
+/* 	        	if (mapPanel != null && (obj == null || allinfo.selectedChild == canMap)) {
+	        		
+	        		mapData.minSize = Math.min(mapPanel.height,mapPanel.width);
+
+	        		castles = city.cityManager.updateMapImage(mapImage,mapData);
+	        		
+	        		city.cityManager.updateCastlesData(castlesData,castles);
+	        		
+	        		if (mapImage.bitmapData != null) redraw();
+	        	}	        	 */
+	        }
+			
+/* 			private function initTextAreas(obj:Object = null) : void {
+				initGoalsTextArea();
+			} */
+						
+/* 			private function initGoalsTextArea(obj:Object = null) : void {
+				if (goalsTextArea == null) {
+					callLater(initGoalsTextArea);
+				} else {
+					var goalsCache:SharedObject = SharedObject.getLocal("citygoals"+city.castle.id);				
+					goalsTextArea.text = goalsCache.data.now;
+				}
+			} */
+			
+			private function logMessage(str:String) : void {
+				queueJobs.logMessage(str);
+			}
+
+/* 			private function saveGoals() : void {
+				var soCityCommand:SharedObject ;
+				soCityCommand = SharedObject.getLocal("citygoals"+city.castle.id);
+    			soCityCommand.data.now = goalsTextArea.text;
+    			var status:String = soCityCommand.flush();
+    			if (status != "flushed") {
+    				queueJobs.logMessage("SAVING PROBLEM: " + status + ", you may need to increase flash local storage"); 
+    			}
+			} */
+			
+/* 			private function setGoals() : void {
+				city.cityManager.setGoals(goalsTextArea.text);
+			} */
+			
+			private function myDataTipFunc(val:String):String {
+                return "Current value: " + String(val);
+            }
+
+
+			private function tabBar_creationComplete(tabObject:Object):void {
+				
+				for each (var t1:Object in tabObject.getChildren())
+				{
+					t1.setStyle("themeColor", 0x000000 );
+					t1.setStyle("color", "#000000");	
+					t1.setStyle('fontSize','10');
+					t1.setStyle('fontWeight','normal');
+					//t1.setStyle("fillColors", ["#FFFFFF", "#FFFFFF"]);
+					//t1.setStyle("fillAlphas", [1.0, 1.0]);
+					//t1.setStyle("backgroundColor", "#FFFFFF");
+				}
+			}
+
+	        /**
+	        * Draws the global map
+	        * 
+	        */ 
+	        private function redraw() : void 
+	        {
+	        	if (mapPanel != null && mapImage.bitmapData != null)
+	        	{
+		        	var uiHolder:UIComponent = new UIComponent();
+		        	uiHolder.addChild(mapImage);	        	
+		        	mapPanel.removeAllChildren();
+		        	mapPanel.addChild(uiHolder);
+			        uiHolder.width = mapImage.bitmapData.width;
+			        uiHolder.height = mapImage.bitmapData.height;
+			        
+		        }
+     		        uiHolder.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void 
+	  		        {
+	  		        	var cx:int = mapData.tx;
+						var cy:int = mapData.ty;
+						var scaleFactor:int = mapData.scaleFactor;
+						var fieldId:int = Map.getFieldId(cx+int(event.localX/scaleFactor),cy+int(event.localY/scaleFactor));						
+	  		        	var myObj:Object = castles[fieldId];
+	  		        	var uiHolder:UIComponent = event.target as UIComponent
+	  		        	
+	  		        	uiHolder.toolTip = ""
+	  		        	if(myObj != null) 
+	        			{
+	        				var o:MapCastleBean = myObj as MapCastleBean;
+	        		
+	        				if(o.npc == false) {
+	        					uiHolder.toolTip = Map.fieldIdToString(o.id) + " " + o.userName + ((o.allianceName != null) ? " [" + o.allianceName + "]" : "");
+	        				} else {
+	        					uiHolder.toolTip = Map.fieldIdToString(o.id);
+	        				}
+	        			
+	  		       		}
+	  		        	
+			        } 	
+		        ); 
+ 	        
+		       
+	        } 
+
+		]]>
+	</mx:Script>
+
+
+	<mx:HDividedBox x="0" y="0" width="100%" height="100%" >
+		<mx:VBox width="70%" height="100%" verticalGap="0">
+			<mx:Canvas id="mapPanel" x="0" y="0" width="100%" height="100%">
+				<mx:VBox width="100%" height="100%" verticalGap="0">
+					<mx:HBox width="100%" height="100%" verticalGap="0" paddingBottom="3">
+						<mx:VBox width="100%" height="100%" horizontalGap="0" paddingRight="3">
+							<mx:Canvas id="mapArea" width="100%" height="100%" backgroundColor="#F6FBFA"/>
+							<mx:HSlider width="100%" thumbCount="2" minimum="0" maximum="800" showDataTip="true" tickInterval="20" labels="[0,100,200,300,400,500,600,700,800]" values="[0,199]" snapInterval="1"/>
+						</mx:VBox>
+						<mx:VSlider height="100%" thumbCount="2" minimum="-800" maximum="0" showDataTip="true" tickInterval="20" labels="[800,700,600,500,400,300,200,100,0]" snapInterval="1" values="[0,-199]" showTrackHighlight="true"/>
+					</mx:HBox>
+					<mx:HBox width="100%" height="30" verticalAlign="middle" horizontalAlign="right" paddingRight="1">
+						<mx:Button label="Set Values" themeColor="#000000"/>
+						<mx:Button label="Save" themeColor="#000000"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:Canvas>
+		</mx:VBox>
+	</mx:HDividedBox>
+</mx:Canvas>

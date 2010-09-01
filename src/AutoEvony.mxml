@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+	This is the main application file. It loads modules and can setup/modify
+	basic information in them, like server to connect to which is by default
+	read from config.xml file. It also handles some general connection/login
+	errors.
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" xmlns:local="*"
+	creationComplete="init()" paddingTop="3" paddingBottom="3" 
+    paddingLeft="3" paddingRight="3">
+	<mx:Script>
+		<![CDATA[
+			import autoevony.gui.MainScreen;
+			import flash.utils.setTimeout;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			import com.umge.sovt.common.server.events.LoginResponse;
+			import mx.controls.Alert;
+			import com.umge.sovt.client.response.ResponseDispatcher;
+			import mx.events.ModuleEvent;
+			import mx.modules.ModuleLoader;
+
+			private var m_queueJobs:MainScreen;
+			private var m_serverIp:String = "";
+			
+			public function init(): void 
+			{
+				var usernameCache:SharedObject = SharedObject.getLocal("username");
+				var passwordCache:SharedObject = SharedObject.getLocal("password");
+				var serverNumCache:SharedObject = SharedObject.getLocal("serverNum");
+				
+				username.text = usernameCache.data.now;
+				password.text = passwordCache.data.now;
+				serverNumT.text = serverNumCache.data.now;
+
+				// default error handlers
+				ResponseDispatcher.getInstance().addEventListener(ResponseDispatcher.SERVER_LOGIN_RESPONSE, onLogin);
+			}
+			
+			/**
+			 * Called when login is completed
+			 * 
+			 */ 
+	        public function onLogin(loginResponse:LoginResponse) : void 
+	        {
+	        	if(loginResponse.ok != 1) {
+		        	Alert.show(loginResponse.errorMsg, "Error");
+		        }
+		        else
+		        {
+			        var usernameCache:SharedObject = SharedObject.getLocal("username");
+					var passwordCache:SharedObject = SharedObject.getLocal("password");
+					var serverNumCache:SharedObject = SharedObject.getLocal("serverNum");
+					
+					usernameCache.data.now = username.text;
+					passwordCache.data.now = password.text;
+					serverNumCache.data.now = serverNumT.text;
+		        }
+	        }
+	        
+	        public function onStartBtn():void
+	        {
+	        	// @TODO check the input of serverNumT.text
+	        	var serverId:String = "";
+	        	
+				var sMatch:RegExp = new RegExp("(http://)?(www\\.)?([^.]+)\\.?.*");
+				var result:Object = sMatch.exec(this.serverNumT.text);
+				if ( (result == null) || (result.length < 4) || (result[3].length == 0) )
+				{
+					ipHints.text = "Unable to find the server id from " + this.serverNumT.text;
+					return;
+				}
+				this.serverNumT.text = (serverId = result[3]);
+					
+	        	ipHints.text = "Looking up server ip for server " + serverId;
+	        	var tarAddr:String = "http://" + serverId + ".evony.com/config.xml";
+	        	var hlink:HTTPService = new HTTPService();
+	        	
+	        	hlink.url = tarAddr;
+				hlink.method = "POST";
+				hlink.resultFormat = "xml";
+				hlink.contentType = HTTPService.CONTENT_TYPE_XML;
+				hlink.addEventListener(ResultEvent.RESULT,
+					function(result:ResultEvent):void
+					{
+						var xml:XML = new XML(result.message.body.toString());
+						var serverID:String = xml.serverID;
+						m_serverIp = xml.server;
+						
+						if (serverNumT.text.toLowerCase() != serverID.toLowerCase()) {
+							ipHints.text = "Abnormal config file for " + serverNumT.text + ", showing wrong server " + serverID;
+						} else if(m_serverIp == "") {
+							ipHints.text = "Could not find server ip of server " + serverNumT.text + " from config file";
+						} else {
+							ipHints.text = "Found: " + m_serverIp + ". Connecting...";
+							onJobQueue();
+						}
+					});
+				hlink.addEventListener(FaultEvent.FAULT,
+					function(result:FaultEvent):void
+					{
+						Alert.show("Invalid server specified");
+					});
+				const dummyObject:Object = { };
+                hlink.send(dummyObject);
+	        }
+
+			public function onJobQueue(): void 
+			{
+					m_queueJobs = new MainScreen();
+					setupConfig(m_queueJobs);
+					removeAllChildren();
+					addChild(m_queueJobs);
+			}
+			
+			private function setupConfig(mod:Object):void 
+			{
+				mod.config.connection.username = username.text;
+				mod.config.connection.password = password.text;
+				mod.config.connection.server = m_serverIp;
+			}
+			
+		]]>
+	</mx:Script>	
+	<mx:Panel width="99%" height="99%" backgroundColor="#D4D4D4" cornerRadius="5" roundedBottomCorners="true">		
+	<mx:Form width="100%">
+		<mx:FormItem label="Username: (Email)">
+			<mx:TextInput id="username" />
+		</mx:FormItem>
+		<mx:FormItem label="Password:">
+			<mx:TextInput id="password"  displayAsPassword="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="Server Num:" toolTip="Example: If your server is 50.evony.com, specify '50'">
+			<mx:TextInput id="serverNumT" />
+		</mx:FormItem>
+	</mx:Form>
+	<!-- <mx:Button click="onStartBtn(2);" label="Global Map" />
+	<mx:Label text="Show the global map of the server." /> -->	
+	<mx:Spacer height="10" />
+	<mx:Button click="onStartBtn();" label="Login" />
+	<mx:Label text="" id="ipHints"/>
+	</mx:Panel>
+	<mx:Label bottom="10" text="Build {Version.build_number}, compiled on {Version.build_time} using Evony version {Version.GAMECLIENTVERSION}" />
+</mx:Application>
+

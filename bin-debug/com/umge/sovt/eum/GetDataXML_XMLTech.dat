@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<techDefine>
+  <techEum name="Agriculture" desc="Every single upgrade enhances food production by 10%." wikiDesc="Oh farmers, pray that your summers be wet and your winters clear. - Virgil
+
+Agriculture is the science of cultivating soil, planting and harvesting crops. It can be argued that the mastery of agriculture was the single most important step towards creating a civilization, as agriculture allowed people to stop hunting and gathering and settle down in one place. Villages and cities would be unviable without some form of agriculture. " typeId="1">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Agriculture increases Food production by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Agriculture increases Food production by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Agriculture increases Food production by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Agriculture increases Food production by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Agriculture increases Food production by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Agriculture increases Food production by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Agriculture increases Food production by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Agriculture increases Food production by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Agriculture increases Food production by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Agriculture increases Food production by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.CropTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="500" wood="0" stone="0" iron="0" time="400" gold="1000"/>
+      <levelData level="1" effect="20" food="1000" wood="0" stone="0" iron="0" time="800" gold="2000"/>
+      <levelData level="2" effect="30" food="2000" wood="0" stone="0" iron="0" time="1600" gold="4000"/>
+      <levelData level="3" effect="40" food="4000" wood="0" stone="0" iron="0" time="3200" gold="8000"/>
+      <levelData level="4" effect="50" food="8000" wood="0" stone="0" iron="0" time="6400" gold="16000"/>
+      <levelData level="5" effect="60" food="16000" wood="0" stone="0" iron="0" time="12800" gold="32000"/>
+      <levelData level="6" effect="70" food="32000" wood="0" stone="0" iron="0" time="25600" gold="64000"/>
+      <levelData level="7" effect="80" food="64000" wood="0" stone="0" iron="0" time="51200" gold="128000"/>
+      <levelData level="8" effect="90" food="128000" wood="0" stone="0" iron="0" time="102400" gold="256000"/>
+      <levelData level="9" effect="100" food="256000" wood="0" stone="0" iron="0" time="204800" gold="512000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Lumbering" desc="Every single upgrade enhances lumber production by 10%." wikiDesc="Sharpen the knife before cutting the wood. – Confucius  
+
+Lumbering firstly came into a profession was to meet the continuous need. As tribes settled down in fixed places, they needed more lumber for house-building. Along with the advancing of civilization, trees were inundantly lumbered, and causing great harm to environment. The balance of ecology was disturbed." typeId="2">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Lumbering increases Lumber production by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Lumbering increases Lumber production by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Lumbering increases Lumber production by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Lumbering increases Lumber production by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Lumbering increases Lumber production by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Lumbering increases Lumber production by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Lumbering increases Lumber production by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Lumbering increases Lumber production by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Lumbering increases Lumber production by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Lumbering increases Lumber production by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.HewTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="500" stone="0" iron="100" time="500" gold="1200"/>
+      <levelData level="1" effect="20" food="0" wood="1000" stone="0" iron="200" time="1000" gold="2400"/>
+      <levelData level="2" effect="30" food="0" wood="2000" stone="0" iron="400" time="2000" gold="4800"/>
+      <levelData level="3" effect="40" food="0" wood="4000" stone="0" iron="800" time="4000" gold="9600"/>
+      <levelData level="4" effect="50" food="0" wood="8000" stone="0" iron="1600" time="8000" gold="19200"/>
+      <levelData level="5" effect="60" food="0" wood="16000" stone="0" iron="3200" time="16000" gold="38400"/>
+      <levelData level="6" effect="70" food="0" wood="32000" stone="0" iron="6400" time="32000" gold="76800"/>
+      <levelData level="7" effect="80" food="0" wood="64000" stone="0" iron="12800" time="64000" gold="153600"/>
+      <levelData level="8" effect="90" food="0" wood="128000" stone="0" iron="25600" time="128000" gold="307200"/>
+      <levelData level="9" effect="100" food="0" wood="256000" stone="0" iron="51200" time="256000" gold="614400"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Masonry" desc="Every single upgrade enhances stone production by 10%." wikiDesc="It is from their foes, not their friends, that cities learn the lesson of building high walls. - Aristophanes
+
+The early dwellings of most tribal cultures were built of materials that were readily available and easy to work with, such as bricks of clay and mud. As tribes gave up their nomadic ways and settled the first cities, they soon found that they had a need for more permanent and durable structures. The skill of masonry was developed to fill this need." typeId="3">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Masonry increases Stone production by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Masonry increases Stone production by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Masonry increases Stone production by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Masonry increases Stone production by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Masonry increases Stone production by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Masonry increases Stone production by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Masonry increases Stone production by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Masonry increases Stone production by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Masonry increases Stone production by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Masonry increases Stone production by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.ExcavationTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="0" stone="500" iron="200" time="600" gold="1500"/>
+      <levelData level="1" effect="20" food="0" wood="0" stone="1000" iron="400" time="1200" gold="3000"/>
+      <levelData level="2" effect="30" food="0" wood="0" stone="2000" iron="800" time="2400" gold="6000"/>
+      <levelData level="3" effect="40" food="0" wood="0" stone="4000" iron="1600" time="4800" gold="12000"/>
+      <levelData level="4" effect="50" food="0" wood="0" stone="8000" iron="3200" time="9600" gold="24000"/>
+      <levelData level="5" effect="60" food="0" wood="0" stone="16000" iron="6400" time="19200" gold="48000"/>
+      <levelData level="6" effect="70" food="0" wood="0" stone="32000" iron="12800" time="38400" gold="96000"/>
+      <levelData level="7" effect="80" food="0" wood="0" stone="64000" iron="25600" time="76800" gold="192000"/>
+      <levelData level="8" effect="90" food="0" wood="0" stone="128000" iron="51200" time="153600" gold="384000"/>
+      <levelData level="9" effect="100" food="0" wood="0" stone="256000" iron="102400" time="307200" gold="768000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Mining" desc="Every single upgrade enhances iron production by 10%." wikiDesc="You should hammer your iron when it is glowing hot. - Publius Syrus
+
+There is evidence of surface mining dating back to prehistoric times. The first mining was probably for flint, which was used for knives, scrapers and arrowheads. The oldest known underground mine was in Swaziland over 40,000 years ago, to mine for ochre to use as a body pigment in ceremonies. During the Neolithic Age shafts were dug to extract flint from deeper in the earth. Gold, copper and silver were other minerals mined early in history." typeId="4">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Mining increases Iron production by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Mining increases Iron production by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Mining increases Iron production by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Mining increases Iron production by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Mining increases Iron production by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Mining increases Iron production by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Mining increases Iron production by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Mining increases Iron production by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Mining increases Iron production by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Mining increases Iron production by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.SmeltTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="0" stone="0" iron="800" time="700" gold="2000"/>
+      <levelData level="1" effect="20" food="0" wood="0" stone="0" iron="1600" time="1400" gold="4000"/>
+      <levelData level="2" effect="30" food="0" wood="0" stone="0" iron="3200" time="2800" gold="8000"/>
+      <levelData level="3" effect="40" food="0" wood="0" stone="0" iron="6400" time="5600" gold="16000"/>
+      <levelData level="4" effect="50" food="0" wood="0" stone="0" iron="12800" time="11200" gold="32000"/>
+      <levelData level="5" effect="60" food="0" wood="0" stone="0" iron="25600" time="22400" gold="64000"/>
+      <levelData level="6" effect="70" food="0" wood="0" stone="0" iron="51200" time="44800" gold="128000"/>
+      <levelData level="7" effect="80" food="0" wood="0" stone="0" iron="102400" time="89600" gold="256000"/>
+      <levelData level="8" effect="90" food="0" wood="0" stone="0" iron="204800" time="179200" gold="512000"/>
+      <levelData level="9" effect="100" food="0" wood="0" stone="0" iron="409600" time="358400" gold="1024000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Metal Casting" desc="Every single upgrade enhances production speed of mechanics by 10%." wikiDesc="And them that take the sword shall perish by the sword. - The Bible, Matthew
+
+Metal casting is a way to fabricate metal objects. When subjected to extreme heat, metal melts into a liquid. The molten metal is poured into a mold, where it cools and returns to a solid state, holding the shape of the space inside the mold. Once the object is removed, the mold can be reused to make an identical object. " typeId="5">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Metal Casting increases  production speed of mechanics by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Metal Casting increases production speed of mechanics by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Metal Casting increases production speed of mechanics by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Metal Casting increases production speed of mechanics by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Metal Casting increases production speed of mechanics by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Metal Casting increases production speed of mechanics by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Metal Casting increases production speed of mechanics by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Metal Casting increases production speed of mechanics by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Metal Casting increases production speed of mechanics by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Metal Casting increases production speed of mechanics by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.MakeTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="500" stone="0" iron="500" time="900" gold="5000"/>
+      <levelData level="1" effect="20" food="0" wood="1000" stone="0" iron="1000" time="1800" gold="10000"/>
+      <levelData level="2" effect="30" food="0" wood="2000" stone="0" iron="2000" time="3600" gold="20000"/>
+      <levelData level="3" effect="40" food="0" wood="4000" stone="0" iron="4000" time="7200" gold="40000"/>
+      <levelData level="4" effect="50" food="0" wood="8000" stone="0" iron="8000" time="14400" gold="80000"/>
+      <levelData level="5" effect="60" food="0" wood="16000" stone="0" iron="16000" time="28800" gold="160000"/>
+      <levelData level="6" effect="70" food="0" wood="32000" stone="0" iron="32000" time="57600" gold="320000"/>
+      <levelData level="7" effect="80" food="0" wood="64000" stone="0" iron="64000" time="115200" gold="640000"/>
+      <levelData level="8" effect="90" food="0" wood="128000" stone="0" iron="128000" time="230400" gold="1280000"/>
+      <levelData level="9" effect="100" food="0" wood="256000" stone="0" iron="256000" time="460800" gold="2560000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Informatics" desc="The higher its level the more detailed information you gain." wikiDesc="Know both your opponent and yourself ever victorious. - Sun-Tzu
+
+&quot;Know thy enemy&quot; has been an essential part of warfare since the dawn of time, with victory almost always falling into the hands of the informed. And while intrigue and backstabbing (usually quite literally) have been a part of the war since time immemorial, in the modern era, intelligence has become a multi-billion dollar endeavor. New technologies, such as spy satellites and remote microphones, have facilitated the gathering of information, giving eyes and ears all over the world to those who need to be in the know." typeId="7">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="1" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="2" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="3" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="4" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="5" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="6" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="7" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="8" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="9" upLevelDesc="The higher its level the more detailed information you gain."/>
+      <upLevelDescType level="10" upLevelDesc="tech.ScoutSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="0" food="300" wood="0" stone="0" iron="0" time="300" gold="2000"/>
+      <levelData level="1" effect="0" food="600" wood="0" stone="0" iron="0" time="600" gold="4000"/>
+      <levelData level="2" effect="0" food="1200" wood="0" stone="0" iron="0" time="1200" gold="8000"/>
+      <levelData level="3" effect="0" food="2400" wood="0" stone="0" iron="0" time="2400" gold="16000"/>
+      <levelData level="4" effect="0" food="4800" wood="0" stone="0" iron="0" time="4800" gold="32000"/>
+      <levelData level="5" effect="0" food="9600" wood="0" stone="0" iron="0" time="9600" gold="64000"/>
+      <levelData level="6" effect="0" food="19200" wood="0" stone="0" iron="0" time="19200" gold="128000"/>
+      <levelData level="7" effect="0" food="38400" wood="0" stone="0" iron="0" time="38400" gold="256000"/>
+      <levelData level="8" effect="0" food="76800" wood="0" stone="0" iron="0" time="76800" gold="512000"/>
+      <levelData level="9" effect="0" food="153600" wood="0" stone="0" iron="0" time="153600" gold="1024000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Military Science" desc="Every single upgrade enhances training speed by 10%." wikiDesc="&quot;I must study politics and war that my sons may have liberty to study mathematics and philosophy.&quot; - John Adams
+
+While truly masterful works on war by men like Sun Tzu and Machiavelli have remained valuable since their creation, the acknowledgement of Military Science as a field of study separate from war itself only began in the seventeenth century. During the next two hundred years, numerous treatises on contemporary warfare surfaced. Two of the most influential military scientists of their times, Carl von Clausewitz and Antoine Henri-Jomini, birthed a rivalry that continues to this day, focused in large part on their major works, Clausewitz's &quot;On War&quot; and Jomini's &quot;The Art of War.&quot;" typeId="8">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Military Science increases training speed of Barracks by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Military Science increases training speed of Barracks by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Military Science increases training speed of Barracks by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Military Science increases training speed of Barracks by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Military Science increases training speed of Barracks by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Military Science increases training speed of Barracks by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Military Science increases training speed of Barracks by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Military Science increases training speed of Barracks by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Military Science increases training speed of Barracks by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Military Science increases training speed of Barracks by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.TrainSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="600" wood="100" stone="100" iron="150" time="900" gold="2500"/>
+      <levelData level="1" effect="20" food="1200" wood="200" stone="200" iron="300" time="1800" gold="5000"/>
+      <levelData level="2" effect="30" food="2400" wood="400" stone="100" iron="600" time="3600" gold="10000"/>
+      <levelData level="3" effect="40" food="4800" wood="800" stone="800" iron="1200" time="7200" gold="20000"/>
+      <levelData level="4" effect="50" food="9600" wood="1600" stone="1600" iron="2400" time="14400" gold="40000"/>
+      <levelData level="5" effect="60" food="19200" wood="3200" stone="3200" iron="4800" time="28800" gold="80000"/>
+      <levelData level="6" effect="70" food="38400" wood="6400" stone="6400" iron="9600" time="57600" gold="160000"/>
+      <levelData level="7" effect="80" food="76800" wood="12800" stone="12800" iron="19200" time="115200" gold="320000"/>
+      <levelData level="8" effect="90" food="153600" wood="25600" stone="25600" iron="38400" time="230400" gold="640000"/>
+      <levelData level="9" effect="100" food="307200" wood="51200" stone="51200" iron="76800" time="460800" gold="1280000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Military Tradition" desc="Every single upgrade enhances army attack by 5%." wikiDesc="Victorious warriors win first and then go to war, while defeated warriors go to war first and then seek to win. - Sun-Tzu
+
+With the fall of the feudal system in Europe and the creation of standing armies, a new military tradition was born. Organizing soldiers based on their skill, experience, and understanding of tactics rather than their position of birth, the armies of post-feudal Europe were markedly different from their predecessors. This change in the position of warfare also necessitated a change in the definition of the soldier, and with this transformation also came a strict code of conduct based on the old ideals of chivalry. The life of a professional soldier came to appeal to many who saw it as a career filled with opportunity for advancement, and now ordinary citizens were able to distinguish themselves in any number of specialized positions in military conflict." typeId="9">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Military Tradition increases troops' Attack by 5%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Military Tradition increases troops' Attack by 10%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Military Tradition increases troops' Attack by 15%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Military Tradition increases troops' Attack by 20%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Military Tradition increases troops' Attack by 25%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Military Tradition increases troops' Attack by 30%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Military Tradition increases troops' Attack by 35%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Military Tradition increases troops' Attack by 40%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Military Tradition increases troops' Attack by 45%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Military Tradition increases troops' Attack by 50%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.CombatSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="5" food="800" wood="120" stone="0" iron="200" time="1200" gold="3000"/>
+      <levelData level="1" effect="10" food="1600" wood="240" stone="0" iron="400" time="2400" gold="6000"/>
+      <levelData level="2" effect="15" food="3200" wood="480" stone="0" iron="800" time="4800" gold="12000"/>
+      <levelData level="3" effect="20" food="6400" wood="960" stone="0" iron="1600" time="9600" gold="24000"/>
+      <levelData level="4" effect="25" food="12800" wood="1920" stone="0" iron="3200" time="19200" gold="48000"/>
+      <levelData level="5" effect="30" food="25600" wood="3840" stone="0" iron="6400" time="38400" gold="96000"/>
+      <levelData level="6" effect="35" food="51200" wood="7680" stone="0" iron="12800" time="76800" gold="192000"/>
+      <levelData level="7" effect="40" food="102400" wood="15360" stone="0" iron="25600" time="153600" gold="384000"/>
+      <levelData level="8" effect="45" food="204800" wood="30720" stone="0" iron="51200" time="307200" gold="768000"/>
+      <levelData level="9" effect="50" food="409600" wood="61440" stone="0" iron="102400" time="614400" gold="1536000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Iron Working" desc="Every single upgrade enhances army defence by 5%." wikiDesc="Attack is the best way to defend - &quot;On War&quot; - Carl von Clausewitz
+
+Some examples of iron ornamentation date back to 4000 BC, but the use of iron for tools, weapons, and other practical purposes did not become common until much later. Prior to this time, bronze was the most widely used metal for such purposes. Although the term &quot;Iron Age&quot; denotes a period of time starting around 1000 BC, iron replaced bronze as the metal of choice at different times in different places. Iron is more common than copper and tin, the component metals of bronze, but iron is seldom found in a free state; it is most commonly found mixed with other minerals and elements. In order to be used, the iron must be separated from the ore. Once this technique was developed, and forges hot enough to melt the iron were developed, iron working became commonplace. Worked iron was harder, less brittle, and could hold a much sharper edge than bronze. " typeId="10">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Iron Working increases troops' Defence by 5%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Iron Working increases troops' Defence by 10%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Iron Working increases troops' Defence by 15%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Iron Working increases troops' Defence by 20%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Iron Working increases troops' Defence by 25%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Iron Working increases troops' Defence by 30%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Iron Working increases troops' Defence by 35%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Iron Working increases troops' Defence by 40%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Iron Working increases troops' Defence by 45%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Iron Working increases troops' Defence by 50%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.DefendSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="5" food="700" wood="150" stone="0" iron="300" time="1500" gold="3500"/>
+      <levelData level="1" effect="10" food="1400" wood="300" stone="0" iron="600" time="3000" gold="7000"/>
+      <levelData level="2" effect="15" food="2800" wood="600" stone="0" iron="1200" time="6000" gold="14000"/>
+      <levelData level="3" effect="20" food="5600" wood="1200" stone="0" iron="2400" time="12000" gold="28000"/>
+      <levelData level="4" effect="25" food="11200" wood="2400" stone="0" iron="4800" time="24000" gold="56000"/>
+      <levelData level="5" effect="30" food="22400" wood="4800" stone="0" iron="9600" time="48000" gold="112000"/>
+      <levelData level="6" effect="35" food="44800" wood="9600" stone="0" iron="19200" time="96000" gold="224000"/>
+      <levelData level="7" effect="40" food="89600" wood="19200" stone="0" iron="38400" time="192000" gold="448000"/>
+      <levelData level="8" effect="45" food="179200" wood="38400" stone="0" iron="76800" time="384000" gold="896000"/>
+      <levelData level="9" effect="50" food="358400" wood="76800" stone="0" iron="153600" time="768000" gold="1792000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Logistics" desc="Every single upgrade enhances army's load by 10%." wikiDesc="No mutton, no hay. Starving as both warriors and horses do in wilderness. It’s time to turn to warehouse. - Genghis Khan
+
+Logistics is the management of the flow of goods, information and other resources, including energy and people, between the point of origin and the point of consumption in order to meet the requirements of consumers (frequently, and originally, military organizations). Logistics involve the integration of information, transportation, inventory, warehousing, material-handling, and packaging. Logistics is considered to have originated in the military's need to supply themselves with arms, ammunition and rations as they moved from their base to a forward position. In ancient Greek, Roman and Byzantine empires, there were military officers with the title ‘Logistikas’ who were responsible for financial and supply distribution matters." typeId="11">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Logistics increases troops' Load by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Logistics increases troops' Load by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Logistics increases troops' Load by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Logistics increases troops' Load by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Logistics increases troops' Load by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Logistics increases troops' Load by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Logistics increases troops' Load by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Logistics increases troops' Load by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Logistics increases troops' Load by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Logistics increases troops' Load by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.LoadTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="500" wood="0" stone="200" iron="0" time="1600" gold="3000"/>
+      <levelData level="1" effect="20" food="1000" wood="0" stone="400" iron="0" time="3200" gold="6000"/>
+      <levelData level="2" effect="30" food="2000" wood="0" stone="800" iron="0" time="6400" gold="12000"/>
+      <levelData level="3" effect="40" food="4000" wood="0" stone="1600" iron="0" time="12800" gold="24000"/>
+      <levelData level="4" effect="50" food="8000" wood="0" stone="3200" iron="0" time="25600" gold="48000"/>
+      <levelData level="5" effect="60" food="16000" wood="0" stone="6400" iron="0" time="51200" gold="96000"/>
+      <levelData level="6" effect="70" food="32000" wood="0" stone="12800" iron="0" time="102400" gold="192000"/>
+      <levelData level="7" effect="80" food="64000" wood="0" stone="25600" iron="0" time="204800" gold="384000"/>
+      <levelData level="8" effect="90" food="128000" wood="0" stone="51200" iron="0" time="409600" gold="768000"/>
+      <levelData level="9" effect="100" food="256000" wood="0" stone="102400" iron="0" time="819200" gold="1536000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Compass " desc="Every single upgrade enhances infantry moving speed by 10%." wikiDesc="The wisest men follow their own direction. - Euripides
+
+The ancient Greeks, Romans, and Chinese knew the phenomenon of magnetism. They observed that lodestone, an iron-bearing ore, attracted other iron. They also noted that pieces of iron that came into contact with lodestone gained magnetic properties as well. The electromagnetic force of attraction and repulsion between various substances is due to the motion of positively and negatively charged electrons. Every magnet has positive and negative sides, called poles. Poles with a like charge repel one another, and poles with opposite charges attract one another. The study of magnetic phenomena soon showed that a free-floating magnet aligns itself with the Earth's magnetic field, one pole pointing north, the other south. This was an important discovery, and led to the invention of the compass in the early 13th century. " typeId="12">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Compass increases infantry's moving speed by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Compass increases infantry's moving speed by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Compass increases infantry's moving speed by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Compass increases infantry's moving speed by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Compass increases infantry's moving speed by 50%.
+"/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Compass increases infantry's moving speed by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Compass increases infantry's moving speed by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Compass increases infantry's moving speed by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Compass increases infantry's moving speed by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Compass increases infantry's moving speed by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.MarchSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="600" wood="0" stone="0" iron="0" time="1800" gold="3000"/>
+      <levelData level="1" effect="20" food="1200" wood="0" stone="0" iron="0" time="3600" gold="6000"/>
+      <levelData level="2" effect="30" food="2400" wood="0" stone="0" iron="0" time="7200" gold="12000"/>
+      <levelData level="3" effect="40" food="4800" wood="0" stone="0" iron="0" time="14400" gold="24000"/>
+      <levelData level="4" effect="50" food="9600" wood="0" stone="0" iron="0" time="28800" gold="48000"/>
+      <levelData level="5" effect="60" food="19200" wood="0" stone="0" iron="0" time="57600" gold="96000"/>
+      <levelData level="6" effect="70" food="38400" wood="0" stone="0" iron="0" time="115200" gold="192000"/>
+      <levelData level="7" effect="80" food="76800" wood="0" stone="0" iron="0" time="230400" gold="384000"/>
+      <levelData level="8" effect="90" food="153600" wood="0" stone="0" iron="0" time="460800" gold="768000"/>
+      <levelData level="9" effect="100" food="307200" wood="0" stone="0" iron="0" time="921600" gold="1536000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Horseback Riding" desc="Every single upgrade enhances moving speed of cavalrys and mechanics by 5%." wikiDesc="If you speak the truth, have a foot in the stirrup. - Turkish proverb
+
+Tribesmen on the Asian steppes first domesticated the horse for transportation and warfare. These tribesmen used their superior mobility and speed to overwhelm the proto-civilizations just rising in southeast Europe and the Middle East. In approximately 2000 BC, domestic horses were introduced into Babylonia. Within the next several centuries, horses had spread throughout much of Europe and northern Africa. It was not long before nearly every civilization had put horses to work as field animals and as a means of transportation. Horses also went on to play an important role in the military conflicts of nearly every civilization in the world, both as mounts for horsemen and cavalry, and as draft animals for pulling war chariots and heavy weapons into battle." typeId="13">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Horseback Riding increases the moving speed of horsemen and mechanics by 5%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Horseback Riding increases the moving speed of horsemen and mechanics by 10%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Horseback Riding increases the moving speed of horsemen and mechanics by 15%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Horseback Riding increases the moving speed of horsemen and mechanics by 20%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Horseback Riding increases the moving speed of horsemen and mechanics by 25%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Horseback Riding increases the moving speed of horsemen and mechanics by 30%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Horseback Riding increases the moving speed of horsemen and mechanics by 35%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Horseback Riding increases the moving speed of horsemen and mechanics by 40%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Horseback Riding increases the moving speed of horsemen and mechanics by 45%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Horseback Riding increases the moving speed of horsemen and mechanics by 50%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.DriveSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="5" food="1000" wood="0" stone="0" iron="0" time="2000" gold="6000"/>
+      <levelData level="1" effect="10" food="2000" wood="0" stone="0" iron="0" time="4000" gold="12000"/>
+      <levelData level="2" effect="15" food="4000" wood="0" stone="0" iron="0" time="8000" gold="24000"/>
+      <levelData level="3" effect="20" food="8000" wood="0" stone="0" iron="0" time="16000" gold="48000"/>
+      <levelData level="4" effect="25" food="16000" wood="0" stone="0" iron="0" time="32000" gold="96000"/>
+      <levelData level="5" effect="30" food="32000" wood="0" stone="0" iron="0" time="64000" gold="192000"/>
+      <levelData level="6" effect="35" food="64000" wood="0" stone="0" iron="0" time="12800" gold="384000"/>
+      <levelData level="7" effect="40" food="128000" wood="0" stone="0" iron="0" time="25600" gold="768000"/>
+      <levelData level="8" effect="45" food="256000" wood="0" stone="0" iron="0" time="51200" gold="1536000"/>
+      <levelData level="9" effect="50" food="512000" wood="0" stone="0" iron="0" time="102400" gold="3072000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Archery" desc="Every single upgrade enhances shooting range by 5%." wikiDesc="Do not throw the arrow which will return against you. - Kurdish Proverb
+
+An important technological innovation, bows were perhaps the first machines built to store energy slowly and then release it quickly. Bows and arrows have been in existence for 30,000 years. The original bows were made of springy wood - yew, bamboo, palm, and so forth. By 1300 BC, bows were made of composite material - wood, horn, and sinew. The first arrows were probably straight wooden sticks with one end sharpened and fire-hardened. Stone tips were added once man learned to sharpen flint. " typeId="14">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 5%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 10%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 15%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 20%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 25%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 30%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 35%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 40%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 45%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Archery increases Range of Archer, Ballista, Catapult and Archer's Tower by 50%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.ThrowSkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="5" food="0" wood="800" stone="500" iron="600" time="2400" gold="5000"/>
+      <levelData level="1" effect="10" food="0" wood="1600" stone="1000" iron="1200" time="4800" gold="10000"/>
+      <levelData level="2" effect="15" food="0" wood="3200" stone="2000" iron="2400" time="9600" gold="20000"/>
+      <levelData level="3" effect="20" food="0" wood="6400" stone="4000" iron="4800" time="19200" gold="40000"/>
+      <levelData level="4" effect="25" food="0" wood="12800" stone="8000" iron="9600" time="38400" gold="80000"/>
+      <levelData level="5" effect="30" food="0" wood="25600" stone="16000" iron="19200" time="76800" gold="160000"/>
+      <levelData level="6" effect="35" food="0" wood="51200" stone="32000" iron="38400" time="153600" gold="320000"/>
+      <levelData level="7" effect="40" food="0" wood="102400" stone="64000" iron="76800" time="307200" gold="640000"/>
+      <levelData level="8" effect="45" food="0" wood="204800" stone="128000" iron="153600" time="614400" gold="1280000"/>
+      <levelData level="9" effect="50" food="0" wood="409600" stone="256000" iron="307200" time="1228800" gold="2560000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Stockpile" desc="Every single upgrade enhances warehouse capacity by 10%." wikiDesc="When clouds appear, wise men put on their cloaks. -W. Shakespeare.
+
+Human beings learned to gather naturally preserved foods and to assist nature in the preserving process about 10,000 years ago, before the dawn of agriculture and animal husbandry. Human beings in the Stone Age stored nuts and seeds for winter use and discovered that meat and fish could be preserved by drying in the sun. Food preservation or storage was crucial to a country. Without this critical factor, a country was almost defenceless in wars." typeId="15">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Stockpile increases capacity of Warehouse by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Stockpile increases capacity of Warehouse by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Stockpile increases capacity of Warehouse by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Stockpile increases capacity of Warehouse by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Stockpile increases capacity of Warehouse by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Stockpile increases capacity of Warehouse by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Stockpile increases capacity of Warehouse by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Stockpile increases capacity of Warehouse by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Stockpile increases capacity of Warehouse by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Stockpile increases capacity of Warehouse by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.StoreTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="1200" stone="1000" iron="800" time="900" gold="2000"/>
+      <levelData level="1" effect="20" food="0" wood="2400" stone="2000" iron="1600" time="1800" gold="4000"/>
+      <levelData level="2" effect="30" food="0" wood="4800" stone="4000" iron="3200" time="3600" gold="8000"/>
+      <levelData level="3" effect="40" food="0" wood="9600" stone="8000" iron="6400" time="7200" gold="16000"/>
+      <levelData level="4" effect="50" food="0" wood="19200" stone="16000" iron="12800" time="14400" gold="32000"/>
+      <levelData level="5" effect="60" food="0" wood="38400" stone="32000" iron="25600" time="28800" gold="64000"/>
+      <levelData level="6" effect="70" food="0" wood="76800" stone="64000" iron="51200" time="57600" gold="128000"/>
+      <levelData level="7" effect="80" food="0" wood="153600" stone="128000" iron="102400" time="115200" gold="256000"/>
+      <levelData level="8" effect="90" food="0" wood="307200" stone="256000" iron="204800" time="230400" gold="512000"/>
+      <levelData level="9" effect="100" food="0" wood="614400" stone="512000" iron="409600" time="460800" gold="1024000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Medicine" desc="Every single upgrade enhances army's life by 5%." wikiDesc="As to diseases make a habit of two things - to help, or at least, to do no harm. - Hippocrates
+
+Primitive man attributed the onset of serious disease as the influence of the gods, or possession by evil spirits. Over time, however, it was found that such &quot;possessions&quot; could be treated through the use of elixirs made from plant extracts. Methods were also developed to clean and treat wounds, and set fractured bones. The ancient Greeks established the first school to teach medical sciences circa 500 BC. The texts produced by the students of these schools, most notably Hippocrates, who is considered the father of medicine, based his theories of the human body on observation and reasoning rather than supernatural intervention. " typeId="16">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Medicine increases Life of troops by 5%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Medicine increases Life of troops by 10%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Medicine increases Life of troops by 15%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Medicine increases Life of troops by 20%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Medicine increases Life of troops by 25%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Medicine increases the Max HP of troops by 30%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Medicine increases Life of troops by 35%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Medicine increases Life of troops by 40%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Medicine increases Life of troops by 45%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Medicine increases Life of troops by 50%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.SupplySkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="5" food="1500" wood="0" stone="0" iron="0" time="1800" gold="3600"/>
+      <levelData level="1" effect="10" food="3000" wood="0" stone="0" iron="0" time="3600" gold="7200"/>
+      <levelData level="2" effect="15" food="6000" wood="0" stone="0" iron="0" time="7200" gold="14400"/>
+      <levelData level="3" effect="20" food="12000" wood="0" stone="0" iron="0" time="14400" gold="28800"/>
+      <levelData level="4" effect="25" food="24000" wood="0" stone="0" iron="0" time="28800" gold="57600"/>
+      <levelData level="5" effect="30" food="48000" wood="0" stone="0" iron="0" time="57600" gold="115200"/>
+      <levelData level="6" effect="35" food="96000" wood="0" stone="0" iron="0" time="115200" gold="230400"/>
+      <levelData level="7" effect="40" food="192000" wood="0" stone="0" iron="0" time="230400" gold="460800"/>
+      <levelData level="8" effect="45" food="384000" wood="0" stone="0" iron="0" time="460800" gold="921600"/>
+      <levelData level="9" effect="50" food="768000" wood="0" stone="0" iron="0" time="921600" gold="1843200"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Construction" desc="Every single upgrade enhances constructing speed of buildings and fortified units by 10%. " wikiDesc="And on the pedestal these words appear: 'My name is Ozymandias, king of kings: Look on my works, ye Mighty, and despair!' Nothing beside remains. - Percy Bysshe Shelley
+
+The development of masonry led to a widespread use of stone in simple structures such as fortifications, but due to the weight and cumbersome nature of stone blocks, more complex structures had to be made of simpler materials. The need for the widespread use of more durable and permanent materials eventually became apparent, forcing ancient artisans to learn new techniques. The biggest problem to overcome was finding a stable way to span the distance between two upright columns or walls using stone blocks. To solve this problem, fundamental architectural elements such as the arch and vault evolved. These basic construction techniques allowed larger and more elaborate buildings to be created from stone and mortar. Many of the buildings erected by these early builders are still standing, a testament to the sound construction techniques employed in their construction." typeId="17">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Construction increases construction speed by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Construction increases construction speed by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Construction increases construction speed by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Construction increases construction speed by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Construction increases construction speed by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Construction increases construction speed by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Construction increases construction speed by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Construction increases construction speed by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Construction increases construction speed by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Construction increases construction speed by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.BuildTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="2000" stone="2000" iron="2000" time="1800" gold="5000"/>
+      <levelData level="1" effect="20" food="0" wood="4000" stone="4000" iron="4000" time="3600" gold="10000"/>
+      <levelData level="2" effect="30" food="0" wood="8000" stone="8000" iron="8000" time="7200" gold="20000"/>
+      <levelData level="3" effect="40" food="0" wood="16000" stone="16000" iron="16000" time="14400" gold="40000"/>
+      <levelData level="4" effect="50" food="0" wood="32000" stone="32000" iron="32000" time="28800" gold="80000"/>
+      <levelData level="5" effect="60" food="0" wood="64000" stone="64000" iron="64000" time="57600" gold="160000"/>
+      <levelData level="6" effect="70" food="0" wood="128000" stone="128000" iron="128000" time="115200" gold="320000"/>
+      <levelData level="7" effect="80" food="0" wood="256000" stone="256000" iron="256000" time="230400" gold="640000"/>
+      <levelData level="8" effect="90" food="0" wood="512000" stone="512000" iron="512000" time="460800" gold="1280000"/>
+      <levelData level="9" effect="100" food="0" wood="1024000" stone="1024000" iron="1024000" time="921600" gold="2560000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Engineering" desc="Every single upgrade enhances endurance of walls and fortified units by 10%." wikiDesc="A designer knows he has achieved perfection not when there is nothing left to add, but when there is nothing left to take away. - Antoine de Saint-Exupry
+
+Engineering is the application of scientific and mathematical principles to the design and/or manufacture of theoretical systems and physical objects. Prior to the mid-18th century, military engineers carried out all engineering functions. Their work involved the construction of roads, bridges, fortifications, and the performance of other duties relating to the military. In the late 18th century, civil engineers took over all non-military engineering functions. Other fields of engineering prior to the 20th century including mining engineers, who designed mines and methods of mining, and mechanical engineers, who dealt with the design and construction of machinery. As new technologies developed, new fields of engineering developed along with them. Today, there are engineers specifically trained in nearly every field, from electronics and computers to chemistry and atomics." typeId="18">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Engineering increases Durability of Walls and Fortified Units by 10%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Engineering increases Durability of Walls and Fortified Units by 20%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Engineering increases Durability of Walls and Fortified Units by 30%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Engineering increases Durability of Walls and Fortified Units by 40%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Engineering increases Durability of Walls and Fortified Units by 50%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Engineering increases Durability of Walls and Fortified Units by 60%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Engineering increases Durability of Walls and Fortified Units by 70%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Engineering increases Durability of Walls and Fortified Units by 80%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Engineering increases Durability of Walls and Fortified Units by 90%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Engineering increases Durability of Walls and Fortified Units by 100%."/>
+      <upLevelDescType level="10" upLevelDesc="tech.FortificationTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="10" food="0" wood="2500" stone="3000" iron="1500" time="2100" gold="6000"/>
+      <levelData level="1" effect="20" food="0" wood="5000" stone="6000" iron="3000" time="4200" gold="12000"/>
+      <levelData level="2" effect="30" food="0" wood="10000" stone="12000" iron="6000" time="8400" gold="24000"/>
+      <levelData level="3" effect="40" food="0" wood="20000" stone="24000" iron="12000" time="16800" gold="48000"/>
+      <levelData level="4" effect="50" food="0" wood="40000" stone="48000" iron="24000" time="33600" gold="96000"/>
+      <levelData level="5" effect="60" food="0" wood="80000" stone="96000" iron="48000" time="67200" gold="192000"/>
+      <levelData level="6" effect="70" food="0" wood="160000" stone="192000" iron="96000" time="134400" gold="384000"/>
+      <levelData level="7" effect="80" food="0" wood="320000" stone="384000" iron="192000" time="268800" gold="768000"/>
+      <levelData level="8" effect="90" food="0" wood="640000" stone="768000" iron="384000" time="537600" gold="1536000"/>
+      <levelData level="9" effect="100" food="0" wood="1280000" stone="1536000" iron="768000" time="1075200" gold="3072000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Machinery" desc="Every single upgrade enhances repairable rate of fortified units by 100%." wikiDesc="A god from the machine - Menander
+
+A machine is an object constructed of several parts that assists in the performance of a task. The machinery technology allows construction of fairly complex machines with metal components that store, modify and transmit energy in a useful fashion. A windmill is a machine of this type, as is a printing press. Man has used primitive machines throughout much of history. A bow can be considered a simple machine, as can a mortar and pestle. More complex machines came into being in the Middle Ages - at least in Europe. The Persians had windmills back in the seventh century BC. " typeId="19">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Machinery increases Repairable Rate of Fortified Units to 2 times."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Machinery increases Repairable Rate of Fortified Units to 3 times."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Machinery increases Repairable Rate of Fortified Units to 4 times."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Machinery increases Repairable Rate of Fortified Units to 5 times."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Machinery increases Repairable Rate of Fortified Units to 6 times."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Machinery increases Repairable Rate of Fortified Units to 7 times."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Machinery increases Repairable Rate of Fortified Units to 8 times."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Machinery increases Repairable Rate of Fortified Units to 9 times."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Machinery increases Repairable Rate of Fortified Units to 10 times."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Machinery increases Repairable Rate of Fortified Units to 11 times."/>
+      <upLevelDescType level="10" upLevelDesc="tech.RepairTech.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="100" food="0" wood="600" stone="700" iron="800" time="2400" gold="5500"/>
+      <levelData level="1" effect="200" food="0" wood="1200" stone="1400" iron="1600" time="4800" gold="11000"/>
+      <levelData level="2" effect="300" food="0" wood="2400" stone="2800" iron="3200" time="9600" gold="22000"/>
+      <levelData level="3" effect="400" food="0" wood="4800" stone="5600" iron="6400" time="19200" gold="44000"/>
+      <levelData level="4" effect="500" food="0" wood="9600" stone="11200" iron="12800" time="38400" gold="88000"/>
+      <levelData level="5" effect="600" food="0" wood="19200" stone="22400" iron="25600" time="76800" gold="176000"/>
+      <levelData level="6" effect="700" food="0" wood="38400" stone="44800" iron="51200" time="153600" gold="352000"/>
+      <levelData level="7" effect="800" food="0" wood="76800" stone="89600" iron="102400" time="307200" gold="704000"/>
+      <levelData level="8" effect="900" food="0" wood="153600" stone="179200" iron="204800" time="614400" gold="1408000"/>
+      <levelData level="9" effect="1000" food="0" wood="307200" stone="358400" iron="409600" time="1228800" gold="2816000"/>
+    </levelDatas>
+  </techEum>
+  <techEum name="Privateering" desc="Every single upgrade decreases rival's warehouse ability down to 3% while plundering." wikiDesc="The sinews of war are infinite money. - Cicero
+
+A letter of marque is an official warrant or commission from a government authorizing the designated agent to search, seize, or destroy specified assets or personnel belonging to a foreign party which has committed some offense under the laws of nations against the assets or citizens of the issuing nation, and has usually been used to authorize private parties to raid and capture merchant shipping of an enemy nation. It was until 1856 that the right to issue letters of marque were relinquished by signatories to the Declaration of Paris." typeId="20">
+    <upLevelDescs>
+      <upLevelDescType level="0" upLevelDesc="Level 1 Privateering decreases Warehouse protection by 3%."/>
+      <upLevelDescType level="1" upLevelDesc="Level 2 Privateering decreases Warehouse protection by 6%."/>
+      <upLevelDescType level="2" upLevelDesc="Level 3 Privateering decreases Warehouse protection by 9%."/>
+      <upLevelDescType level="3" upLevelDesc="Level 4 Privateering decreases Warehouse protection by 12%."/>
+      <upLevelDescType level="4" upLevelDesc="Level 5 Privateering decreases Warehouse protection by 15%."/>
+      <upLevelDescType level="5" upLevelDesc="Level 6 Privateering decreases Warehouse protection by 18%."/>
+      <upLevelDescType level="6" upLevelDesc="Level 7 Privateering decreases Warehouse protection by 21%."/>
+      <upLevelDescType level="7" upLevelDesc="Level 8 Privateering decreases Warehouse protection by 24%."/>
+      <upLevelDescType level="8" upLevelDesc="Level 9 Privateering decreases Warehouse protection by 27%."/>
+      <upLevelDescType level="9" upLevelDesc="Level 10 Privateering decreases Warehouse protection by 30%. 
+"/>
+      <upLevelDescType level="10" upLevelDesc="tech.HarrySkill.level10.upLevelDesc"/>
+    </upLevelDescs>
+    <levelDatas>
+      <levelData level="0" effect="3" food="5000" wood="0" stone="0" iron="2000" time="3600" gold="10000"/>
+      <levelData level="1" effect="6" food="10000" wood="0" stone="0" iron="4000" time="7200" gold="20000"/>
+      <levelData level="2" effect="9" food="20000" wood="0" stone="0" iron="8000" time="14400" gold="40000"/>
+      <levelData level="3" effect="12" food="40000" wood="0" stone="0" iron="16000" time="28800" gold="80000"/>
+      <levelData level="4" effect="15" food="80000" wood="0" stone="0" iron="32000" time="57600" gold="160000"/>
+      <levelData level="5" effect="18" food="160000" wood="0" stone="0" iron="64000" time="115200" gold="320000"/>
+      <levelData level="6" effect="21" food="320000" wood="0" stone="0" iron="128000" time="230400" gold="640000"/>
+      <levelData level="7" effect="24" food="640000" wood="0" stone="0" iron="256000" time="460800" gold="1280000"/>
+      <levelData level="8" effect="27" food="1280000" wood="0" stone="0" iron="512000" time="921600" gold="2560000"/>
+      <levelData level="9" effect="30" food="2560000" wood="0" stone="0" iron="1024000" time="1843200" gold="5120000"/>
+    </levelDatas>
+  </techEum>
+</techDefine>
