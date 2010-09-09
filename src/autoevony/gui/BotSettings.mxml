@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" title="Settings">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" title="Settings" borderColor="#EAF3D5">
 	<mx:Script>
 		<![CDATA[
 //			import org.smtp.events.SMTPEvent;
@@ -92,8 +92,8 @@
 		]]>
 	</mx:Script>
 	
-	<mx:VBox width="100%" height="100%" verticalGap="0" borderThickness="0" borderStyle="none">
-		<mx:TabBar direction="horizontal"  verticalAlign="middle" dataProvider="settingsStack"/>
+	<mx:VBox width="100%" height="100%" verticalGap="0" borderStyle="none">
+		<mx:TabBar direction="horizontal"  verticalAlign="middle" dataProvider="{settingsStack}"/>
 		<mx:ViewStack id="settingsStack" width="100%" height="100%" creationPolicy="all" creationComplete="init()" >
 			<mx:Canvas label="Map colors" width="100%" height="100%">
 				<mx:Form height="100%" width="100%">
@@ -149,6 +149,11 @@
 					</mx:HBox>
 				</mx:Form>
 			</mx:Canvas>
+			<mx:Canvas label="About" width="100%" height="100%">
+				<mx:HBox id="versioning" verticalAlign="middle" visible="true" horizontalAlign="right" width="100%" height="100%">					
+					<mx:TextArea editable="false" text="Build { Version.build_number}, compiled on {Version.build_time} using Evony version {Version.GAMECLIENTVERSION}" width="100%" height="100%"/>										
+				</mx:HBox>				
+			</mx:Canvas>
 <!--			<mx:Canvas label="Notification" width="100%" height="100%">
 				<mx:CheckBox x="10" y="10" label="Audio attack alert" id="audioAlert" click="audioAlert_Click()"/>
 				<mx:HRule x="0" y="40" width="100%" height="1"/>
@@ -168,6 +173,5 @@
 	<mx:HBox horizontalAlign="right" verticalAlign="bottom" width="100%">
 		<mx:Button id="okButton" label="Ok" enabled="true" click="ok()"/>		
 	</mx:HBox>	
-
 	</mx:VBox>
 </mx:TitleWindow>

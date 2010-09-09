@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:local="*"
-	creationComplete="init()" width="100%" height="100%" borderThickness="0" paddingBottom="0" xmlns:ns1="autoevony.gui.*">
+	creationComplete="init()" width="100%" height="100%" paddingBottom="0" xmlns:ns1="autoevony.gui.*">
 	<mx:Script>
 		<![CDATA[
 			import com.umge.sovt.common.beans.UnitAlliance;
@@ -1361,20 +1361,19 @@
 	<mx:Model id="config" source="/config.xml" />
 
 	<mx:VBox width="100%" height="100%" x="0" y="0">
-		<mx:Panel id="mainPanel" height="100%" width="100%" layout="horizontal" borderStyle="solid" borderColor="#090909"  backgroundColor="#D4D4D4" headerHeight="0" paddingTop="8">
+		<mx:Panel id="mainPanel" height="100%" width="100%" layout="horizontal" borderStyle="none" borderColor="#090909"  backgroundColor="#D4D4D4" headerHeight="0" paddingTop="8">
 			<mx:VBox width="100%" height="100%" verticalGap="0" borderStyle="none">
 				<mx:HBox width="100%" height="36" verticalAlign="middle" horizontalGap="5" paddingLeft="5" paddingRight="5">
-					<mx:Button id="pauseButton" label="Pause" enabled="true" click="pauseQueue()" fontSize="10" themeColor="#000000"/>
-					<mx:Button id="refreshButton" label="Refresh" enabled="true" click="refresh()" fontSize="10" themeColor="#000000"/>
-					<mx:Button label="Settings" id="settingsButton" enabled="true" click="showSettings()" fontSize="10" themeColor="#000000"/>
+					<mx:Button id="pauseButton" label="Pause" enabled="true" click="pauseQueue()" fontSize="10"/>
+					<mx:Button id="refreshButton" label="Refresh" enabled="true" click="refresh()" fontSize="10"/>
+					<mx:Button label="Settings" id="settingsButton" enabled="true" click="showSettings()" fontSize="10" />
 					<mx:Label text="AutoEvony - http://www.wiki-site.com/index.php/Evobot_City_Management" useHandCursor="true" width="100%" fontWeight="bold"/>
-					<ns1:CityTopView id="_Playerstats">
-					</ns1:CityTopView>
+					<ns1:CityTopView id="_Playerstats"></ns1:CityTopView>
 				</mx:HBox>
 				<mx:ToggleButtonBar id="citiesTab" direction="horizontal"  fontSize="9" paddingLeft="1" horizontalGap="1"/>
 				<mx:VDividedBox width="100%" height="100%">
-				<mx:ViewStack id="citiesViewStack" width="100%" height="50%"></mx:ViewStack>
-					<mx:HDividedBox width="100%" id="logChatBox" horizontalGap="3" height="50%" borderStyle="solid" borderThickness="0" verticalAlign="bottom">
+				<mx:ViewStack id="citiesViewStack" width="100%" height="50%" borderStyle="none"></mx:ViewStack>
+					<mx:HDividedBox width="100%" id="logChatBox" horizontalGap="3" height="50%" borderStyle="solid" verticalAlign="bottom">
 						<mx:VBox width="50%" height="100%" borderStyle="none" id="vlogs" verticalGap="3">
 								<mx:HBox width="100%" height="24" verticalAlign="middle">
 									<mx:ToggleButtonBar dataProvider="logStack" horizontalGap="1" paddingLeft="1" id="logToggleBar" selectedIndex="0" creationComplete="tabBar_creationComplete(logToggleBar)"/>
@@ -1452,10 +1451,5 @@
 				</mx:VDividedBox>
 			</mx:VBox>
 	</mx:Panel>
-	<mx:HBox width="100%" height="26" verticalAlign="middle">
-		<mx:HBox width="100%" height="26" verticalAlign="middle">
-			<mx:Label text="Build {Version.build_number}, compiled on {Version.build_time} using Evony version {Version.GAMECLIENTVERSION}" />
-		</mx:HBox>
-	</mx:HBox>
 	</mx:VBox>
 </mx:Module>

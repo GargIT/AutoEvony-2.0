@@ -104,8 +104,8 @@
         ]]>
     </mx:Script>
 
-	<mx:TextArea width="360" height="235" wordWrap="true" editable="true" enabled="true" backgroundColor="#FFFFEE" borderColor="#000000" x="10" y="182" change="bodychars();" maxChars="500" id="messageBody"/>
-	<mx:TextInput width="360" borderColor="#000000" backgroundColor="#FFFFEE" x="10" y="141" maxChars="25" change="subjchars();" id="messageSubject"/>
+	<mx:TextArea width="360" height="235" wordWrap="true" editable="true" enabled="true" borderColor="#000000" x="10" y="182" change="bodychars();" maxChars="500" id="messageBody"/>
+	<mx:TextInput width="360" borderColor="#000000" x="10" y="141" maxChars="25" change="subjchars();" id="messageSubject"/>
 	<mx:Text text="Subject&#xd;" width="360" x="10" y="121"/>
 	<mx:Text text="Message" width="360" x="10" y="163"/>
 	<mx:Text x="10" y="10" text="To:"/>
@@ -113,7 +113,7 @@
 	<mx:Button x="245" y="421" label="Cancel" id="btnClose" click="closeWindow();"/>
 	<mx:CheckBox x="35" y="8" label="My Alliance Members" selected="false" click="messageAllianceMembers(  );" id="messageAlliance"/>
 	<mx:Text x="208" y="12" text="(This does NOT use Speakers)" width="165" color="#FF0000" fontSize="9" textAlign="right"/>
-	<mx:TextArea x="10" y="62" width="360" height="59" backgroundColor="#FFFFEE" id="messageAddresses" borderColor="#000000"/>
+	<mx:TextArea x="10" y="62" width="360" height="59" id="messageAddresses" borderColor="#000000"/>
 	<mx:Text x="69" y="121" text="(Max 25 Characters)" width="192" color="#FF0000" id="subjcharsleft" />
 	<mx:Text x="69" y="163" text="(Max 500 Characters)" width="192" color="#FF0000" id="bodycharsleft" />
 	<mx:Text x="10" y="30" text="Enter names seperated by a comma (me, you) to mail someone with a space in the name use a _ (underline)&#xd;" width="360" height="32"/>

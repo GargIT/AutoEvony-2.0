@@ -7970,7 +7970,6 @@ package autoevony.management
 				if (army.missionType == ObjConstants.ARMY_MISSION_OCCUPY) {
 					obj.col1 = "attack";
 					if (isJunkTroop(army.troop)) {
-						;
 					} else if (isScoutBombTroop(army.troop)) {
 						obj.bgColor = 0xE3EAFD;
 					} else {
@@ -8013,8 +8012,7 @@ package autoevony.management
 				if (army.direction == ArmyConstants.ARMY_FORWARD) {
 					obj.col3 = remainTime(army.reachTime);
 					extra = "\nArrival: " + new Date(army.reachTime).toLocaleTimeString();
-				} else if (army.direction == ArmyConstants.ARMY_BACKWARD) {
-					;
+				} else if (army.direction == ArmyConstants.ARMY_BACKWARD) {					
 				} else {
 					obj.col1 += " from";
 				}

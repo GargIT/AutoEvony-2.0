@@ -107,9 +107,9 @@
 	<mx:NumberFormatter id="nf" precision="0" useThousandsSeparator="true" useNegativeSign="true"/>
 	<mx:DateFormatter id="df" formatString="J:NN"/>
 	<mx:Text x="350" text="00:00" width="75" fontSize="12" fontWeight="bold" textAlign="center" height="19" y="15" id="_Clock"/>
-	<mx:Label x="350" y="0" text="Server Time" width="75" textAlign="center" fontSize="9" maxHeight="15"/>
-	<mx:Label text="Honor" textAlign="center" fontSize="9" maxHeight="15" x="250" width="100"/>
-	<mx:Label text="Prestige" textAlign="center" fontSize="9" maxHeight="15" x="150" width="100"/>
+	<mx:Label x="350" y="0" text="Server Time" width="75" textAlign="center" fontSize="9" maxHeight="15" fontWeight="bold" color="#3B7706"/>
+	<mx:Label text="Honor" textAlign="center" fontSize="9" maxHeight="15" x="250" width="100" fontWeight="bold" color="#3B7706"/>
+	<mx:Label text="Prestige" textAlign="center" fontSize="9" maxHeight="15" x="150" width="100" fontWeight="bold" color="#3B7706"/>
 	<mx:Text x="250" text="0" width="100" fontSize="12" fontWeight="bold" textAlign="center" height="19" y="15" id="_Honor"/>
 	<mx:Text x="150" text="0" width="100" fontSize="12" fontWeight="bold" textAlign="center" height="19" y="15" id="_Prestige"/>
 	<mx:Text x="100" width="50" height="34" textAlign="center" color="#021EE6" fontWeight="bold" fontSize="16" paddingTop="7" id="_Mail" useHandCursor="true"/>

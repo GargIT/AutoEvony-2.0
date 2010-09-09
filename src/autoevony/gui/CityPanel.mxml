@@ -18,7 +18,6 @@
 			import mx.events.ToolTipEvent;
 			import mx.collections.ArrayCollection;
 			
-			import autoevony.gui.heroes;
 			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			import mx.core.IFlexDisplayObject;
@@ -436,12 +435,12 @@
 				<mx:Canvas label="Goals" width="100%" height="100%" id="goalsCanvas">
 					<mx:VBox width="100%" height="100%" verticalGap="0">
 						<mx:HDividedBox id="goalshelpDivider" width="100%" height="100%" horizontalGap="0">
-							<mx:TextArea id="goalsTextArea" width="100%" height="100%" backgroundColor="#F6FBFA"/>
+							<mx:TextArea id="goalsTextArea" width="100%" height="100%" />
 							<local:HelpPanel id="goalshelp" helpType="Goals" visible="false" width="0" height="100%"/>
 						</mx:HDividedBox>					
 						<mx:HBox width="100%" height="30" verticalAlign="middle" horizontalAlign="right" paddingRight="1">
-							<mx:Button label="Set Goals" click="setGoals()" themeColor="#000000"/>
-							<mx:Button label="Save" click="saveGoals()" themeColor="#000000"/>
+							<mx:Button label="Set Goals" click="setGoals()" />
+							<mx:Button label="Save" click="saveGoals()" />
 						</mx:HBox>
 					</mx:VBox>
 				</mx:Canvas>
@@ -452,10 +451,10 @@
 							<local:HelpPanel id="scripthelp" helpType="Script" visible="false" width="0" height="100%"/>
 						</mx:HDividedBox>
 						<mx:HBox width="100%" height="30" verticalAlign="middle" horizontalAlign="right" paddingRight="1">
-							<mx:TextInput id="startLine" width="50" editable="true" restrict="0-9"  borderColor="#8F8E8E" borderStyle="solid" cornerRadius="4"/>
-							<mx:Button label="Run" id="runButton" click="runScript()" themeColor="#000000"/>
-							<mx:Button label="Stop" enabled="false" id="stopButton" click="stopScript()" themeColor="#000000"/>
-							<mx:Button label="Save" id="saveButton" click="saveScript()" themeColor="#000000"/>
+							<mx:TextInput id="startLine" width="50" editable="true" restrict="0-9"  borderColor="#8F8E8E" borderStyle="solid" />
+							<mx:Button label="Run" id="runButton" click="runScript()" />
+							<mx:Button label="Stop" enabled="false" id="stopButton" click="stopScript()" />
+							<mx:Button label="Save" id="saveButton" click="saveScript()" />
 						</mx:HBox>
 					</mx:VBox>
 				</mx:Canvas>
@@ -544,7 +543,7 @@
             						import mx.events.CloseEvent;       		
 									
 									private function showWindow( hero1ID:int, item1ID:String, hero1Name:String , buff1Name:String , cityID:int ) : void {
-                						var login:SimpleTitleWindowExample=SimpleTitleWindowExample(PopUpManager.createPopUp( this, SimpleTitleWindowExample , true ));
+                						var login:HeroBuffs=HeroBuffs(PopUpManager.createPopUp( this, HeroBuffs , true ));
                 						if ( buff1Name == "hero.power.1" ) {
                 							buff1Name = "Excalibur";                							
                 						} else if ( buff1Name == "hero.management.1" ) {

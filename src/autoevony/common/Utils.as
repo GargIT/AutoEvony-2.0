@@ -24,10 +24,9 @@ package autoevony.common
 			return new Date().getTime() + serverTimeAdjust;
 		}
 		
-		public static function trim(str:String):String
-		{
-		    for(var i:int = 0; str.charCodeAt(i) < 33; i++);
-		    for(var j:int = str.length-1; str.charCodeAt(j) < 33; j--);
+		public static function trim(str:String):String {
+		    for ( var i:int = 0; str.charCodeAt(i) < 33; i++);
+		    for ( var j:int = str.length-1; str.charCodeAt(j) < 33; j--); 
 		    return str.substring(i, j+1);
 		}
 		public static function searchAndReplace(holder:String, searchfor:String, replacement:String) : String {
