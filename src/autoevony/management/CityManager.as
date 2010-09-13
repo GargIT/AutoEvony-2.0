@@ -5284,6 +5284,7 @@ package autoevony.management
 
 		private function hasResourceForArmy(newArmy:NewArmyParam) : Boolean {			
 			var foodConsume:Number = getFoodConsume(newArmy);
+			logDebugMsg( 11 , "HAS RESOURCE FOR ARMY: " );
 			for each(var resName:String in resourceIntNames) {
 				logDebugMsg( 11 , resName + " = " + estResource[resName] + " need " + newArmy.resource[resName] );
 				if (estResource[resName] < newArmy.resource[resName]) return false;
@@ -5584,6 +5585,7 @@ package autoevony.management
 				newArmy.targetPoint = fieldId;
 				newArmy.troops = tr;
 				newArmy.resource = new ResourceBean();
+				logDebugMsg(DEBUG_NPCATTACK, "RESOURCE NEW ARMY: ");
 				logDebugMsg(DEBUG_NPCATTACK, newArmy.resource.toDebugString("") );
 				if (!hasResourceForArmy(newArmy)) {
 					logDebugMsg(DEBUG_NPCATTACK,"Not enough resource for new army");
@@ -7918,6 +7920,36 @@ package autoevony.management
 					obj.col4 = hero.id;
 				}
 
+				data.addItem(obj);
+    		}
+    		
+    		DataRow.copyRowArray(data, arr);
+    	}
+
+    	public function updateInnHeroData(arr:ArrayCollection) : void {
+    		var data:ArrayCollection = new ArrayCollection();
+    		for each(var hero:HeroBean in innHeroes) {
+    			var obj:DataRow = new DataRow();
+    			obj.col1 = hero.name;
+    			obj.col12 = this.castle.id;
+    			obj.col2 = heroStatusStrings[hero.status];
+    			if (hero.management >= Math.max(hero.stratagem, hero.power)) {
+    				obj.col3 = "Pol";
+    			} else if (hero.stratagem >= Math.max(hero.management, hero.power)) {
+    				obj.col3 = "Int"; 
+    			} else {
+    				obj.col3 = "Att"; 
+    			}
+    			obj.col5 = hero.management + Math.round(hero.management * ( hero.managementBuffAdded / 100 ));
+    			obj.col7 = hero.stratagem + Math.round( hero.stratagem * (hero.stratagemBuffAdded / 100 ));
+    			obj.col6 = hero.power + Math.round( hero.power * ( hero.powerBuffAdded / 100 ));
+    			obj.col8 = hero.level;    			
+				obj.label = hero.name + " " + (hero.management + Math.round(hero.management * ( hero.managementBuffAdded / 100 ) ))  + "/" + (hero.power + Math.round( hero.power * ( hero.powerBuffAdded / 100 ) ))  + "/" + (hero.stratagem + Math.round( hero.stratagem * (hero.stratagemBuffAdded / 100 ) )) +
+    				"\nlevel " + hero.level + "\nloyalty " + hero.loyalty + "\nexperience " + hero.experience + "/" + hero.upgradeExp ;
+							    			
+				obj.bgColor = 0xFFFFFF;
+				obj.col4 = hero.id;
+				obj.col9 = "hire";
 				data.addItem(obj);
     		}
     		

@@ -8,10 +8,13 @@
 			import autoevony.net.Connection;
 			import autoevony.scripts.CityState;
 			import autoevony.common.CommandHelp;
+			import autoevony.common.BuildingType;
+			import com.umge.sovt.common.beans.BuildingBean;
 			import autoevony.gui.MainScreen;
 			import com.umge.sovt.common.beans.MapCastleBean;
 			import flash.utils.setTimeout;
 			import com.umge.sovt.client.action.ActionFactory;
+			import com.umge.sovt.common.constants.*;
 			import mx.core.Container;
 			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
@@ -32,7 +35,17 @@
 			private var uiHolder:UIComponent = new UIComponent();
 			private var mapData:Object = new Object();
 			private var scriptCache:SharedObject;
-			
+
+			public var ACADEMY_POSITION:int = 0; 
+			public var INN_POSITION:int = 0;	
+			public var FEASTING_POSITION:int = 0; 
+			public var TOWNHALL_POSITION:int = 0;
+			public var RALLY_POSITION:int = 0;
+			public var EMBASSY_POSITION:int = 0;
+			public var WALL_POSITION:int = 0;
+			public var BARRACK_POSITION:int = 0;
+			public var MARKET_POSITION:int = 0;
+					
 			[Bindable] private var mapImage:Bitmap = new Bitmap();
 			[Bindable] private var infoData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var resourceData:ArrayCollection = new ArrayCollection;
@@ -40,6 +53,7 @@
 			[Bindable] private var buildingData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var researchData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var heroData:ArrayCollection = new ArrayCollection;
+			[Bindable] private var innheroData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var armyData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var extraTroopData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var troopsData:ArrayCollection = new ArrayCollection;
@@ -47,6 +61,8 @@
 			[Bindable] private var tradesData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var castlesData:ArrayCollection = new ArrayCollection;
 			[Bindable] private var allianceData:ArrayCollection = new ArrayCollection;
+			
+			public var abuildings:ArrayCollection = new ArrayCollection;
             			
 			public function init(queueJobs:MainScreen, city:CityState, log:CityLogView) : void {
 	        	this.queueJobs = queueJobs;
@@ -56,6 +72,33 @@
 	        	timer.addEventListener(TimerEvent.TIMER, updateAllInfo);
 	        	timer.start();
 	        	
+	        	abuildings = city.castle.buildingsArray;
+	        	
+	        	for each(var building:BuildingBean in abuildings) {
+				if (building.typeId != BuildingConstants.TYPE_BARRACK) {
+					if ( building.typeId == BuildingConstants.TYPE_ACADEMY ) { 
+						ACADEMY_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_TAVERN ) { 
+						INN_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_HEROS_MANSION ) { 
+						FEASTING_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_TOWN_HALL ) { 
+						TOWNHALL_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_TRAINNING_FEILD ) { 
+						RALLY_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_EMBASSY ) { 
+						EMBASSY_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_MARKET ) { 
+						MARKET_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_WALL ) { 
+						WALL_POSITION = building.positionId;
+					} 
+					continue;
+				} else {
+					BARRACK_POSITION = building.positionId;				
+				}
+			}
+
 				this.id = "Castle" + city.castle.id;
 	        	var sName:String = city.castle.name;
 	        	if (sName.length > 3) sName = sName.substring(0, 3);
@@ -101,6 +144,9 @@
 	        	if (obj == null || allinfo.selectedChild == heroes) {
 	        		city.cityManager.updateHeroData(heroData);
 	        	}
+	        	if (obj == null || allinfo.selectedChild == innheroes) {
+	        		city.cityManager.updateInnHeroData(innheroData);
+	        	}
 	        	if (obj == null || allinfo.selectedChild == buildings) {
 	        		city.cityManager.updateBuildingData(buildingData);
 	        	}
@@ -140,7 +186,6 @@
 	        	if (obj == null || allinfo.selectedChild == alliance) {
 	        		city.cityManager.updateAllianceData(allianceData);
 	        	}
-	        		        	
 	        }
 			
 			private function initTextAreas(obj:Object = null) : void {
@@ -315,6 +360,7 @@
 			
 			public function abandonField(fieldId:int) : void {
 				queueJobs.logMessage("Abandon field: " + Map.fieldIdToString(fieldId));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(city.castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getFieldCommand().giveUpField(fieldId);
 				setTimeout(city.cityManager.updateValleyData, 3000, valleyData);
 			}
@@ -341,12 +387,22 @@
 						
 			public function fireHero(heroId:int) : void {
 				queueJobs.logMessage("Firing hero with heroId: " + heroId);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(city.castle.id, FEASTING_POSITION);
 				ActionFactory.getInstance().getHeroCommand().fireHero(city.castle.id, heroId);
 				setTimeout(city.cityManager.updateHeroData, 3000, heroData);
 			}
 
+			public function hireHero(heroName:String) : void {
+				queueJobs.logMessage("Hiring hero with Name: " + heroName);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(city.castle.id, INN_POSITION);
+				ActionFactory.getInstance().getHeroCommand().hireHero(city.castle.id, heroName);
+				setTimeout(city.cityManager.updateInnHeroData, 3000, innheroData);
+				setTimeout(city.cityManager.refreshinn, 3000);
+			}
+
 			public function demoteHero(heroId:int) : void {
 				queueJobs.logMessage("Removing Mayor: " + heroId);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(city.castle.id, FEASTING_POSITION);
 				ActionFactory.getInstance().getHeroCommand().dischargeChief( city.castle.id );
 				setTimeout(city.cityManager.updateHeroData, 3000, heroData);
 			}
@@ -521,6 +577,42 @@
 							</mx:DataGridColumn>
 						</mx:columns>
 					</mx:DataGrid>
+				</mx:Canvas>
+				<mx:Canvas label="In" width="100%" height="100%" id="innheroes">
+					<local:RowColorDataGrid dataProvider="{innheroData}" width="100%" height="100%" allowMultipleSelection="false"
+						doubleClickEnabled="false" dragEnabled="false" editable="false" resizableColumns="true" wordWrap="false" 
+						showHeaders="true" sortableColumns="true" visible="true" allowDragSelection="false" draggableColumns="false" enabled="true" 
+						selectable="false" horizontalScrollPolicy="off" variableRowHeight="true" minHeight="30" rowHeight="16">
+						<local:columns>
+							<mx:DataGridColumn headerText="Hero" dataField="col1" width="0.2"/>							
+							<mx:DataGridColumn headerText="Type" dataField="col3" width="0.1" showDataTips="true"/>
+							<mx:DataGridColumn headerText="Lvl" dataField="col8" width="0.1" />							
+							<mx:DataGridColumn headerText="Pol" dataField="col5" width="0.1" />
+							<mx:DataGridColumn headerText="Atk" dataField="col6" width="0.1" />
+							<mx:DataGridColumn headerText="Int" dataField="col7" width="0.1" />
+							<mx:DataGridColumn headerText="Actions" width="0.2">
+								<mx:itemRenderer>
+								<mx:Component>
+								<mx:VBox verticalGap="0" horizontalGap="0" horizontalAlign="center">
+								<mx:Script>
+								<![CDATA[
+									private var lastTime:Number = 0;								
+									private function hireHero(heroName:String) : void {
+										if (new Date().getTime() < lastTime + 3000) return;
+										lastTime = new Date().getTime(); 
+										var cp:CityPanel = this.outerDocument as CityPanel;
+										if (cp != null) cp.hireHero(heroName);
+									}
+									
+								]]>
+								</mx:Script>
+								<mx:Button fontSize="9" height="{data.col9=='hire'?18:0}" id="hire" label="Hire" visible="{data.col9=='hire'}" click="hireHero(data.col1)"/>
+								</mx:VBox>
+								</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</local:columns>
+					</local:RowColorDataGrid>	
 				</mx:Canvas>
 				<mx:Canvas label="H" width="100%" height="100%" id="heroes">
 					<local:RowColorDataGrid dataProvider="{heroData}" width="100%" height="100%" allowMultipleSelection="false"
