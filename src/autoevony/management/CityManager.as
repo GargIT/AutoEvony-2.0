@@ -517,6 +517,8 @@ package autoevony.management
 				}
 			}
 
+			logMessage("BUILDING POSITIONS: RALLY " + RALLY_POSITION + ", ACADEMY " + ACADEMY_POSITION + ", INN " + INN_POSITION + ", FEASTING " + FEASTING_POSITION + ", WALL " + WALL_POSITION + ", TOWNHALL " + TOWNHALL_POSITION + ", BARRACK " + BARRACK_POSITION + ", EMBASSY " + EMBASSY_POSITION + ", MARKET " + MARKET_POSITION );
+
 			// promotePoliticsChief();
 
 			// get local map information
@@ -2168,6 +2170,7 @@ package autoevony.management
 			}
 			
 			if (cityTimingAllowed("refresh", 300)) {
+				
 				troopProductionUpdateNeeded = true;
 				fortificationProductionUpdateNeeded = true;
 				researchUpdateNeeded = true;
@@ -2280,6 +2283,7 @@ package autoevony.management
 				logMessage("CURING TROOPS using " + healingGoldRequired + " gold" , "#660000");
 				healingGoldRequired = 0;
 				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				logDebugMsg(DEBUG_NORMAL, "RALLYPOSITION " + RALLY_POSITION , "#169736");				
 				ActionFactory.getInstance().getArmyCommands().getInjuredTroop(castle.id);
 				ActionFactory.getInstance().getArmyCommands().cureInjuredTroop(castle.id);
 				estResource.gold -= healingGoldRequired;
@@ -3996,6 +4000,7 @@ package autoevony.management
 				if (canProduceFortification(type, batch) && spaceAvailableForFortification(batch) && fortification[ troopIntNames[type] ] + prod[ troopIntNames[type] ] < fortificationsRequirement[ troopIntNames[type] ]) {
 					logDebugMsg(DEBUG_NORMAL, "Use spare resources for " + batch + " " + troopExtNames[type], "#169736");
 					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
+					logDebugMsg(DEBUG_NORMAL, "WALLPOSITION " + WALL_POSITION , "#169736");
 					ActionFactory.getInstance().getFortificationsCommands().produceWallProtect(castle.id, type, batch);					
 					return true;
 				}
@@ -5269,6 +5274,7 @@ package autoevony.management
 			npcLocations.push(fieldInfo.id);
 			logMessage("Attack flat " + Map.fieldIdToString(fieldInfo.id) + " for npc with " + troops.archer + " archers " + Utils.formatTime(getTravelTime(newArmy)));
 			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			logDebugMsg(DEBUG_NORMAL ,"RALLYPOSITION" + RALLY_POSITION);
 			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
