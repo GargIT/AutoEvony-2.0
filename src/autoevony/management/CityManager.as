@@ -230,6 +230,17 @@ package autoevony.management
 		private var capNpcLoyaltyWavesTroopBean:TroopBean = null;
 		private var capNpcList:Array = null;
 		public  var heroItems:Object = new Object();		
+		
+		public var ACADEMY_POSITION:int = 0; 
+		public var INN_POSITION:int = 0;	
+		public var FEASTING_POSITION:int = 0; 
+		public var TOWNHALL_POSITION:int = 0;
+		public var RALLY_POSITION:int = 0;
+		public var EMBASSY_POSITION:int = 0;
+		public var WALL_POSITION:int = 0;
+		public var BARRACK_POSITION:int = 0;
+		public var MARKET_POSITION:int = 0;
+		
 		private function errorCaught(errorMsg:String) : void {
 			logMessage("Error: " + errorMsg,"#ff0000");
 		}	
@@ -463,26 +474,47 @@ package autoevony.management
 
 			// map information in theory could change between logins
 			resetMap();
-
-			ActionFactory.getInstance().getTechCommand().getResearchList(castle.id);
-			ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListInside(castle.id);
-			ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListOutside(castle.id);
-			ActionFactory.getInstance().getCastleCommands().getAvailableBuildingBean(castle.id, BuildingConstants.TYPE_WALL, handleWallBuildingBeanResponse);
-
-			if (countBuilding(BuildingConstants.TYPE_WALL, 1) > 0) {
-				ActionFactory.getInstance().getFortificationsCommands().getFortificationsProduceList(castle.id);
-				ActionFactory.getInstance().getFortificationsCommands().getProduceQueue(castle.id);
-			}
 			
-			// ActionFactory.getInstance().getArmyCommands().setArmyGoOut(castle.id, true);
-			// ActionFactory.getInstance().getArmyCommands().setAllowAllianceArmy(castle.id, true);
-			ActionFactory.getInstance().getInteriorCommands().getResourceProduceData(castle.id);			
+			//ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListInside(castle.id);
+			//ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListOutside(castle.id);			
+		
 			
-			ActionFactory.getInstance().getTroopCommands().getProduceQueue(castle.id);
 			for each(var building:BuildingBean in buildings) {
-				if (building.typeId != BuildingConstants.TYPE_BARRACK) continue;
-				ActionFactory.getInstance().getTroopCommands().getTroopProduceList(castle.id, building.positionId);
-				break;
+				if (building.typeId != BuildingConstants.TYPE_BARRACK) {
+					if ( building.typeId == BuildingConstants.TYPE_ACADEMY ) { 
+						ACADEMY_POSITION = building.positionId;
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, ACADEMY_POSITION );
+						ActionFactory.getInstance().getTechCommand().getResearchList(castle.id);
+					} else if ( building.typeId == BuildingConstants.TYPE_TAVERN ) { 
+						INN_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_HEROS_MANSION ) { 
+						FEASTING_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_TOWN_HALL ) { 
+						TOWNHALL_POSITION = building.positionId;
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION );
+						ActionFactory.getInstance().getInteriorCommands().getResourceProduceData(castle.id);									
+					} else if ( building.typeId == BuildingConstants.TYPE_TRAINNING_FEILD ) { 
+						RALLY_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_EMBASSY ) { 
+						EMBASSY_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_MARKET ) { 
+						MARKET_POSITION = building.positionId;
+					} else if ( building.typeId == BuildingConstants.TYPE_WALL ) { 
+						WALL_POSITION = building.positionId;
+						if (countBuilding(BuildingConstants.TYPE_WALL, 1) > 0) {
+							ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION );
+							ActionFactory.getInstance().getFortificationsCommands().getFortificationsProduceList(castle.id);
+							ActionFactory.getInstance().getFortificationsCommands().getProduceQueue(castle.id);
+							ActionFactory.getInstance().getCastleCommands().getAvailableBuildingBean(castle.id, BuildingConstants.TYPE_WALL, handleWallBuildingBeanResponse);
+						}						
+					} 
+					continue;
+				} else {
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, building.positionId);
+					ActionFactory.getInstance().getTroopCommands().getProduceQueue(castle.id);
+					ActionFactory.getInstance().getTroopCommands().getTroopProduceList(castle.id, building.positionId);
+					BARRACK_POSITION = building.positionId;				
+				}
 			}
 
 			// promotePoliticsChief();
@@ -980,7 +1012,10 @@ package autoevony.management
 				}
 				
 				if (researches == null && playerTimingAllowed("research", 6)) {
-					ActionFactory.getInstance().getTechCommand().getResearchList(castle.id, handleQuickResearchListResponse);
+					if ( ACADEMY_POSITION != 0 ) {
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, ACADEMY_POSITION ); 
+						ActionFactory.getInstance().getTechCommand().getResearchList(castle.id, handleQuickResearchListResponse);
+					}
 				}
 	
 				if (!masterTimer.canSend(timeSlot)) return;
@@ -1004,7 +1039,10 @@ package autoevony.management
 				if (innUpdateNeeded && masterTimer.canSend(timeSlot)) {
 					innUpdateNeeded = false;
 					if (countBuilding(BuildingConstants.TYPE_TAVERN, 1) > 0) {
-						ActionFactory.getInstance().getHeroCommand().getHerosListFromTavern(castle.id);
+						if ( INN_POSITION != 0 ) {
+							ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION ); 					
+							ActionFactory.getInstance().getHeroCommand().getHerosListFromTavern(castle.id);
+						}
 					}
 				}
 				//task = "search unoccupied local fields";
@@ -1199,7 +1237,8 @@ package autoevony.management
 					handleBuilding();
 					return;
 				}
-				logMessage("demolish building " + BuildingType.toString(bean.typeId) + ":" + bean.level + " at location " + bean.positionId);
+				logMessage("demolish building " + BuildingType.toString(bean.typeId) + ":" + bean.level + " at location " + bean.positionId);				
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, bean.positionId); 					
 				ActionFactory.getInstance().getCastleCommands().destructBuilding(castle.id, bean.positionId); 
 			} else if (cond.level == 1) { 			// create new building
 				posId = selectEmptyPosition(cond.typeId);
@@ -1210,7 +1249,12 @@ package autoevony.management
 					return;
 				}
 				logMessage("build new building " + BuildingType.toString(cond.typeId) + " at location " + posId);
-				ActionFactory.getInstance().getCastleCommands().newBuilding(castle.id, posId, cond.typeId); 
+				if ( BuildingType.isOutsideBuilding(cond.typeId) == true ) {
+					ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListInside(castle.id);
+				} else {
+					ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListOutside(castle.id);
+				}				
+				ActionFactory.getInstance().getCastleCommands().newBuilding(castle.id, posId, cond.typeId);				 
 				for each(resName in resourceIntNames) estResource[resName] -= condBean[resName];
 			} else {						// upgrade existing building
 				posId = selectBuildingPosition(cond.typeId, cond.level-1);
@@ -1221,9 +1265,11 @@ package autoevony.management
 					return;
 				}
 				logMessage("upgrade building " + BuildingType.toString(cond.typeId) + " to level " + cond.level + " at location " + posId);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, posId);
 				ActionFactory.getInstance().getCastleCommands().upgradeBuilding(castle.id, posId);
 				for each(resName in resourceIntNames) estResource[resName] -= condBean[resName];
 			}
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, posId)
 			ActionFactory.getInstance().getCastleCommands().speedUpBuildCommand(castle.id, posId, CommonConstants.FREE_SPEED_ITEM_ID);
 		}
 		
@@ -1248,6 +1294,7 @@ package autoevony.management
 			if (!cityTimingAllowed("research", 10)) return;
 			promoteIntelChief();
 			logMessage("research " + TechType.toString(cond.typeId) + " to level " + cond.level);
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, ACADEMY_POSITION );
 			ActionFactory.getInstance().getTechCommand().research(castle.id, cond.typeId);
 			ActionFactory.getInstance().getTechCommand().speedUpResearch(castle.id, CommonConstants.FREE_SPEED_ITEM_ID);
 			// promotePoliticsChief();
@@ -1704,6 +1751,7 @@ package autoevony.management
 				
 				if (promoteAllowed(best.id)) {
 					logDebugMsg(DEBUG_NORMAL, "Promote to chief: " + heroToString(best));
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 					ActionFactory.getInstance().getHeroCommand().promoteToChief(castle.id, best.id);
 				}
 			}
@@ -1716,6 +1764,7 @@ package autoevony.management
 				
 				if (promoteAllowed(best.id)) {
 					logDebugMsg(DEBUG_NORMAL, "Promote to chief: " + heroToString(best));
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 					ActionFactory.getInstance().getHeroCommand().promoteToChief(castle.id, best.id);
 				}
 			}
@@ -1727,20 +1776,20 @@ package autoevony.management
 			if (best.status == CityStateConstants.HERO_STATUS_IDLE) {
 				if (promoteAllowed(best.id)) {
 					logDebugMsg(DEBUG_NORMAL, "Promote to chief: " + heroToString(best));
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 					ActionFactory.getInstance().getHeroCommand().promoteToChief(castle.id, best.id);
 				}
 			}
 		}
 		
-
-		
 		private static var seedMarketInterest:int = 0;
 		private static var currMarketInterest:int = -1;
 
-		private static function updateMarketPrices() : void {
+		private function updateMarketPrices() : void {
 			if (!playerTimingAllowed("marketupdate", 10)) return;
 			seedMarketInterest = (seedMarketInterest + 1) % 4;
 			currMarketInterest = seedMarketInterest;
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);
 			ActionFactory.getInstance().getTradeCommands().searchTrades(currMarketInterest);
 		}
 
@@ -1771,6 +1820,7 @@ package autoevony.management
 			if (!cityTimingAllowed("modify", 60)) return;
 
 			logMessage("Cancel buy " + resourceNames[trade.resType] + ": " + remain + "@" + trade.price + ", range: " + sellPrice(trade.resType) + "-" + buyPrice(trade.resType));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);
 			ActionFactory.getInstance().getTradeCommands().cancelTrade(castle.id, trade.id);
 			estResource.gold += remain * trade.price;
 			
@@ -1804,6 +1854,7 @@ package autoevony.management
 			if (!cityTimingAllowed("modify", 60)) return;
 			
 			logMessage("Cancel sell " + resourceNames[trade.resType] + ": " + remain + "@" + trade.price + ", range: " + sellPrice(trade.resType) + "-" + buyPrice(trade.resType));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);
 			ActionFactory.getInstance().getTradeCommands().cancelTrade(castle.id, trade.id);
 			estResource[ resourceIntNames[trade.resType] ] += remain;
 			
@@ -1844,6 +1895,7 @@ package autoevony.management
 			if (estResource.gold < price*amount*0.005) return;
 			
 			logMessage("Sell " + resourceNames[resType] + ": " + amount + " at " + price + ", range: " + sellPrice(resType) + "-" + buyPrice(resType));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);
 			ActionFactory.getInstance().getTradeCommands().newTrade(
 				castle.id, resType, TradeConstants.TRADE_TYPE_SELL, 
 				amount, "" + price);			
@@ -1881,6 +1933,7 @@ package autoevony.management
 			if (estResource.gold < price*amount*1.005) return;
 			
 			logMessage("Buy " + resourceNames[resType] + ": " + amount + " at " + price + ", range: " + sellPrice(resType) + "-" + buyPrice(resType));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);
 			ActionFactory.getInstance().getTradeCommands().newTrade(
 				castle.id, resType, TradeConstants.TRADE_TYPE_BUY, 
 				amount, "" + price);
@@ -2102,17 +2155,17 @@ package autoevony.management
 		}
 		
 		private function handleIdleUpdates() : void {
-			if (playerTimingAllowed("quest1", 300)) {
+			if (playerTimingAllowed("quest1", 180)) {
 				ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 1);
 			}
 			
-			if (playerTimingAllowed("quest2", 310)) {
+			if (playerTimingAllowed("quest2", 180)) {
 				ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 3);
 			}
 			
-//			if (cityTimingAllowed("mapupdate", 10800)) {
-//				resetMap();
-//			}
+			if (playerTimingAllowed("quest3", 180)) {
+				ActionFactory.getInstance().getQuestCommands().getQuestList( castle.id, 1);
+			}
 			
 			if (cityTimingAllowed("refresh", 300)) {
 				troopProductionUpdateNeeded = true;
@@ -2124,21 +2177,26 @@ package autoevony.management
 			}
 
 			if (troopProductionUpdateNeeded) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, BARRACK_POSITION);
 				ActionFactory.getInstance().getTroopCommands().getProduceQueue(castle.id);
 				troopProductionUpdateNeeded = false;
 			}
 
 			if (fortificationProductionUpdateNeeded) {
 				if (countBuilding(BuildingConstants.TYPE_WALL, 1) > 0) {
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 					ActionFactory.getInstance().getFortificationsCommands().getProduceQueue(castle.id);
 				}
 			}
 			
 			if (allianceUpdateNeeded) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, EMBASSY_POSITION);
+				ActionFactory.getInstance().getAllianceManagementCommands().isHasAlliance();
 				ActionFactory.getInstance().getAllianceCommands().getAllianceMembers(handleAllianceMembersResponse);
 			}
 			
 			if (researchUpdateNeeded || researches == null) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, ACADEMY_POSITION);
 				ActionFactory.getInstance().getTechCommand().getResearchList(castle.id);
 			}
 
@@ -2147,11 +2205,12 @@ package autoevony.management
 			}
 			
 			if (getConfig(CONFIG_HERO) > 0 && heroUpdateNeeded) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 				var worst:HeroBean = worstAttackBaseHeroToKeep();
 				var captured:HeroBean = worstAttackBaseCapturedHero();
 
 				if (worst != null && worst.status == HeroConstants.HERO_SEIZED_STATU) {
-					logMessage("Auto release captured hero with low attack attribute " + heroToString(worst) , "#660000" );
+					logMessage("Auto release captured hero with low attack attribute " + heroToString(worst) , "#660000" );					
 					ActionFactory.getInstance().getHeroCommand().releaseHero(castle.id, worst.id);
 				} else if (trainingHeroName != null && !isTrainingHeroPresent() && getBuildingLevel(BuildingConstants.TYPE_HEROS_MANSION) == heroes.length) {
 					if (captured != null) {
@@ -2161,7 +2220,9 @@ package autoevony.management
 						worst = worstAttackBaseHero();
 						if (worst != null && (worst.status == HeroConstants.HERO_FREE_STATU || worst.status == HeroConstants.HERO_CHIEF_STATU)) {
 							logMessage("Fire hero " + heroToString(worst) + " to make space for " + trainingHeroName, "#660000" );
-							if (worst.status == HeroConstants.HERO_CHIEF_STATU) ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+							if (worst.status == HeroConstants.HERO_CHIEF_STATU) {
+								ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+							}
 							ActionFactory.getInstance().getHeroCommand().fireHero(castle.id, worst.id);
 						}
 					}
@@ -2176,6 +2237,7 @@ package autoevony.management
 				if (!castle.allowAlliance) {
 					castle.allowAlliance = true;
 					logMessage("Allow alliance troop" , "#2B602D");
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, EMBASSY_POSITION);
 					ActionFactory.getInstance().getArmyCommands().setAllowAllianceArmy(castle.id, true);
 				}
 			}
@@ -2217,6 +2279,8 @@ package autoevony.management
 			if (healingGoldRequired > 0 && estResource.gold > healingGoldRequired) {
 				logMessage("CURING TROOPS using " + healingGoldRequired + " gold" , "#660000");
 				healingGoldRequired = 0;
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getInjuredTroop(castle.id);
 				ActionFactory.getInstance().getArmyCommands().cureInjuredTroop(castle.id);
 				estResource.gold -= healingGoldRequired;
 			}	
@@ -2287,9 +2351,9 @@ package autoevony.management
 		}
 
 		private function uplevelHeros() : Boolean {
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 			var any:Boolean = false;
-			var hero:HeroBean;
-			
+			var hero:HeroBean;			
 			var avoidReward:HeroBean = getCurrentFastHeroTarget();
 			for each(hero in heroes) {
 				if (hero.status != CityStateConstants.HERO_STATUS_IDLE && hero.status != CityStateConstants.HERO_STATUS_MAYOR) continue;
@@ -2305,7 +2369,7 @@ package autoevony.management
 
 				if (!isLoyal(hero) && hero != avoidReward && estResource.gold >= hero.level * 100) {
 					if (cityTimingAllowed("reward" + hero.id, 900)) {
-						logMessage("reward hero: " + heroToString(hero) , "#000066");
+						logMessage("reward hero: " + heroToString(hero) , "#000066");						
 						ActionFactory.getInstance().getHeroCommand().awardGold(castle.id, hero.id);
 						estResource.gold -= hero.level*100;
 						any = true;
@@ -2615,6 +2679,7 @@ package autoevony.management
 				if (hero == trainingHero) continue;
 				for each(var heroName:String in arr) {
 					if (hero.name.toLowerCase() == heroName.toLowerCase()) {
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 						if (hero.status == HeroConstants.HERO_CHIEF_STATU) ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
 						return hero;
 					}
@@ -2860,6 +2925,7 @@ package autoevony.management
 			if (mansionLevel > heroes.length + extra) {
 				if (hero.power >= 30 || fastLevelDesired > 0) {
 					logMessage("hiring new hero " + heroToString(hero));
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION);
 					ActionFactory.getInstance().getHeroCommand().hireHero(castle.id, hero.name);
 					estResource.gold -= 1000*hero.level;
 					return true;
@@ -2871,10 +2937,13 @@ package autoevony.management
 				initWorst = worstAttackBaseHero();
 				if (initWorst != null && (initWorst.power - initWorst.level) + initWorst.remainPoint < fastLevelDesired && estResource.gold > 1000000) {
 					if (initWorst.status != HeroConstants.HERO_CHIEF_STATU && initWorst.status != HeroConstants.HERO_FREE_STATU) return false;
-					if (initWorst.status == HeroConstants.HERO_CHIEF_STATU)
+					if (initWorst.status == HeroConstants.HERO_CHIEF_STATU) {
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 						ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+					}
 					logMessage("firing hero " + heroToString(initWorst) + " for space, hiring " + heroToString(hero) + " to update inn");
 					ActionFactory.getInstance().getHeroCommand().fireHero(castle.id, initWorst.id);
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION);
 					ActionFactory.getInstance().getHeroCommand().hireHero(castle.id, hero.name);
 					estResource.gold -= 1000*hero.level;
 					return true;
@@ -2885,10 +2954,13 @@ package autoevony.management
 				initWorst = worstAttackIntBaseHero();
 				if (initWorst != null && ((initWorst.power + initWorst.stratagem) - initWorst.level) + initWorst.remainPoint < fastLevelDesired && estResource.gold > 1000000) {
 					if (initWorst.status != HeroConstants.HERO_CHIEF_STATU && initWorst.status != HeroConstants.HERO_FREE_STATU) return false;
-					if (initWorst.status == HeroConstants.HERO_CHIEF_STATU)
+					if (initWorst.status == HeroConstants.HERO_CHIEF_STATU) {
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 						ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+					}
 					logMessage("firing hero " + heroToString(initWorst) + " for space, hiring " + heroToString(hero) + " to update inn");
 					ActionFactory.getInstance().getHeroCommand().fireHero(castle.id, initWorst.id);
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION);
 					ActionFactory.getInstance().getHeroCommand().hireHero(castle.id, hero.name);
 					estResource.gold -= 1000*hero.level;
 					return true;
@@ -2918,9 +2990,12 @@ package autoevony.management
 			if (worst.level > hero.level && worst.power - hero.power >= 20 * (worst.level - hero.level)) return false;
 
 			logMessage("firing hero " + heroToString(worst) + " to hire " + heroToString(hero));
-			if (worst.status == HeroConstants.HERO_CHIEF_STATU)
+			if (worst.status == HeroConstants.HERO_CHIEF_STATU) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 				ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+			}
 			ActionFactory.getInstance().getHeroCommand().fireHero(castle.id, worst.id);
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION);
 			ActionFactory.getInstance().getHeroCommand().hireHero(castle.id, hero.name);
 			estResource.gold -= 1000*hero.level;
 			return true;
@@ -3232,6 +3307,7 @@ package autoevony.management
 				logDebugMsg(DEBUG_NORMAL, "troop produce error: " + response.errorMsg,"#ff0000");
 			}	
 			// refresh list, regardless of status
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, BARRACK_POSITION);
 			ActionFactory.getInstance().getTroopCommands().getProduceQueue(castle.id);
 		}
 		private function handleTroopProduceQueueResponse(response:ProduceQueueResponse) : void {
@@ -3363,6 +3439,7 @@ package autoevony.management
 
 			if (oldProd != productionRate) {
 				logMessage("set production rate: " + productionRate);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getInteriorCommands().modifyCommenceRate(castle.id, productionRate, productionRate, productionRate, productionRate);
 				estResource.workPeople = maxWorkPeople * productionRate / 100;
 			}
@@ -3405,6 +3482,7 @@ package autoevony.management
 			var productionFortification:FortificationsBean = new FortificationsBean();
 			for each(var produceBean:ProduceBean in bean.allProduceQueueArray) {
 				if (produceBean.num >= 5) {
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, bean.positionId);
 					ActionFactory.getInstance().getTroopCommands().cancelTroopProduce(castle.id, bean.positionId, produceBean.queueId);
 				}
 			}	
@@ -3511,6 +3589,7 @@ package autoevony.management
 						}
 
 						// if (getConfig(CONFIG_DEBUG) > 0) logMessage("Produce " + 1 + " " + troopExtNames[type] + " on reserved barrack at " + reservedBarrack.positionId, "#169736");
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, reservedBarrack.positionId);
 						ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, reservedBarrack.positionId, type, 1, false, false);			
 						for each(resName in resourceIntNames) estResource[resName] -= troopCond[resName] * 1;
 						estResource.curPopulation -= troopPopulations[type];
@@ -3571,6 +3650,7 @@ package autoevony.management
 
 				promoteAttackChief();
 				logDebugMsg(DEBUG_NORMAL, "Produce " + batch + " " + troopExtNames[type] + " on " + qualifyCount + " free barracks");
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, reservedBarrack.positionId);
 				ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, reservedBarrack.positionId, type, batch, true, true);			
 				for each(resName in resourceIntNames) estResource[resName] -= troopCond[resName] * batch;
 				estResource.curPopulation -= (troopPopulations[type] * batch);
@@ -3612,6 +3692,7 @@ package autoevony.management
 
 					promoteAttackChief();
 					logDebugMsg(DEBUG_NORMAL, "Produce " + batch + " " + troopExtNames[type] + " on barrack at " + building.positionId , "#169736");
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, building.positionId);
 					ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, building.positionId, type, batch, false, false);			
 					totalTroop[ troopIntNames[type] ] += batch;
 					for each(resName in resourceIntNames) estResource[resName] -= troopCond[resName] * batch;
@@ -3701,7 +3782,7 @@ package autoevony.management
 								promoted = true;
 								promoteAttackChief();
 							}
-	
+							ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, reservedBarrack.positionId);
 							ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, reservedBarrack.positionId, type, count, false, false);			
 							for each(resName in resourceIntNames) estResource[resName] -= troopCond[resName] * count;
 							estResource.curPopulation -= troopPopulations[type] * count;
@@ -3762,6 +3843,7 @@ package autoevony.management
 				}
 
 				logMessage("Use spare resource for " + batch + " " + troopExtNames[type] + " on " + qualifyCount + " barracks");
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, reservedBarrack.positionId);
 				ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, reservedBarrack.positionId, type, batch, true, false);			
 				for each(resName in resourceIntNames) estResource[resName] -= troopCond[resName] * batch;
 				estResource.curPopulation -= (troopPopulations[type] * batch);
@@ -3784,6 +3866,7 @@ package autoevony.management
 				logError("fortification produce wall protect error: " + response.errorMsg);
 				return;
 			}
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 			ActionFactory.getInstance().getFortificationsCommands().getProduceQueue(castle.id);
 		}
 		private function handleFortificationGetProduceQueueResponse(response:ProduceQueueResponse) : void {
@@ -3820,6 +3903,7 @@ package autoevony.management
 			for each(var allProduceBean:AllProduceBean in fortificationProduceQueue) {
 				for each(var produceBean:ProduceBean in allProduceBean.allProduceQueueArray) {
 					if (produceBean.num > 1) {
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 						ActionFactory.getInstance().getFortificationsCommands().cancelFortificationProduce(castle.id, produceBean.queueId);
 					}
 				}
@@ -3869,6 +3953,7 @@ package autoevony.management
 						clearFortificationsDumpItems();
 					}	
 					logMessage("Produce " + 1 + " " + troopExtNames[type] , "#169736");
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 					ActionFactory.getInstance().getFortificationsCommands().produceWallProtect(castle.id, type, 1);					
 				}
 			}
@@ -3883,6 +3968,7 @@ package autoevony.management
 				
 				if (canProduceFortification(type, remain) && spaceAvailableForFortification(remain)) {
 					logDebugMsg(DEBUG_NORMAL, "Produce " + remain + " " + troopExtNames[type] , "#169736");
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 					ActionFactory.getInstance().getFortificationsCommands().produceWallProtect(castle.id, type, remain);					
 					return;
 				}
@@ -3909,6 +3995,7 @@ package autoevony.management
 			for each (var type:int in types) {
 				if (canProduceFortification(type, batch) && spaceAvailableForFortification(batch) && fortification[ troopIntNames[type] ] + prod[ troopIntNames[type] ] < fortificationsRequirement[ troopIntNames[type] ]) {
 					logDebugMsg(DEBUG_NORMAL, "Use spare resources for " + batch + " " + troopExtNames[type], "#169736");
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 					ActionFactory.getInstance().getFortificationsCommands().produceWallProtect(castle.id, type, batch);					
 					return true;
 				}
@@ -3927,11 +4014,12 @@ package autoevony.management
 		
 		private function handleComfortRelief() : void {
 			if (!marketReady()) return;
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 			var color:String = "#C8A44E";
 			if (doingComfortRelief) {
 				if (resource.complaint > 0 || resource.support <= 40) {
 					if (resource.texRate > 20 && resource.gold > 0) {
-						logMessage("Set tax rate to 20%" , color );
+						logMessage("Set tax rate to 20%" , color );						
 						ActionFactory.getInstance().getInteriorCommands().modifyTaxRate(castle.id, 20, handleModifyTaxRateResponse);
 					}
 					if (estResource.gold >= resource.maxPopulation && resource.support <= 40 && cityTimingAllowed("comfort", 905)) {
@@ -4040,6 +4128,7 @@ package autoevony.management
 				if (targetType == -1 || targetType == FieldConstants.TYPE_CASTLE) continue;
 				if (army.direction == ArmyConstants.ARMY_STAY) {
 					logMessage("Recalling troop lead by hero " + army.hero);
+					
 					ActionFactory.getInstance().getArmyCommands().callBackArmy(castle.id, army.armyId, handleArmyCallBackResponse);
 				}
 			}
@@ -4474,6 +4563,7 @@ package autoevony.management
 		
 		public function refreshinn() : void {
 			if (countBuilding(BuildingConstants.TYPE_TAVERN, 1) > 0) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION);
 				ActionFactory.getInstance().getHeroCommand().getHerosListFromTavern(castle.id , function (response:HeroListResponse) : void {
 				innHeroes = response.herosArray;
 				logMessage("Refreshed inn heroes");			
@@ -4634,7 +4724,9 @@ package autoevony.management
 					buildCityLocation = -1;
 					logMessage("City at " + Map.fieldIdToString(response.castleBean.fieldId) + " has been built");
 					// leave the new city in the status so that it is not abandoned if buildCityLocation is lost (due to restart)
+					ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListInside(response.castleBean.id);
 					ActionFactory.getInstance().getCastleCommands().newBuilding(response.castleBean.id, 0, BuildingConstants.TYPE_HOUSE);
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, 0);
 					ActionFactory.getInstance().getCastleCommands().speedUpBuildCommand(response.castleBean.id, 0, CommonConstants.FREE_SPEED_ITEM_ID);
 					Map.updateInfo(response.castleBean.fieldId);
 
@@ -4680,6 +4772,7 @@ package autoevony.management
 			if (!playerTimingAllowed("abandon" + other.id, 1000)) return;
 			logMessage("Abandon castle at " + Map.fieldIdToString(other.fieldId));
 			var pw:String = Connection.getInstance().getHashedPassword();
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 			ActionFactory.getInstance().getCityCommands().giveupCastle(pw, other.id);
 			Map.updateDetailInfo(other.fieldId);
 			Map.updateInfo(other.fieldId);
@@ -4820,6 +4913,7 @@ package autoevony.management
 			if (fields.length + extra < getBuildingLevel(BuildingConstants.TYPE_TOWN_HALL)) return;
 			var worst:FieldBean = findWorstField();
 			logMessage("Abandon valley: " + Map.fieldIdToString(worst.id));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 			ActionFactory.getInstance().getFieldCommand().giveUpField(worst.id);
 		}
 
@@ -4832,6 +4926,7 @@ package autoevony.management
 			var worst:FieldBean = findWorstField();
 			if (worst.type != resourceFieldType || worst.level < level) {
 				logMessage("Abandon field: " + Map.fieldIdToString(worst.id));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getFieldCommand().giveUpField(worst.id);
 				return true;
 			}
@@ -4898,6 +4993,8 @@ package autoevony.management
 			
 			logMessage("Evacuate to " + Map.fieldIdToString(evacuationTown) +  " with " + troopBeanToString(newArmy.troops) + ", arrival in " +
 				Utils.formatTime(getTravelTime(newArmy)));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id); 
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			
@@ -4951,6 +5048,8 @@ package autoevony.management
 			
 			logMessage("Evacuate to " + Map.fieldIdToString(evacuationTown) +  " with " + troopBeanToString(newArmy.troops) + ", arrival in " +
 				Utils.formatTime(getTravelTime(newArmy)));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 
@@ -5005,6 +5104,8 @@ package autoevony.management
 			
 			logMessage("Move troop to " + Map.fieldIdToString(keepTroopFieldId) +  ": " + troopBeanToString(newArmy.troops) + ", arrival in " +
 				Utils.formatTime(getTravelTime(newArmy)));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			
@@ -5104,6 +5205,8 @@ package autoevony.management
 			}
 						
 			logMessage("Transport " + Utils.formatNum(total) + " resource to " + Map.fieldIdToString(keepResourceFieldId) +  " with " + troopBeanToString(newArmy.troops) + ", arrival in " + Utils.formatTime(getTravelTime(newArmy)), "#C200A3");
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 
@@ -5165,6 +5268,8 @@ package autoevony.management
 									
 			npcLocations.push(fieldInfo.id);
 			logMessage("Attack flat " + Map.fieldIdToString(fieldInfo.id) + " for npc with " + troops.archer + " archers " + Utils.formatTime(getTravelTime(newArmy)));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			Map.updateDetailInfo(fieldInfo.id);
@@ -5246,6 +5351,8 @@ package autoevony.management
 			if (!hasResourceForArmy(newArmy)) return false;
 			
 			logMessage("Building city at " + Map.fieldIdToString(fieldId));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			Map.updateDetailInfo(fieldId);
@@ -5320,6 +5427,8 @@ package autoevony.management
 			
 			logMessage("Attack field " + Map.fieldIdToString(fieldInfo.id) + " for city with " + troops.archer + " archers " +
 				Utils.formatTime(getTravelTime(newArmy)));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			Map.updateDetailInfo(fieldInfo.id);
@@ -5486,9 +5595,14 @@ package autoevony.management
 					if (!playerTimingAllowed("attack" + fieldId, 6*3600)) continue;
 				}
 				
-				if (hero.status == HeroConstants.HERO_CHIEF_STATU) ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+				if (hero.status == HeroConstants.HERO_CHIEF_STATU) {
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);			
+					ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+				}
 				logMessage(((training) ? "train at " : "attack NPC ") + Map.fieldIdToString(fieldId) + " with hero " + heroToString(hero) + " and " + troopBeanToString(newArmy.troops) +
 					Utils.formatTime(getTravelTime(newArmy)));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);				
 				updateEstResourceForArmy(newArmy);
 				Map.updateInfo(fieldId);
@@ -5552,7 +5666,12 @@ package autoevony.management
 				
 				logMessage("attack NPC10 " + Map.fieldIdToString(fieldId) + " with hero " + heroToString(hero) + " and " + troopBeanToString(newArmy.troops) +
 					Utils.formatTime(getTravelTime(newArmy)));
-				if (hero.status == HeroConstants.HERO_CHIEF_STATU) ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+				if (hero.status == HeroConstants.HERO_CHIEF_STATU) { 
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);			
+					ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+				}
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);				
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);				
 				updateEstResourceForArmy(newArmy);
 				Map.updateInfo(fieldId);
@@ -5576,6 +5695,7 @@ package autoevony.management
 				// race condition can happen as handleAbandonLocalField is called from 2 different places
 				if (field.id == targetField && playerTimingAllowed("abandonfield" + targetField, 3)) {
 					logMessage("Abandon field: " + Map.fieldIdToString(field.id));
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 					ActionFactory.getInstance().getFieldCommand().giveUpField(field.id);
 					free = true;
 					break;				
@@ -5618,6 +5738,7 @@ package autoevony.management
 
 			if (detail.userName == player.playerInfo.userName) {
 				logMessage("Abandon field: " + Map.fieldIdToString(targetField));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getFieldCommand().giveUpField(targetField);				
 				Map.updateDetailInfo(targetField);
 				return false;		// wait for the field to be released
@@ -5658,6 +5779,8 @@ package autoevony.management
 				
 			logMessage("attack local field " + Map.fieldIdToString(targetField) + " with hero " + heroToString(hero) + " and " + troopBeanToString(tr) + " " +
 				Utils.formatTime(getTravelTime(newArmy)));		
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);				
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);				
 			updateEstResourceForArmy(newArmy);
 			Map.updateDetailInfo(targetField);
@@ -5706,6 +5829,8 @@ package autoevony.management
 				
 				logMessage("attack field " + Map.fieldIdToString(fieldInfo.id) + " for resource with hero " + hero.name + " and " + tr.archer + " archers, " + tr.militia + " militia " +
 					Utils.formatTime(getTravelTime(newArmy)));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);					
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);				
 				updateEstResourceForArmy(newArmy);
 				Map.updateDetailInfo(fieldInfo.id);
@@ -5754,6 +5879,8 @@ package autoevony.management
 				
 				logMessage("attack field " + Map.fieldIdToString(fieldInfo.id) + " for resource with hero " + hero.name + " and " + tr.archer + " archers, " + tr.militia + " militia " +
 					Utils.formatTime(getTravelTime(newArmy)));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);				
 				updateEstResourceForArmy(newArmy);
 				Map.updateDetailInfo(fieldInfo.id);
@@ -5833,6 +5960,7 @@ package autoevony.management
 			if (state == castle.goOutForBattle) return;
 			logMessage(msg);
 			castle.goOutForBattle = state;
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);					
 			ActionFactory.getInstance().getArmyCommands().setArmyGoOut(castle.id, state);
 		}
 		
@@ -5974,6 +6102,7 @@ package autoevony.management
 
 			for each (var trade:TradeBean in tradesArray) {
 				logMessage("Cancel trade " + resourceNames[trade.resType] + " " + trade.amount + "/" + trade.dealedAmount + "@" + trade.price);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);			
 				ActionFactory.getInstance().getTradeCommands().cancelTrade(castle.id, trade.id);
 				done = true;
 			}
@@ -6070,6 +6199,7 @@ package autoevony.management
 			
 			// the chief is considered an "idle" hero
 			if (hero.status == HeroConstants.HERO_CHIEF_STATU) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 				ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
 			}
 
@@ -6109,6 +6239,8 @@ package autoevony.management
 			}
 			
 			logMessage("Sending critical troop/resource to " + Map.fieldIdToString(evasionFieldId) + hero.name + ", b:" + newArmy.troops.ballista + " t:" + newArmy.troops.carriage + ", g:" + newArmy.resource.gold + " f:" + newArmy.resource.food + " w:" + newArmy.resource.wood + " s:" + newArmy.resource.stone + " i:" + newArmy.resource.iron);
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 
@@ -6164,6 +6296,8 @@ package autoevony.management
 			if (!hasResourceForArmy(newArmy)) return false;
 
 			logMessage("Dumping resource to " + Map.fieldIdToString(fieldId) + " t:" + newArmy.troops.carriage + ", g:" + newArmy.resource.gold + " w:" + newArmy.resource.wood + " s:" + newArmy.resource.stone + " i:" + newArmy.resource.iron);
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			
@@ -6200,6 +6334,8 @@ package autoevony.management
 			if (!hasResourceForArmy(newArmy)) return false;
 
 			logMessage("  dumping troop to " + Map.fieldIdToString(fieldId) + " " + troopBeanToString(tr));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(newArmy);
 			return true;
@@ -6226,12 +6362,14 @@ package autoevony.management
 			if (resource.support >= 20 && cityTimingAllowed("levy", 905)) {
 				resource.support -= 20;
 				logMessage("Abandon: Levy food to lower loyalty");
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getInteriorCommands().taxation(castle.id, 2);
 			}
 			
 			var newTaxRate:int = 100 - int(resource.support/20)*20;
 			if (resource.texRate != newTaxRate && cityTimingAllowed("taxrate", 30)) {
 				logMessage("Abandon: set tax rate to " + newTaxRate);
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getInteriorCommands().modifyTaxRate(castle.id, newTaxRate);
 			}
 			
@@ -6244,6 +6382,7 @@ package autoevony.management
 					for each(produceBean in allProduceBean.allProduceQueueArray) {
 						
 						logMessage("Abandon: Cancel fortification production " + produceBean.num + " " + troopExtNames[produceBean.type]);
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 						ActionFactory.getInstance().getFortificationsCommands().cancelFortificationProduce(castle.id, produceBean.queueId);
 						break;	// purposely do things lowly
 					}
@@ -6255,6 +6394,7 @@ package autoevony.management
 			for each (type in fTypes) {
 				if (fortification[ troopIntNames[type] ] > 0) {
 					logMessage("Abandon: Destroy " + fortification[ troopIntNames[type] ] + " " + troopExtNames[type]);
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, WALL_POSITION);
 					ActionFactory.getInstance().getFortificationsCommands().destructWallProtect(castle.id, type, fortification[ troopIntNames[type] ]);
 					break; // purposely do things lowly
 				}
@@ -6264,15 +6404,17 @@ package autoevony.management
 				for each(allProduceBean in troopProduceQueue) {
 					for each(produceBean in allProduceBean.allProduceQueueArray) {
 						logMessage("Abandon: Cancel troop production " + produceBean.num + " " + troopExtNames[produceBean.type]);
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, allProduceBean.positionId);
 						ActionFactory.getInstance().getTroopCommands().cancelTroopProduce(castle.id, allProduceBean.positionId, produceBean.queueId);
 						break;
 					}
 				}
 			}
-
+			
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, BARRACK_POSITION );
 			var tTypes:Array = new Array(TFConstants.T_PEASANTS, TFConstants.T_MILITIA, TFConstants.T_SCOUTER, TFConstants.T_ARCHER, TFConstants.T_SWORDSMEN, TFConstants.T_PIKEMAN, TFConstants.T_LIGHTCAVALRY, TFConstants.T_HEAVYCAVALRY, TFConstants.T_BATTERINGRAM, TFConstants.T_BALLISTA, TFConstants.T_CARRIAGE);
 			for each (type in tTypes) {
-				if (troop[ troopIntNames[type] ] > 0) {
+				if (troop[ troopIntNames[type] ] > 0) {					
 					ActionFactory.getInstance().getTroopCommands().disbandTroop(castle.id, type, troop[ troopIntNames[type] ]);
 					logMessage("Abandon: Disband " + troop[ troopIntNames[type] ] + " " + troopExtNames[type]);	
 					break;
@@ -6288,6 +6430,7 @@ package autoevony.management
 			
 			if (resource.gold > resource.maxPopulation && cityTimingAllowed("comfort", 905)) {
 				logMessage("Do praying");
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 				ActionFactory.getInstance().getInteriorCommands().pacifyPeople(castle.id, CityStateConstants.COMFORT_PRAY);
 				return;
 			}
@@ -6312,11 +6455,13 @@ package autoevony.management
 						var hero:HeroBean = getSpammingHero();
 						if (hero != null) {
 							logMessage("FIRING HERO TO SAVE GOLD");
+							ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 							ActionFactory.getInstance().getHeroCommand().fireHero(castle.id, hero.id);
 						}
 					}
 				} else if (newRate != resource.texRate) {
 					logMessage("Set tax rate to " + newRate + " for positive gold rate");
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, TOWNHALL_POSITION);
 					ActionFactory.getInstance().getInteriorCommands().modifyTaxRate(castle.id, newRate, handleModifyTaxRateResponse);
 				}		
 			}
@@ -6339,6 +6484,7 @@ package autoevony.management
 				var sellAmount:int = Math.min(goldNeeded/price*1.01, resource.gold/0.01/price, amount);
 
 				if (cityTimingAllowed("emergencyselling", 30)) {
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, MARKET_POSITION);
 					logMessage("Selling " + sellAmount + " " + resourceNames[resType] + "@" + price);
 					ActionFactory.getInstance().getTradeCommands().newTrade(
 						castle.id, resType, TradeConstants.TRADE_TYPE_SELL,
@@ -6797,6 +6943,7 @@ package autoevony.management
 				logMessage("Fail to get any hero from the inn");
 			} else {
 				logMessage("Attempt to hire: " + heroToString(best));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, INN_POSITION);
 				ActionFactory.getInstance().getHeroCommand().hireHero(castle.id, best.name);
 				heroUpdateNeeded = true;
 				innHeroes.removeItemAt(innHeroes.getItemIndex(best));
@@ -6937,6 +7084,7 @@ package autoevony.management
 					return;
 				}
 				if (hero2 == getMayor()) {
+					ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
 					ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
 				}
 				scoutArmy.heroId = hero2.id;
@@ -6962,6 +7110,8 @@ package autoevony.management
 				return;
 			}
 			logMessage("Guarded attack on " + Map.fieldIdToString(fieldId) + " with hero " + hero.name + " in " + Utils.formatTime(attackTime));
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);			
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, attackArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(attackArmy);
 			
@@ -6969,6 +7119,7 @@ package autoevony.management
 				logMessage("Problem sending out scout mission, please send and guard the attack manually");
 				return;
 			}
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);			
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, scoutArmy, handleArmyCommandResponse);
 			updateEstResourceForArmy(scoutArmy);
 			
@@ -7120,6 +7271,7 @@ package autoevony.management
 			playerTimingAllowed("loyaltyattack", 30);
 
 			if (hero.loyalty < 100) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);										
 				ActionFactory.getInstance().getHeroCommand().awardGold(castle.id, hero.id);
 			}
 			
@@ -7129,8 +7281,12 @@ package autoevony.management
 			logMessage("Loyalty attack on " + Map.fieldIdToString(loyaltyAttackFieldId) + " with hero " + hero.name + " and " + newArmy.troops.lightCavalry + " cavalries " +
 				Utils.formatTime(getTravelTime(newArmy)));
 			if (MasterTimer.getInstance().canSend(timeSlot)) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);					
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			} else {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);							
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy);				
 			}
 			updateEstResourceForArmy(newArmy);
@@ -7187,8 +7343,12 @@ package autoevony.management
 			logMessage("Spam attack on " + Map.fieldIdToString(spamAttackFieldId) + " with hero " + hero.name + " and " + troopBeanToString(spamTroopBean) + " " +
 				Utils.formatTime(getTravelTime(newArmy)));
 			if (MasterTimer.getInstance().canSend(timeSlot)) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);							
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);
 			} else {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+				ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);						
 				ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy);				
 			}
 			updateEstResourceForArmy(newArmy);
@@ -8418,7 +8578,12 @@ package autoevony.management
 				
 			logMessage("Move training hero to " + detail.name + Map.fieldIdToCoordString(trainingHeroNextStop) + ", arriving in " +
 				Utils.formatTime(getTravelTime(newArmy)));		
-			if (trainingHero.status == HeroConstants.HERO_CHIEF_STATU) ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+			if (trainingHero.status == HeroConstants.HERO_CHIEF_STATU) {
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);			
+				ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+			} 
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, RALLY_POSITION);
+			ActionFactory.getInstance().getArmyCommands().getTroopParam(castle.id);	
 			ActionFactory.getInstance().getArmyCommands().newArmy(castle.id, newArmy, handleArmyCommandResponse);				
 			Map.updateDetailInfo(trainingHeroNextStop);
 			Map.updateInfo(trainingHeroNextStop);

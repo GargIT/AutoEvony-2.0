@@ -530,7 +530,7 @@ package autoevony.scripts
 			if (hero != null)
 			{
             	setCommandResponse(ResponseDispatcher.HERO_TRY_GET_SEIZED_HERO, handleCommandResponse);
-            	onCommandResult("Persuade hero " + name);
+            	onCommandResult("Persuade hero " + name);            	
             	ActionFactory.getInstance().getHeroCommand().tryGetSeizedHero(castle.id, hero.id);
             	return;
    			}
@@ -827,9 +827,10 @@ package autoevony.scripts
 
 			trace("create - set call back")
 			setCommandResponse(ResponseDispatcher.CASTLE_NEW_BUILDING, buildResponse);
-
+			ActionFactory.getInstance().getCastleCommands().getAvailableBuildingListInside(castle.id);
 			trace("create - " + buildingType + ", position " + positionId + " on castle " + castle.name);
-			ActionFactory.getInstance().getCastleCommands().newBuilding(castle.id, positionId, typeId);
+			ActionFactory.getInstance().getCastleCommands().newBuilding(castle.id, positionId, typeId);			
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade( castle.id, positionId );			
 			trace("create - attempt free speedup");
 			ActionFactory.getInstance().getCastleCommands().speedUpBuildCommand(castle.id, positionId, CommonConstants.FREE_SPEED_ITEM_ID);
 		}
@@ -885,6 +886,7 @@ package autoevony.scripts
 			setCommandResponse(ResponseDispatcher.CASTLE_DESTRUCT_BUILDING, buildResponse);
 
 			trace("demo - " + f.name + ", position " + f.positionId + " on castle " + castle.id);
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, f.positionId);		
 			ActionFactory.getInstance().getCastleCommands().destructBuilding(castle.id, f.positionId);
 		}
 
@@ -1380,9 +1382,10 @@ package autoevony.scripts
 
 			trace("setup upgrade response callbacks");
 			setCommandResponse(ResponseDispatcher.CASTLE_UPGRADE_BUILDING, buildResponse);
-
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, f.positionId);
 			ActionFactory.getInstance().getCastleCommands().upgradeBuilding(castle.id, f.positionId);
 			// do a free speed up, in case it helps
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, f.positionId);
 			ActionFactory.getInstance().getCastleCommands().speedUpBuildCommand(castle.id, f.positionId, CommonConstants.FREE_SPEED_ITEM_ID);
 
 			trace("upgrading " + f.name + ", position " + f.positionId + " on castle " + castle.name);
@@ -2707,6 +2710,7 @@ package autoevony.scripts
 			if (newMayorId != -1 && newMayorStat > currentMayorStat)
 			{
 				onCommandResult("Promoted "+newMayorName+" to mayor " + type + newMayorStat + "]", "");
+				
 				ActionFactory.getInstance().getHeroCommand().promoteToChief(castle.id,newMayorId, handleCommandResponse);
 			}
 			else
