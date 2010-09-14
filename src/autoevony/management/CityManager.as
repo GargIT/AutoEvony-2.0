@@ -1746,7 +1746,7 @@ package autoevony.management
 			return Utils.formatTime((end-curr) / 1000);
 		}
 		
-		private function promotePoliticsChief() : void {
+		public function promotePoliticsChief() : void {
 			var best:HeroBean = bestIdlePoliticsHero();
 			if (best == null) return;
 			if (best.status == CityStateConstants.HERO_STATUS_IDLE || best.status == CityStateConstants.HERO_STATUS_MAYOR) {
@@ -1759,7 +1759,7 @@ package autoevony.management
 			}
 		}
 
-		private function promoteIntelChief() : void {
+		public  function promoteIntelChief() : void {
 			var best:HeroBean = bestIdleIntelHero();
 			if (best == null) return;
 			if (best.status == CityStateConstants.HERO_STATUS_IDLE) {
@@ -1772,7 +1772,7 @@ package autoevony.management
 			}
 		}
 
-		private function promoteAttackChief(hero:HeroBean = null) : void {
+		public function promoteAttackChief(hero:HeroBean = null) : void {
 			var best:HeroBean = (hero != null) ? hero : bestIdleAttackHero();
 			if (best == null) return;
 			if (best.status == CityStateConstants.HERO_STATUS_IDLE) {
@@ -1783,7 +1783,43 @@ package autoevony.management
 				}
 			}
 		}
+
+		public function promoteChiefById(hero:HeroBean = null) : Boolean {
+			if ( hero == null ) return false;
+			if (promoteAllowed(hero.id)) {
+				logDebugMsg(DEBUG_NORMAL, "Promote to chief: " + heroToString(hero));
+				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
+				ActionFactory.getInstance().getHeroCommand().promoteToChief(castle.id, hero.id);
+				return true;
+			}			
+			return false;
+		}
+
+		public function demoteChief() : void {
+			logDebugMsg(DEBUG_NORMAL, "Removed Mayor ");
+			ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, FEASTING_POSITION);
+			ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);			
+		}
 		
+		public function promoteChiefByName(heroName:String) : Boolean {
+			if ( heroName == null ) return false;
+			var promoteHero:HeroBean = findHeroByName( heroName );			 			
+			return promoteChiefById( promoteHero );
+		}
+
+		public function findHeroByName(heroName:String):HeroBean
+		{
+			var foundHero:HeroBean = null;
+			var heroNameLower:String = heroName == null? "" : heroName.toLowerCase();
+			for each(var hero:HeroBean in castle.herosArray ) {
+				if(hero.name.toLowerCase() == heroNameLower) {
+					foundHero = hero;
+					break;
+				}
+			}
+			return foundHero;
+		}
+				
 		private static var seedMarketInterest:int = 0;
 		private static var currMarketInterest:int = -1;
 

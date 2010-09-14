@@ -1270,47 +1270,30 @@ package autoevony.scripts
 				
 				var trainobj:Object = TrainTroopHelper.getTrainObj(this, troops, barrackid, useallbarracks, minamount);
 				
-				if(trainobj.errormsg.length > 0)
-				{
+				if(trainobj.errormsg.length > 0) {
 					onCommandResult(trainobj.errormsg, "");
-				}
-				else
-				{
+				} else {
 					var origMayor:HeroBean = getMayor();
 					var heroLower:String = hero.toLowerCase();
 					var mayorgood:Boolean = true;
-					if(heroLower == "any" || heroLower == "atk")
-					{
-						setmayorbyattr("atk");
-					}
-					else
-					{
-						mayorgood = setmayorbynamerun(hero);
+					if(heroLower == "any" || heroLower == "atk") {
+						cityManager.promoteAttackChief();
+					} else {
+						mayorgood = cityManager.promoteChiefByName(heroLower);
 					}
 					
-					if(!mayorgood)
-					{
+					if(!mayorgood) {
 						onCommandResult("Could not set mayor to " + hero + ". Not training troops.", "");
-					}
-					else
-					{
+						cityManager.promotePoliticsChief();
+					} else {
 						var output:String = useallbarracks ? " in all barracks" : (" in barrack #" + String(trainobj.barrackid));
 						output = idle ? " in all idle barracks" : output;
 						
 						onCommandResult("Training " + String(trainobj.amount) + " " + TrainTroopHelper.lookupName(trainobj.troopid) + output, "");
-						ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, trainobj.barrackid, trainobj.troopid, trainobj.amount, useallbarracks, idle);
-						
-						if(origMayor != getMayor())
-						{
-							if(origMayor == null)
-							{
-								setmayorbyattr("re");
-							}
-							else
-							{
-								setmayorbynamerun(origMayor.name);
-							}
-						}
+						ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, trainobj.barrackid);
+						ActionFactory.getInstance().getTroopCommands().produceTroop(castle.id, trainobj.barrackid, trainobj.troopid, trainobj.amount, useallbarracks, idle);	
+						//onCommandResult("Reset Mayor", "");			
+						cityManager.promotePoliticsChief();																
 					}
 				}
 			}
@@ -2728,31 +2711,23 @@ package autoevony.scripts
 			var result:Boolean = false;
 			
 			if (heroName == "none") {
-				onCommandResult("Remove mayor");
-				ActionFactory.getInstance().getHeroCommand().dischargeChief(castle.id);
+				onCommandResult("Removing " + getMayor().name , "");
+				cityManager.demoteChief();
 				return true;
 			}
 
-			var foundHero:HeroBean = findHeroByName(heroName);
-			if(foundHero == null)
-			{
+			var foundHero:HeroBean = cityManager.findHeroByName(heroName);
+			if(foundHero == null) {
 				onCommandResult("You dont even have a hero named " + heroName, "");
-			}
-			else
-			{
-				if(foundHero.status == CityStateConstants.HERO_STATUS_IDLE)
-				{
+			} else {
+				if(foundHero.status == CityStateConstants.HERO_STATUS_IDLE) {
 					result = true;
 					onCommandResult("Promoted "+heroName+" to mayor", "");
-					ActionFactory.getInstance().getHeroCommand().promoteToChief(castle.id,foundHero.id);
-				}
-				else if (foundHero.status == CityStateConstants.HERO_STATUS_MAYOR)
-				{
+					cityManager.promoteChiefById( foundHero );
+				} else if (foundHero.status == CityStateConstants.HERO_STATUS_MAYOR) {
 					result = true;
 					onCommandResult("Hero " + heroName + " is already mayor", "");
-				}
-				else
-				{
+				} else {
 					onCommandResult("Hero " + heroName + " is not idle", "");
 				}
 			}
