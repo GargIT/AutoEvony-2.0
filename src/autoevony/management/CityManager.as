@@ -3600,7 +3600,7 @@ package autoevony.management
 					}
 				}
 				if (promoted) {
-					// promotePoliticsChief();
+					promotePoliticsChief();
 					return true;
 				}
 			}
@@ -3661,7 +3661,7 @@ package autoevony.management
 				totalTroop[ troopIntNames[type] ] += batch;
 				lastTroopTypeProduced = type;
 
-				// promotePoliticsChief();
+				promotePoliticsChief();
 				return true;
 			}
 
@@ -3702,7 +3702,7 @@ package autoevony.management
 					for each(resName in resourceIntNames) estResource[resName] -= troopCond[resName] * batch;
 					estResource.curPopulation -= troopPopulations[type] * batch;
 					lastTroopTypeProduced = type;
-					// promotePoliticsChief();
+					promotePoliticsChief();
 					return true;
 				}
 			}
