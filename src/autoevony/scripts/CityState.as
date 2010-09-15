@@ -1279,7 +1279,7 @@ package autoevony.scripts
 					if(heroLower == "any" || heroLower == "atk") {
 						cityManager.promoteAttackChief();
 					} else {
-						mayorgood = cityManager.promoteChiefByName(heroLower);
+						mayorgood  = cityManager.promoteChiefByName(heroLower);
 					}
 					
 					if(!mayorgood) {

@@ -517,7 +517,7 @@ package autoevony.management
 				}
 			}
 
-			logMessage("BUILDING POSITIONS: RALLY " + RALLY_POSITION + ", ACADEMY " + ACADEMY_POSITION + ", INN " + INN_POSITION + ", FEASTING " + FEASTING_POSITION + ", WALL " + WALL_POSITION + ", TOWNHALL " + TOWNHALL_POSITION + ", BARRACK " + BARRACK_POSITION + ", EMBASSY " + EMBASSY_POSITION + ", MARKET " + MARKET_POSITION );
+			logDebugMsg(DEBUG_NORMAL, "BUILDING POSITIONS: RALLY " + RALLY_POSITION + ", ACADEMY " + ACADEMY_POSITION + ", INN " + INN_POSITION + ", FEASTING " + FEASTING_POSITION + ", WALL " + WALL_POSITION + ", TOWNHALL " + TOWNHALL_POSITION + ", BARRACK " + BARRACK_POSITION + ", EMBASSY " + EMBASSY_POSITION + ", MARKET " + MARKET_POSITION );
 
 			// promotePoliticsChief();
 
@@ -870,7 +870,7 @@ package autoevony.management
 				if (getConfig(CONFIG_VALLEY) > 0) {
 					handleSearchResourceFields();
 				}
-				
+							
 				task = "search local field";
 				if (getConfig(CONFIG_HUNTING) > 0 || getConfig(CONFIG_BUILDNPC) > 0) {
 					handleSearchLocalFields();	
@@ -1034,6 +1034,13 @@ package autoevony.management
 				task = "search unoccupied local fields";
 				searchUnoccupiedLocalFields();
 				
+				task = "QuickTimer: Check quests";
+				if (playerTimingAllowed("quest1", 180)) {
+					logDebugMsg(DEBUG_NORMAL, task );
+					ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 1);
+					ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 3);
+				}
+
 				task = "find evasion field";
 				if (evasionFieldId == -1) findEvasionFieldId();
 				
@@ -2192,13 +2199,7 @@ package autoevony.management
 			}
 		}
 		
-		private function handleIdleUpdates() : void {
-			if (playerTimingAllowed("quest1", 180)) {
-				ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 1);
-				ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 3);
-				ActionFactory.getInstance().getQuestCommands().getQuestList(castle.id, 1);
-			}
-						
+		private function handleIdleUpdates() : void {						
 			if (cityTimingAllowed("refresh", 300)) {				
 				troopProductionUpdateNeeded = true;
 				fortificationProductionUpdateNeeded = true;
