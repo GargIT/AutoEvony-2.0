@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" title="Settings" borderColor="#EAF3D5">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="400" title="Settings" borderColor="#EAF3D5">
 	<mx:Script>
 		<![CDATA[
 //			import org.smtp.events.SMTPEvent;
@@ -17,9 +17,11 @@
 				same.selectedColor = Map.colorSAME_ALLIANCE;
 				neutral.selectedColor = Map.colorMIDDLE_ALLIANCE;
 				mycities.selectedColor = Map.colorPLAYER;
+				npc.selectedColor = Map.colorNPC;
 				npc5.selectedColor = Map.colorNPC5;
 				npc10.selectedColor = Map.colorNPC10;
 				otherfield.selectedColor = Map.colorUNKOWNFIELD;
+				flat.selectedColor = Map.colorFlat;
 				flat5.selectedColor = Map.colorFlat5;
 				flat10.selectedColor = Map.colorFlat10;
 			}
@@ -33,8 +35,10 @@
 				Map.colorMIDDLE_ALLIANCE = neutral.selectedColor;
 				Map.colorPLAYER = mycities.selectedColor;
 				Map.colorNPC5 = npc5.selectedColor;
+				Map.colorNPC = npc.selectedColor;
 				Map.colorNPC10 = npc10.selectedColor;
 				Map.colorUNKOWNFIELD = otherfield.selectedColor;
+				Map.colorFlat = flat.selectedColor;
 				Map.colorFlat5 = flat5.selectedColor;
 				Map.colorFlat10 = flat10.selectedColor;
 //				Context.smtpAddress = smtpAddressText.text;
@@ -140,7 +144,14 @@
 						<mx:ColorPicker width="50" showTextField="true" id="flat10"/>
 					</mx:FormItem>					
 					</mx:HBox>
-					
+					<mx:HBox width="100%">
+					<mx:FormItem label="Other Flats" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="flat"/>
+					</mx:FormItem>		
+					<mx:FormItem label="Other NPC's" width="165" horizontalAlign="right">
+						<mx:ColorPicker width="50" showTextField="true" id="npc"/>
+					</mx:FormItem>					
+					</mx:HBox>				
 					<mx:HBox width="100%">
 					<mx:FormItem label="Map background" width="165" horizontalAlign="right">
 						<mx:ColorPicker width="50" showTextField="true" id="mapBack"/>

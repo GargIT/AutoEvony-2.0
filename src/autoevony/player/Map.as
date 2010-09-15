@@ -42,8 +42,10 @@ package autoevony.player
 		public static var colorMIDDLE_ALLIANCE:uint = 0xeedeee;
 		public static var colorPLAYER:uint = 0xebf310;
 		public static var colorBACKGROUND:uint = 0x000000;
+		public static var colorNPC:uint = 0xf0ebeb;
 		public static var colorNPC5:uint = 0xf0ebeb;
 		public static var colorNPC10:uint = 0xe6e1e1;
+		public static var colorFlat:uint = 0xFFFFFF;
 		public static var colorFlat5:uint = 0xFFFFFF;
 		public static var colorFlat10:uint = 0xFFFFFF;
 		public static var colorUNKOWNFIELD:uint = 0xFFFFFF;
@@ -88,7 +90,9 @@ package autoevony.player
 					colorUNKOWNFIELD = mapSettings.data.colorUNKOWNFIELD;
 					colorNPC10 = mapSettings.data.colorNPC10;
 					colorNPC5 = mapSettings.data.colorNPC5;
+					colorNPC = mapSettings.data.colorNPC;
 					colorPLAYER = mapSettings.data.colorPLAYER;
+					colorFlat = mapSettings.data.colorFlat;
 					colorFlat5 = mapSettings.data.colorFlat5;
 					colorFlat10 = mapSettings.data.colorFlat10;
 				}
@@ -250,6 +254,7 @@ package autoevony.player
 				 
 				if (castle.npc) {
 					var level:int = getLevel(castle.id);
+					col = colorNPC;
 					if (level == 5)	col = colorNPC5;
 					if (level == 10) col = colorNPC10;
 				}
@@ -281,8 +286,13 @@ package autoevony.player
 			if (!(map[fieldId] == undefined || map[fieldId] == null)) {
 				if (getType(fieldId) ==  10)
 				{
-					if (getLevel(fieldId) == 5) color = colorFlat5;
-					else if (getLevel(fieldId) == 10) color = colorFlat10;
+					color = colorFlat;
+					if (getLevel(fieldId) == 5) {
+						color = colorFlat5;	
+					} else if (getLevel(fieldId) == 10) {
+						color = colorFlat10;
+					} 
+					
 				}
 			}
 		    mapImage.bitmapData.setPixel(x, y, color);
@@ -453,7 +463,9 @@ package autoevony.player
 			mapSettings.data.colorUNKOWNFIELD = colorUNKOWNFIELD;
 			mapSettings.data.colorNPC10 = colorNPC10;
 			mapSettings.data.colorNPC5 = colorNPC5;
+			mapSettings.data.colorNPC = colorNPC;
 			mapSettings.data.colorPLAYER = colorPLAYER;
+			mapSettings.data.colorFlat = colorFlat;
 			mapSettings.data.colorFlat5 = colorFlat5;
 			mapSettings.data.colorFlat10 = colorFlat10;
 			mapSettings.flush();

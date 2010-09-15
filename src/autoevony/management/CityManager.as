@@ -2195,18 +2195,11 @@ package autoevony.management
 		private function handleIdleUpdates() : void {
 			if (playerTimingAllowed("quest1", 180)) {
 				ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 1);
-			}
-			
-			if (playerTimingAllowed("quest2", 180)) {
 				ActionFactory.getInstance().getQuestCommands().getQuestType(castle.id, 3);
+				ActionFactory.getInstance().getQuestCommands().getQuestList(castle.id, 1);
 			}
-			
-			if (playerTimingAllowed("quest3", 180)) {
-				ActionFactory.getInstance().getQuestCommands().getQuestList( castle.id, 1);
-			}
-			
-			if (cityTimingAllowed("refresh", 300)) {
-				
+						
+			if (cityTimingAllowed("refresh", 300)) {				
 				troopProductionUpdateNeeded = true;
 				fortificationProductionUpdateNeeded = true;
 				researchUpdateNeeded = true;
