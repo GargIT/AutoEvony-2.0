@@ -3690,7 +3690,6 @@ package autoevony.management
 				estResource.curPopulation -= (troopPopulations[type] * batch);
 				totalTroop[ troopIntNames[type] ] += batch;
 				lastTroopTypeProduced = type;
-
 				promotePoliticsChief();
 				return true;
 			}
@@ -3829,7 +3828,7 @@ package autoevony.management
 				}
 				if (promoted) {
 					logDebugMsg(DEBUG_NORMAL, "Fill " + fillCount + " positions on reserved barrack at " + reservedBarrack.positionId, "#169736");
-					// promotePoliticsChief();
+					promotePoliticsChief();
 					return true;
 				}
 			}
@@ -3871,10 +3870,7 @@ package autoevony.management
 				if (batch <= qualifyCount * 10) continue;
 				if (batch > qualifyCount * maxBatch) batch = qualifyCount * maxBatch;
 					
-				if (!promoted) {
-					promoted = true;
-					promoteAttackChief(bestHero);
-				}
+				promoteAttackChief(bestHero);				
 
 				logMessage("Use spare resource for " + batch + " " + troopExtNames[type] + " on " + qualifyCount + " barracks");
 				ActionFactory.getInstance().getCastleCommands().checkOutUpgrade(castle.id, reservedBarrack.positionId);
@@ -3886,7 +3882,7 @@ package autoevony.management
 				lastTroopTypeProduced = type;
 				logDebugMsg(DEBUG_POPULATION, "after: est population: " + estResource.curPopulation + ", est worker: " + estResource.workPeople + ", est idle: " + estIdle);	
 
-				// promotePoliticsChief();
+				promotePoliticsChief();
 				return true;
 			}
 
