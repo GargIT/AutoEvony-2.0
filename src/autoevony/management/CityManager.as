@@ -5962,6 +5962,7 @@ package autoevony.management
 			return true;
 		}
 		
+
 		private function getFriendlyTroopBean() : TroopBean {
 			var types:Array = new Array(TFConstants.T_BATTERINGRAM, TFConstants.T_BALLISTA, TFConstants.T_CATAPULT, TFConstants.T_CARRIAGE, TFConstants.T_SWORDSMEN, TFConstants.T_PIKEMAN, TFConstants.T_LIGHTCAVALRY, TFConstants.T_HEAVYCAVALRY, TFConstants.T_PEASANTS, TFConstants.T_MILITIA, TFConstants.T_SCOUTER, TFConstants.T_ARCHER);
 			var tr:TroopBean = new TroopBean();
@@ -7793,10 +7794,50 @@ package autoevony.management
 			var data:ArrayCollection = new ArrayCollection();
 			var obj:DataRow;
     		var shipped:int = 0;
-    		obj = new DataRow();
-    		 
+    		var resgold:int = 0;
+    		var resfood:int = 0;
+    		var reslumber:int = 0;
+    		var resstone:int = 0;
+    		var resiron:int = 0;
+    		
+			for each(var army:ArmyBean in friendlyArmies) {
+				if ( army.direction != ArmyConstants.ARMY_STAY ) {				
+					//logMessage("ALLIANCE INCOMING: ");
+					//logMessage("GOLD : " + army.resource.gold );
+					//logMessage("FOOD : " + army.resource.food );
+					//logMessage("WOOD : " + army.resource.wood );
+					//logMessage("STONE: " + army.resource.stone);
+					//logMessage("IRON : " + army.resource.iron );
+					
+						resgold += int( army.resource.gold );
+						resfood += int( army.resource.food );
+						reslumber += int( army.resource.wood );
+						resstone += int( army.resource.stone );
+						resiron += int( army.resource.iron );
+				}
+			}
+    		
+			for each(var army1:ArmyBean in selfArmies ) {
+				if ( army1.direction == ArmyConstants.ARMY_BACKWARD ) {						
+						//logMessage("SELF INCOMING: ");
+						//logMessage("GOLD : " + army1.resource.gold );
+						//logMessage("FOOD : " + army1.resource.food );
+						//logMessage("WOOD : " + army1.resource.wood );
+						//logMessage("STONE: " + army1.resource.stone);
+						//logMessage("IRON : " + army1.resource.iron );
+					
+						resgold += int( army1.resource.gold );
+						resfood += int( army1.resource.food );
+						reslumber += int( army1.resource.wood );
+						resstone += int( army1.resource.stone );
+						resiron += int( army1.resource.iron );
+				}
+			}
+
+
+    		obj = new DataRow();    		 
     		obj.col1 = "Gold";
-    		obj.col5 = ""; 
+    		obj.col5 = Utils.formatNum( resgold ); 
     		obj.col2 = Utils.formatNum(resource.gold); 
     		obj.col3 = Utils.formatNum(resource.taxIncome - resource.herosSalary);
     		obj.label = "Tax collected: " + Utils.formatNum(resource.taxIncome) + 
@@ -7811,9 +7852,6 @@ package autoevony.management
     			obj.col4 = "";
     		}
     		data.addItem(obj);
-
-    		
-    		
     		
     		obj = new DataRow();
  			for each (var transingTradef:TransingTradeBean in transingTradesArray) { 				
@@ -7821,7 +7859,7 @@ package autoevony.management
 					shipped = shipped + transingTradef.amount;					
 				}				
 			}
-			obj.col5 = Utils.formatNum( shipped );
+			obj.col5 = Utils.formatNum( shipped + resfood );
 			shipped = 0;
     		obj.col1 = "Food"; obj.col2 = Utils.formatNum(resource.food.amount); 
     		obj.col3 = Utils.formatNum(resource.food.increaseRate - resource.troopCostFood);
@@ -7846,7 +7884,7 @@ package autoevony.management
 					shipped = shipped + transingTradel.amount;					
 				}				
 			}
-			obj.col5 = Utils.formatNum( shipped );
+			obj.col5 = Utils.formatNum( shipped + reslumber);
 			shipped = 0;
 			obj.col1 = "Lumber"; obj.col2 = Utils.formatNum(resource.wood.amount); 
     		obj.col3 = Utils.formatNum(resource.wood.increaseRate);
@@ -7863,7 +7901,7 @@ package autoevony.management
 					shipped = shipped + transingTrades.amount;					
 				}				
 			}
-			obj.col5 = Utils.formatNum( shipped );
+			obj.col5 = Utils.formatNum( shipped + resstone);
 			shipped = 0;
 			obj.col1 = "Stone"; obj.col2 = Utils.formatNum(resource.stone.amount); 
     		obj.col3 = Utils.formatNum(resource.stone.increaseRate);
@@ -7880,7 +7918,7 @@ package autoevony.management
 					shipped = shipped + transingTradei.amount;					
 				}				
 			}
-			obj.col5 = Utils.formatNum( shipped );
+			obj.col5 = Utils.formatNum( shipped + resiron );
 			shipped = 0;
     		obj.col1 = "Iron"; obj.col2 = Utils.formatNum(resource.iron.amount); 
     		obj.col3 = Utils.formatNum(resource.iron.increaseRate);
@@ -8083,10 +8121,10 @@ package autoevony.management
 
     	public function updateResearchData(arr:ArrayCollection) : void {
     		if (researches == null) { arr.removeAll(); return; }
-    		var data:ArrayCollection = new ArrayCollection();
-    		
+    		var data:ArrayCollection = new ArrayCollection();    		
     		var obj:DataRow;
     		var research:AvailableResearchListBean;
+    		    		
             for each(research in researches) {
             	if (research.upgradeing) {
             		obj = new DataRow();
