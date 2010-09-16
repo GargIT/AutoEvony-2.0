@@ -2180,20 +2180,20 @@ package autoevony.management
 				var batchSize:int = Utils.rand(limits[res] / 4, limits[res] / 2);
 				batchSize = Utils.roundAmount(batchSize, 2);
 							
-				if (estResource.gold < goldDesired + 500000000 && nResource[res] > Math.min(desired * 1.2, desired + 1000000) && nResource[res] > limits[res]) { // sale
+				if (nResource[res] < limits[res] && desired > Math.min(nResource[res] * 1.2, nResource[res] + 1000000) && estResource.gold > 1000) { // buy
+					var buyAmount:Number = Math.min((estResource.gold-goldDesired-reserved.gold)/buyPrice(res)*0.99, (desired-nResource[res])*1.2, buyAmount(res));
+					buyAmount = Utils.roundAmount(buyAmount);
+					if (buyAmount <= Math.max(0, nResource[res] / 10, maxProduction / 3)) continue;
+					if (buyAmount > batchSize) buyAmount = batchSize;
+					doBuy(buyAmount, res, desperate);
+					return;
+				} else if (estResource.gold < goldDesired + 500000000 && nResource[res] > Math.min(desired * 1.2, desired + 1000000) && nResource[res] > limits[res]) { // sale
 					var sellAmount:Number = Math.min(estResource.gold/sellPrice(res)*100, (nSellResource[res]-desired)*1.2, nCurrResource[res]*.9, sellAmount(res));
 					sellAmount = Utils.roundAmount(sellAmount);
 					// there is no constrain for selling!
 					// if (sellAmount <= Math.max(0, nResource[res] / 10, maxProduction / 3)) continue;
 					if (sellAmount > batchSize) sellAmount = batchSize;
 					doSell(sellAmount, res, desperate);
-					return;
-				} else if (nResource[res] < limits[res] && desired > Math.min(nResource[res] * 1.2, nResource[res] + 1000000) && estResource.gold > 1000) { // buy
-					var buyAmount:Number = Math.min((estResource.gold-goldDesired-reserved.gold)/buyPrice(res)*0.99, (desired-nResource[res])*1.2, buyAmount(res));
-					buyAmount = Utils.roundAmount(buyAmount);
-					if (buyAmount <= Math.max(0, nResource[res] / 10, maxProduction / 3)) continue;
-					if (buyAmount > batchSize) buyAmount = batchSize;
-					doBuy(buyAmount, res, desperate);
 					return;
 				}
 			}
@@ -7792,9 +7792,11 @@ package autoevony.management
     	public function updateResourceData(arr:ArrayCollection) : void {
 			var data:ArrayCollection = new ArrayCollection();
 			var obj:DataRow;
-    		
-    		obj = new DataRow(); 
-    		obj.col1 = "Gold"; 
+    		var shipped:int = 0;
+    		obj = new DataRow();
+    		 
+    		obj.col1 = "Gold";
+    		obj.col5 = ""; 
     		obj.col2 = Utils.formatNum(resource.gold); 
     		obj.col3 = Utils.formatNum(resource.taxIncome - resource.herosSalary);
     		obj.label = "Tax collected: " + Utils.formatNum(resource.taxIncome) + 
@@ -7810,7 +7812,17 @@ package autoevony.management
     		}
     		data.addItem(obj);
 
-    		obj = new DataRow(); 
+    		
+    		
+    		
+    		obj = new DataRow();
+ 			for each (var transingTradef:TransingTradeBean in transingTradesArray) { 				
+				if ( resourceNames[transingTradef.resType] == "food" ) {
+					shipped = shipped + transingTradef.amount;					
+				}				
+			}
+			obj.col5 = Utils.formatNum( shipped );
+			shipped = 0;
     		obj.col1 = "Food"; obj.col2 = Utils.formatNum(resource.food.amount); 
     		obj.col3 = Utils.formatNum(resource.food.increaseRate - resource.troopCostFood);
     		obj.label = "Rate: " + Utils.formatNum(resource.food.increaseRate) + 
@@ -7829,7 +7841,14 @@ package autoevony.management
 			data.addItem(obj);
 
     		obj = new DataRow(); 
-    		obj.col1 = "Lumber"; obj.col2 = Utils.formatNum(resource.wood.amount); 
+ 			for each (var transingTradel:TransingTradeBean in transingTradesArray) {
+				if ( resourceNames[transingTradel.resType] == "lumber" ) {
+					shipped = shipped + transingTradel.amount;					
+				}				
+			}
+			obj.col5 = Utils.formatNum( shipped );
+			shipped = 0;
+			obj.col1 = "Lumber"; obj.col2 = Utils.formatNum(resource.wood.amount); 
     		obj.col3 = Utils.formatNum(resource.wood.increaseRate);
     		obj.col4 = "";
     		obj.label = "Max storage: " + resource.wood.max + 
@@ -7838,8 +7857,15 @@ package autoevony.management
 
     		data.addItem(obj);
 
-    		obj = new DataRow(); 
-    		obj.col1 = "Stone"; obj.col2 = Utils.formatNum(resource.stone.amount); 
+    		obj = new DataRow();
+    		for each (var transingTrades:TransingTradeBean in transingTradesArray) {
+				if ( resourceNames[transingTrades.resType] == "stone" ) {
+					shipped = shipped + transingTrades.amount;					
+				}				
+			}
+			obj.col5 = Utils.formatNum( shipped );
+			shipped = 0;
+			obj.col1 = "Stone"; obj.col2 = Utils.formatNum(resource.stone.amount); 
     		obj.col3 = Utils.formatNum(resource.stone.increaseRate);
     		obj.col4 = "";
     		obj.label = "Max storage: " + resource.stone.max + 
@@ -7848,7 +7874,14 @@ package autoevony.management
 
     		data.addItem(obj);
 
-    		obj = new DataRow(); 
+    		obj = new DataRow();
+			for each (var transingTradei:TransingTradeBean in transingTradesArray) {
+				if ( resourceNames[transingTradei.resType] == "iron" ) {
+					shipped = shipped + transingTradei.amount;					
+				}				
+			}
+			obj.col5 = Utils.formatNum( shipped );
+			shipped = 0;
     		obj.col1 = "Iron"; obj.col2 = Utils.formatNum(resource.iron.amount); 
     		obj.col3 = Utils.formatNum(resource.iron.increaseRate);
     		obj.col4 = "";
@@ -7862,6 +7895,7 @@ package autoevony.management
     		obj.col1 = "Population"; obj.col2 = resource.curPopulation; 
     		obj.col3 = "";
     		obj.col4 = "";
+    		obj.col5 = "";
     		obj.label = "Max population: " + resource.maxPopulation + 
     			"\nWorkers: " + resource.workPeople +
     			"\nIdle: " + (resource.curPopulation - resource.workPeople);

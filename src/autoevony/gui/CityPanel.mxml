@@ -516,7 +516,7 @@
 				</mx:Canvas>
 			</mx:ViewStack>
 		</mx:VBox>
-		<mx:VBox width="510" height="100%" verticalGap="0">
+		<mx:VBox width="550" height="100%" verticalGap="0">
 			<mx:HBox width="100%" height="24" verticalAlign="middle">
 				<mx:ToggleButtonBar id="infoTab" dataProvider="allinfo" buttonHeight="20" paddingLeft="1" horizontalGap="1" creationComplete="tabBar_creationComplete(infoTab)" buttonWidth="38"/>
 			</mx:HBox>
@@ -540,6 +540,7 @@
 						<local:columns>
 							<mx:DataGridColumn headerText="Resource" dataField="col1" width="0.25"/>
 							<mx:DataGridColumn headerText="Amount" dataField="col2" width="0.25"/>
+							<mx:DataGridColumn headerText="Incoming" dataField="col5" width="0.25"/>
 							<mx:DataGridColumn headerText="Rate" dataField="col3" width="0.25" showDataTips="true"/>
 							<mx:DataGridColumn headerText="Days left" dataField="col4" width="0.35"/>
 						</local:columns>
