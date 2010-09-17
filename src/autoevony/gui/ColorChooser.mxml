@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:PopUpButton xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()">
+ <mx:Script>
+  <![CDATA[
+   import autoevony.gui.ColorSwatch;
+   import autoevony.gui.ColorSelectEvent;
+
+   private var drawColor:uint = 0xffffff;
+
+   private function init():void{
+    this.setStyle("cornerRadius",0);
+    popUp = new ColorSwatch();
+    popUp.addEventListener(ColorSelectEvent.COLOR_SELECTED, selectColor);
+   }
+   public function get selectedColor():uint{
+    return drawColor;
+   }
+   public function set selectedColor(color:uint):void{
+    drawColor = color;
+   }
+   private function selectColor(e:ColorSelectEvent):void{
+    drawColor = e.pickedColor;
+    invalidateDisplayList();
+    close();
+   }
+   override protected function updateDisplayList(w:Number, h:Number):void{
+    super.updateDisplayList(w,h);
+    graphics.beginFill(drawColor);
+    graphics.drawRect(0,0,w-20,h);
+    graphics.endFill();
+   }
+   private function uintToString(hex:uint):String {
+    var hexString:* = hex.toString(16).toUpperCase();
+    var cnt:int = 6 - hexString.length;
+    var zeros:String = "";
+   for (var i:int = 0; i < cnt; i++) {
+    zeros += "0";
+   }
+    return "#" + zeros + hexString;
+   }
+  ]]>
+ </mx:Script>
+</mx:PopUpButton>

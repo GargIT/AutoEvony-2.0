@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="400" title="Settings" borderColor="#EAF3D5">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="400" title="Settings" borderColor="#EAF3D5" xmlns:ns1="autoevony.gui.*">
 	<mx:Script>
 		<![CDATA[
 //			import org.smtp.events.SMTPEvent;
@@ -103,58 +103,58 @@
 				<mx:Form height="100%" width="100%">
 					<mx:HBox width="100%">
 					<mx:FormItem label="Enemy alliance" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="enemy"/>
+						<ns1:ColorChooser width="50" id="enemy"/>
 					</mx:FormItem>
 					<mx:FormItem label="Friend alliance" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="friend"/>
+						<ns1:ColorChooser width="50" id="friend"/>
 					</mx:FormItem>								
 					</mx:HBox>
 										
 					<mx:HBox width="100%">
 					<mx:FormItem label="Neutral alliance" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="neutral"/>
+						<ns1:ColorChooser width="50" id="neutral"/>
 					</mx:FormItem>					
 					<mx:FormItem label="My alliance" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="same"/>
+						<ns1:ColorChooser width="50" id="same"/>
 					</mx:FormItem>
 					</mx:HBox>
 																				
 					<mx:HBox width="100%">
 					<mx:FormItem label="My cities" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="mycities"/>
+						<ns1:ColorChooser width="50" id="mycities"/>
 					</mx:FormItem>
 					<mx:FormItem label="All other fields" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="otherfield"/>
+						<ns1:ColorChooser width="50" id="otherfield"/>
 					</mx:FormItem>								
 					</mx:HBox>
 
 					<mx:HBox width="100%">
 					<mx:FormItem label="NPC5" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="npc5"/>
+						<ns1:ColorChooser width="50" id="npc5"/>
 					</mx:FormItem>		
 					<mx:FormItem label="NPC10" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="npc10"/>
+						<ns1:ColorChooser width="50" id="npc10"/>
 					</mx:FormItem>					
 					</mx:HBox>				
 					<mx:HBox width="100%">
 					<mx:FormItem label="Flat5" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="flat5"/>
+						<ns1:ColorChooser width="50" id="flat5"/>
 					</mx:FormItem>		
 					<mx:FormItem label="Flat10" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="flat10"/>
+						<ns1:ColorChooser width="50" id="flat10"/>
 					</mx:FormItem>					
 					</mx:HBox>
 					<mx:HBox width="100%">
 					<mx:FormItem label="Other Flats" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="flat"/>
+						<ns1:ColorChooser width="50" id="flat"/>
 					</mx:FormItem>		
 					<mx:FormItem label="Other NPC's" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="npc"/>
+						<ns1:ColorChooser width="50" id="npc"/>
 					</mx:FormItem>					
 					</mx:HBox>				
 					<mx:HBox width="100%">
 					<mx:FormItem label="Map background" width="165" horizontalAlign="right">
-						<mx:ColorPicker width="50" showTextField="true" id="mapBack"/>
+						<ns1:ColorChooser width="50" id="mapBack"/>
 					</mx:FormItem>
 			
 					</mx:HBox>
