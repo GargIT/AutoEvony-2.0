@@ -600,7 +600,7 @@ package autoevony.scripts
 		{
 			var message:String = ""
 
-			for (var i:int = 1; i < params.length; i++)
+			for (var i:int = 0; i < params.length; i++)
 			{
 				message += getValue(params[i]) + " ";
 			}
